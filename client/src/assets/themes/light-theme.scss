@@ -1,0 +1,190 @@
+html {
+    .background {
+        background-color: #607D8B !important;
+    }
+
+    .sidenav {
+        background-color: rgb(235, 232, 232) !important;
+    }
+
+    .btn-primary {
+        background-color: $light-gray !important;
+        font-family: cairo !important;
+        font-weight: bold !important;
+
+    }
+
+    .btn-secondary {
+        background-color: $soft-orange !important;
+        font-family: cairo !important;
+    }
+
+    .dialog-btn-close {
+
+        background-color: $snow-white !important;
+        // color: $dark-slate !important;
+        border: 2px solid $snow-white !important;
+        scale: 0.9 !important;
+        transition: .4s ease-in-out;
+
+        mat-icon {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+
+        }
+
+        &:hover {
+            background-color: $night-blue !important;
+            color: $snow-white !important;
+            border-color: $snow-white !important;
+            transform: rotate(180deg);
+
+
+
+        }
+    }
+
+
+    .btn-warning {
+        background-color: $soft-red !important;
+        color: $snow-white !important;
+        font-family: cairo !important;
+        font-weight: bold !important;
+    }
+
+    .btn-default {
+        background-color: $blue-gray !important;
+        color: $light-gray !important;
+    }
+
+    .mat-icon-danger {
+        color: $soft-red !important;
+    }
+
+    .spacer {
+        padding: 30px !important;
+    }
+
+    //Dialog
+    //Delete
+
+    [mat-dialog-title] {
+        height: 60px;
+        padding: 0px 10px 0px 10px !important;
+        background-color: $charcoal-gray !important;
+
+
+        .title {
+            font-family: cairo !important;
+            color: white !important;
+            padding-right: 20px;
+
+        }
+    }
+
+    .delete-dialog-container {
+        min-height: 150px !important;
+        min-width: 400px !important;
+        background-color: $soft-red !important;
+        color: $snow-white !important;
+
+
+        .body {
+            margin: 20px;
+            padding: 20px !important;
+            text-align: center;
+            background-color: $blue-gray;
+            border-radius: 20px !important;
+            font-family: cairo;
+
+
+
+        }
+
+        .footer {
+
+            text-align: center;
+            font-family: cairo !important;
+
+            button {
+                font-family: cairo !important;
+
+            }
+
+        }
+    }
+
+    .form-dialog-content {
+        margin-top: 20px !important;
+        padding-top: 30px !important;
+        margin: 10px;
+        background-color: $blue-gray !important;
+        border-radius: 20px !important;
+    }
+
+    //Table
+
+    table {
+        width: 100% !important;
+
+        tr {
+            font-family: cairo !important;
+            //font-weight: bold !important;
+            //  text-shadow: 0px 1px 0px $dark-gray !important;
+
+        }
+
+        tr:nth-child(1) {
+
+
+            th {
+                background-color: $dark-gray !important;
+                height: 70px !important;
+                font-size: 18px !important;
+
+            }
+        }
+
+
+        tr:nth-child(even) {
+            background-color: $light-gray !important;
+        }
+
+        tr:nth-child(n+1):nth-child(odd) {
+            background-color: $snow-white !important;
+
+        }
+
+        tbody tr:hover {
+            &:nth-child(odd) {
+                background-color: rgba($dark-gray, 0.4) !important;
+                color: $snow-white !important;
+            }
+
+            mat-icon {
+                color: $snow-white !important;
+            }
+
+            background-color: rgba($dark-gray, 0.7) !important;
+            color: $snow-white !important;
+            //  font-weight: bold !important;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+
+
+    }
+
+
+    @include mat.theme((color: (theme-type: light,
+                primary: $primary-gray-palette ,
+                tertiary:$primary-blue-gray-palette ,
+            ),
+
+
+            typography: (bold-weight:900),
+            density: 0,
+        ));
+
+}

@@ -1,0 +1,23 @@
+<mat-toolbar class="top-navbar" color="accent">
+    <button mat-icon-button (click)="toggleSidenavEmitter()" class="menu-btn">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <button mat-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>person</mat-icon>
+        {{ username }}
+    </button>
+
+    <mat-slide-toggle [checked]="isDarkMode" (change)="toggleTheme()">Dark Mode</mat-slide-toggle>
+
+    <div>
+        <!-- باقي الكونتنت بتاعك هنا -->
+    </div>
+
+    <span class="spacer"></span>
+
+
+    <span>لوحة التحكم - المجمع الطبي</span>
+    <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="logout()">تسجيل الخروج</button>
+    </mat-menu>
+</mat-toolbar>

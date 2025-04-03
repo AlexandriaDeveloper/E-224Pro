@@ -1,0 +1,129 @@
+<!-- <div class="container" style="display: flex; justify-content: space-between;" @ngFor="let account of accounts">
+    <div *ngIf="account.accountStatus==='Debit">
+        {{account.accountName}}
+    </div>
+    <div *ngIf="account.accountStatus==='Credit'">
+        {{account.accountName}}
+    </div>
+</div>
+
+
+<div @ngFor="let account of accounts">
+    <div *ngIf="account.accountStatus==='Debit'">
+        {{account.accountBalance}}
+    </div>
+    <div *ngIf="account.accountStatus==='Credit'">
+        {{account.accountBalance}}
+    </div>
+</div> -->
+
+<!-- <div *ngFor="let account of accounts">
+    <div *ngIf="account.accountStatus==='Debit'">
+        {{account.accountBalance}}
+    </div>
+    <div *ngIf="account.accountStatus==='Credit'">
+        {{account.accountBalance}}
+    </div>
+</div> -->
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+
+    <h2 mat-dialog-title class="delete-dialog-title" cdkDragHandle>
+
+        <button mat-icon-button (click)="onNoClick()" class="dialog-btn-close">
+            <mat-icon>close</mat-icon>
+        </button>
+        <span class="title">الحسابات</span>
+
+    </h2>
+    <div style="display: flex; justify-content: space-between;margin: 10px; max-height: 600px; overflow-x: scroll;">
+        <div style="width: 49%;">
+            <div style="display: flex; justify-content: center;">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>البحث فى الحسابات المدينه</mat-label>
+                    <input matInput (keyup)="searchDebitByName($event)" />
+                </mat-form-field>
+
+
+            </div>
+            <table mat-table [dataSource]="debit" class="mat-elevation-z8">
+
+                <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+                <!-- Position Column -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-flat-button (click)="copyAccount(element)">
+                            نسخ
+                        </button>
+
+                    </td>
+                </ng-container>
+                <!-- Position Column -->
+                <ng-container matColumnDef="accountName">
+                    <th mat-header-cell *matHeaderCellDef> اسم الحساب </th>
+                    <td mat-cell *matCellDef="let element"> {{element.accountName}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="accountNumber">
+                    <th mat-header-cell *matHeaderCellDef> كود الحساب </th>
+                    <td mat-cell *matCellDef="let element"> {{element.accountNumber}} </td>
+                </ng-container>
+
+
+
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+        <div style="width: 49%;">
+            <div style="display: flex; justify-content: center;">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>البحث فى الحسابات الدائنه</mat-label>
+                    <input matInput (keyup)="searchCreditByName($event)" />
+                </mat-form-field>
+
+
+            </div>
+            <table mat-table [dataSource]="credit" class="mat-elevation-z8">
+
+                <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+                <!-- Position Column -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-flat-button (click)="copyAccount(element)">
+                            نسخ
+                        </button>
+
+                    </td>
+                </ng-container>
+                <!-- Position Column -->
+                <ng-container matColumnDef="accountName">
+                    <th mat-header-cell *matHeaderCellDef> اسم الحساب </th>
+                    <td mat-cell *matCellDef="let element"> {{element.accountName}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="accountNumber">
+                    <th mat-header-cell *matHeaderCellDef> كود الحساب </th>
+                    <td mat-cell *matCellDef="let element"> {{element.accountNumber}} </td>
+                </ng-container>
+
+
+
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</div>
+<!--
+  <div class="list-item-value" *ngIf="account.accountStatus==='Credit'">
+                        {{account.accountName}} </div>-->

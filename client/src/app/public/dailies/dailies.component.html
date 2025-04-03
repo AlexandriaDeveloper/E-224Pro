@@ -1,0 +1,91 @@
+<div class="table-container">
+    <!-- <div class="search-form-container">
+
+
+    </div> -->
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 fixed-table" color="primary">
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>
+                <button mat-icon-button (click)="openAddDialog(null)" style="color: #fff;">
+                    <mat-icon>add</mat-icon>
+                </button>
+                <button mat-icon-button (click)="openSearchDialog()" style="color: #fff;">
+                    <mat-icon>search</mat-icon>
+                </button>
+                <button mat-icon-button (click)="addDaily(element)" style="color: #fff;">
+                    <mat-icon>print</mat-icon>
+                </button>
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button [routerLink]="['./',element.id]">
+                    <mat-icon>visibility</mat-icon>
+                </button>
+
+                <button mat-icon-button (click)="editDaily(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="openDeleteDialog(element)" class="mat-icon-danger">
+                    <mat-icon>delete</mat-icon>
+                </button>
+
+
+
+            </td>
+        </ng-container>
+        <!-- Position Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>الكود </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <!-- Name Column 
+         {
+    "id": 31,
+    "name": "Test Daily 30",
+    "dailyDate": "2025-04-23",
+    "dailyType": "General",
+    "accountItem": "StateBudget"
+}
+        
+        
+        -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> الاسم </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="dailyDate">
+            <th mat-header-cell *matHeaderCellDef> تاريخ اليوميه </th>
+            <td mat-cell *matCellDef="let element"> {{element.dailyDate}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="dailyType">
+            <th mat-header-cell *matHeaderCellDef> نوع اليوميه </th>
+            <td mat-cell *matCellDef="let element"> {{element.dailyType==='General'?'عاديه':'بايرول'}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="accountItem">
+            <th mat-header-cell *matHeaderCellDef> بند الصرف </th>
+            <td mat-cell *matCellDef="let element"> {{element.accountItem==='StateBudget'?'موازنه':'صناديق'}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+            <td style="width: 100%;text-align: center; padding: 20px;" class="mat-cell" colspan="11">لا يوجد بيانات
+                للعرض</td>
+        </tr>
+    </table>
+    <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons
+        showFirstLastButtons aria-label="Select page" aria-label="Select page" (page)="handlePageEvent($event)"
+        class="fixed-table">
+    </mat-paginator>
+</div>

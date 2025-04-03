@@ -1,0 +1,28 @@
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <h2 mat-dialog-title class="delete-dialog-title" cdkDragHandle>
+
+        <button mat-icon-button (click)="onNoClick()" class="dialog-btn-close">
+            <mat-icon>
+                close
+            </mat-icon>
+        </button>
+        <span class="title">تأكيد الحذف</span>
+
+    </h2>
+    <mat-dialog-content class="delete-dialog-container">
+
+
+        <div class="body">
+            <h5>{{ data.message }}</h5>
+        </div>
+        <div class="footer">
+            <button mat-button (click)="onDelete()" class="btn-warning">
+                نعم
+            </button>
+            <button mat-button (click)="onNoClick()" class="btn-default">
+                لا
+            </button>
+
+        </div>
+    </mat-dialog-content>
+</div>

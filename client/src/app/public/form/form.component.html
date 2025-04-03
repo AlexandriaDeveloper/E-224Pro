@@ -1,0 +1,150 @@
+<div *ngIf="data">
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title> بيان اليوميه</mat-panel-title>
+                <mat-panel-description>{{data.daily.name}} </mat-panel-description>
+
+            </mat-expansion-panel-header>
+            <mat-list role="list">
+                <mat-list-item role="listitem">
+                    <div class="list-item-container" style="display: flex; justify-content: space-evenly;">
+                        <div class="list-item-title">تاريخ اليومية</div>
+                        <div class="list-item-value">{{data.daily.dailyDate}} </div>
+
+
+
+
+                    </div>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <div class="list-item-container" style="display: flex; justify-content: space-evenly;">
+                        <div class="list-item-title">نوع اليومية</div>
+                        <div class="list-item-value">{{data.daily.dailyType ==="General"?'عاديه':'بيرول'}} </div>
+                    </div>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <div class="list-item-container" style="display: flex; justify-content: space-evenly;">
+                        <div class="list-item-title">بند الصرف</div>
+                        <div class="list-item-value">{{data.daily.accountItem ==="StateBudget"?'بيرول':'موازنه'}} </div>
+                    </div>
+                </mat-list-item>
+            </mat-list>
+
+        </mat-expansion-panel>
+
+    </mat-accordion>
+</div>
+
+<div *ngIf="data" class="table-container">
+
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 fixed-table" color="primary">
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>
+                <button mat-icon-button (click)="openAddFormDialog(null)" style="color: #fff;">
+                    <mat-icon>add</mat-icon>
+                </button>
+                <button mat-icon-button (click)="openSearchDialog()" style="color: #fff;">
+                    <mat-icon>search</mat-icon>
+                </button>
+                <button mat-icon-button (click)="addDaily(element)" style="color: #fff;">
+                    <mat-icon>print</mat-icon>
+                </button>
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button [routerLink]="['./',element.id]">
+                    <mat-icon>visibility</mat-icon>
+                </button>
+
+                <button mat-icon-button (click)="editDaily(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="openDeleteDialog(element)" class="mat-icon-danger">
+                    <mat-icon>delete</mat-icon>
+                </button>
+
+
+
+            </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> الكود </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+        <ng-container matColumnDef="num224">
+            <th mat-header-cell *matHeaderCellDef> رقم 224 </th>
+            <td mat-cell *matCellDef="let element"> {{element.num224}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="num55">
+            <th mat-header-cell *matHeaderCellDef> رقم 55 </th>
+            <td mat-cell *matCellDef="let element"> {{element.num55}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="formName">
+            <th mat-header-cell *matHeaderCellDef> اسم الاستمارة</th>
+            <td mat-cell *matCellDef="let element"> {{element.formName}} </td>
+        </ng-container>
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="collageName">
+            <th mat-header-cell *matHeaderCellDef> الكليه </th>
+            <td mat-cell *matCellDef="let element"> {{element.collageName}} </td>
+        </ng-container>
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="fundName">
+            <th mat-header-cell *matHeaderCellDef> الصندوق </th>
+            <td mat-cell *matCellDef="let element"> {{element.fundName}} </td>
+        </ng-container>
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="totalDebit">
+            <th mat-header-cell *matHeaderCellDef> أجمالى مدين </th>
+            <td mat-cell *matCellDef="let element"> {{element.totalDebit}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="totalCredit">
+            <th mat-header-cell *matHeaderCellDef> أجمالى دائن </th>
+            <td mat-cell *matCellDef="let element"> {{element.totalCredit}} </td>
+        </ng-container>
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="isBalanced">
+            <th mat-header-cell *matHeaderCellDef> التوازن </th>
+            <td mat-cell *matCellDef="let element">
+                <div *ngIf="element.totalCredit===element.totalDebit">
+                    <mat-icon class="mat-icon-success">check</mat-icon>
+                </div>
+                <div *ngIf="!element.isBalanced">
+                    <mat-icon class="mat-icon-danger" style="font-weight: Bold;">close</mat-icon>
+                </div>
+
+            </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="auditorName">
+            <th mat-header-cell *matHeaderCellDef> المراجع </th>
+            <td mat-cell *matCellDef="let element"> {{element.auditorName}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            [style.background]="row.totalDebit === row.totalCredit ? '#fff' : red "></tr>
+        <tr class="mat-row" *matNoDataRow>
+            <td style="width: 100%;text-align: center; padding: 20px;" class="mat-cell" colspan="11">لا يوجد بيانات
+                للعرض</td>
+        </tr>
+    </table>
+    <mat-paginator [length]="paginator.length" [pageSize]="paginator.pageSize"
+        [pageSizeOptions]="paginator.pageSizeOptions" showFirstLastButtons showFirstLastButtons aria-label="Select page"
+        aria-label="Select page" (page)="handlePageEvent($event)" class="fixed-table">
+    </mat-paginator>
+</div>

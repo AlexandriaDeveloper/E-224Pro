@@ -1,0 +1,29 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Core.Models;
+
+public class Account : BaseEntity
+{
+    [NotMapped]
+    public override string? Name { get => base.Name; set => base.Name = value; }
+
+    [StringLength(150)]
+    public string AccountName { get; set; } = string.Empty;
+    [StringLength(50)]
+    public string AccountNumber { get; set; } = string.Empty;
+    //دائن او مدين
+    [StringLength(50)]
+    public string AccountStatus { get; set; } = string.Empty;
+
+    // public int ParentAccountId { get; set; }
+
+    // public Account? ParentAccount { get; set; }
+    // public List<Account> ChildAccounts { get; set; } = new List<Account>();
+
+    public List<SubAccount>? SubAccounts { get; set; }
+
+
+
+}
+

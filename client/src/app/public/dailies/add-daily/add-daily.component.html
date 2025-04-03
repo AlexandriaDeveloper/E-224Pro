@@ -1,0 +1,78 @@
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+
+
+    <h2 mat-dialog-title class="delete-dialog-title" cdkDragHandle>
+
+        <button mat-icon-button (click)="onNoClick()" class="dialog-btn-close">
+            <mat-icon>close</mat-icon>
+        </button>
+        <span class="title">أضافة يوميه</span>
+
+    </h2>
+
+    <mat-dialog-content class="form-dialog-content">
+
+        <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+            <div style="display: flex; justify-content: center;">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>الاسم</mat-label>
+                    <input matInput placeholder="البحث بالأسم" formControlName="name" />
+                </mat-form-field>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>من يوم</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="dailyDate">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+            </div>
+            <div style="display: flex; justify-content: center;">
+
+
+                <mat-form-field style="width: 100%;">
+                    <mat-label>نوع اليوميه</mat-label>
+
+                    <mat-select formControlName="dailyType">
+                        <mat-option [value]="">الكل</mat-option>
+                        @for (dailyType of dailyTypes; track dailyType) {
+                        <mat-option [value]="dailyType.value">{{dailyType.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>نوع الصرفيه </mat-label>
+                    <mat-select formControlName="accountItem">
+                        <mat-option [value]="">الكل</mat-option>
+                        @for (accountItem of accountItems; track accountItem) {
+                        <mat-option [value]="accountItem.value">{{accountItem.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+
+        </form>
+    </mat-dialog-content>
+
+    <div style="display:flex !important;justify-content: center;">
+
+        <button mat-raised-button (click)="onSubmit()" style="width: 140px;" class="btn-primary">
+            اضافة
+            <mat-icon>add</mat-icon>
+        </button>
+        <div class="spacer"></div>
+
+
+        <button mat-raised-button (click)="onNoClick()" style="width: 140px; " class="btn-warning">
+            مسح
+            <mat-icon>clear</mat-icon>
+        </button>
+
+
+    </div>
+</div>

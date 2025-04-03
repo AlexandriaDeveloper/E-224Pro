@@ -1,0 +1,128 @@
+.dark-mode {
+    .background {
+        background-color: #1E293B !important;
+    }
+
+    .btn-primary {
+        background-color: $pastel-orange !important;
+        color: #000 !important;
+    }
+
+    .btn-secondary {
+        background-color: $soft-orange !important;
+        color: #000 !important;
+    }
+
+    .btn-warning {
+        background-color: $dark-red !important;
+    }
+
+    .btn-default {
+        background-color: $dark-slate !important;
+    }
+
+    .mat-icon-danger {
+        color: rgba((mix($soft-red, $dark-red)), 1) !important;
+    }
+
+    .dialog-btn-close {
+
+        background-color: $pastel-orange !important;
+        color: $snow-white !important;
+        scale: .9;
+        transition: .4s ease-in-out;
+
+        &:hover {
+            color: $snow-white !important;
+            transform: rotate(180deg);
+            border: $blue-gray solid 2px !important;
+        }
+    }
+
+    .sidenav {
+        background-color: #24292e !important;
+    }
+
+    table {
+
+
+        tr:nth-child(1) {
+            th {
+                background-color: $dark-orange !important;
+                height: 70px !important;
+
+            }
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba($blue-gray, 1) !important;
+            // color: $cool-gray;
+        }
+
+        tr:nth-child(n+1):nth-child(odd) {
+            background-color: $dark-slate !important;
+
+        }
+
+        tbody tr:hover {
+            &:nth-child(odd) {
+                background-color: rgba($dark-slate , 0.4) !important;
+
+                mat-icon {
+                    color: $blue-gray !important;
+                }
+
+
+            }
+
+            mat-icon {
+                color: $dark-slate !important;
+            }
+
+            background-color: rgba($blue-gray, 0.6) !important;
+
+        }
+
+    }
+
+    //dialog
+    //delete dialog
+    [mat-dialog-title] {
+
+        background-color: $dark-orange !important;
+
+        .title {
+
+            color: white !important;
+
+        }
+    }
+
+    .delete-dialog-container {
+
+        border-top: 2px solid $snow-white;
+        background-color: $dark-red !important;
+        color: $snow-white !important;
+
+        .body {
+
+
+            background-color: $night-blue !important;
+        }
+    }
+
+    .form-dialog-content {
+
+        background-color: $dark-slate !important;
+
+    }
+
+
+
+    @include mat.theme((color: (theme-type: dark,
+                primary: ($primary-black-palette),
+                tertiary: $secondary-palette , ),
+            typography: Roboto,
+            density: 0, ),
+    );
+}

@@ -1,0 +1,28 @@
+<app-header [username]="'username'" (toggleSidenav)="toggleSidenav()" (isDarkModeEmit)="darkMode($event)"></app-header>
+<mat-sidenav-container class="sidenav-container">
+
+    <!-- القائمة الجانبية -->
+    <mat-sidenav-content>
+
+
+        <!-- المحتوى الرئيسي مع القائمة العلوية -->
+
+
+
+        <!--   TEST
+        القائمة الرئيسية العلوية 
+     -->
+        <!-- المحتوى الرئيسي -->
+        <div class="content">
+            <router-outlet></router-outlet>
+        </div>
+
+    </mat-sidenav-content>
+
+    <mat-sidenav fixedInViewport [opened]="!isSidenavOpened" position="start" class="sidenav" color="primary"
+        mode="side">
+        <div app-sidebar></div>
+    </mat-sidenav>
+
+
+</mat-sidenav-container>

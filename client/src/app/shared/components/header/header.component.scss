@@ -1,0 +1,14 @@
+.top-navbar {
+    display: flex;
+    align-items: center;
+}
+
+.menu-btn {
+    margin-right: 10px;
+    color: #fff;
+    /* تعديل المسافة لتتناسب مع RTL */
+}
+
+.spacer {
+    flex: 1 1 auto;
+}

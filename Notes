@@ -1,0 +1,2 @@
+
+dotnet ef migrations add Initial -s ./API -p ./Infrastructure -c ApplicationDbContext -o ./Data/Migrations

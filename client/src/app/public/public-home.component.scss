@@ -1,0 +1,40 @@
+.sidenav-container {
+
+    height: 92.55vh;
+    direction: rtl;
+    /* ضبط الاتجاه من اليمين إلى اليسار */
+}
+
+.content {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    position: absolute;
+    top: 20px;
+    /* ارتفاع الـ Toolbar */
+}
+
+.welcome-card {
+    max-width: 600px;
+    text-align: center;
+}
+
+.sidenav {
+    position: absolute;
+    top: 3px !important;
+    height: auto !important;
+
+
+    width: 300px !important;
+
+
+
+    /* الحد على الجانب الأيمن لأنه من اليسار */
+}
+
+.cdk-column-name {
+    min-width: 200% !important;
+}

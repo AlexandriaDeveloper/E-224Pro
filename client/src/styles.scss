@@ -1,0 +1,11 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+@import './assets/themes/variables.scss';
+@import './assets/themes/theme-colors-gray';
+@import './assets/themes/theme-colors-orange';
+@import './assets/themes/theme-colors_blue-gray';
+@import './assets/themes/theme-colors-black';
+@import './assets/themes/global.scss';
+@import './assets/themes/light-theme.scss';
+@import './assets/themes/dark-theme.scss';

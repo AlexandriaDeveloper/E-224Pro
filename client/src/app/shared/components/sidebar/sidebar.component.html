@@ -1,0 +1,74 @@
+<mat-toolbar>
+  <mat-icon style="margin-left: 20px;">account_balance</mat-icon>
+  نظام الحسابات
+
+</mat-toolbar>
+
+
+<mat-accordion class="example-headers-align">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+
+      <mat-panel-title>
+        <mat-icon>menu_book</mat-icon>
+        <span style="padding-right: 20px;"> اليوميات</span>
+      </mat-panel-title>
+
+    </mat-expansion-panel-header>
+    <ng-template matExpansionPanelContent>
+
+      <mat-nav-list>
+        <a mat-list-item routerLink="dailies">
+
+          <mat-icon style="margin-left: 10px;padding-top: 5px;">add</mat-icon>
+          فتح يومية جديدة
+        </a>
+
+        <!-- <a mat-list-item routerLink="/daily-entries"> الاستعلام عن يوميات </a>
+        <a mat-list-item routerLink="/expense-forms">تسجيل استمارات الصرف</a>
+        <a mat-list-item routerLink="/adjustments">تسجيل التسويات</a>
+        <a mat-list-item routerLink="/general-ledger">دفتر الأستاذ العام</a>
+        <a mat-list-item routerLink="/subsidiary-ledger">دفتر الأستاذ المساعد</a>
+        <a mat-list-item routerLink="/trial-balance">ميزان المراجعة</a>
+        <a mat-list-item routerLink="/financial-reports">التقارير المالية</a>
+        <a mat-list-item (click)="logout()">تسجيل الخروج</a> -->
+      </mat-nav-list>
+    </ng-template>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title> الصناديق </mat-panel-title>
+
+    </mat-expansion-panel-header>
+    <ng-template matExpansionPanelContent>
+      <mat-nav-list>
+        <a mat-list-item routerLink="dailies">
+
+          <mat-icon style="margin-left: 10px;padding-top: 5px;">add</mat-icon>
+          فتح يومية جديدة
+        </a>
+      </mat-nav-list>
+
+    </ng-template>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        الحسابات
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <ng-template matExpansionPanelContent>
+      <mat-nav-list>
+        <a mat-list-item routerLink="dailies">
+          <mat-icon style="margin-left: 10px;padding-top: 5px;">add</mat-icon>
+          حسابات رئيسيه
+        </a>
+        <a mat-list-item routerLink="dailies">
+          <mat-icon style="margin-left: 10px;padding-top: 5px;">add</mat-icon>
+          حسابات فرعيه
+        </a>
+      </mat-nav-list>
+    </ng-template>
+  </mat-expansion-panel>
+</mat-accordion>

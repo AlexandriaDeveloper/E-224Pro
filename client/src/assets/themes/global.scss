@@ -1,0 +1,88 @@
+@import "./variables.scss";
+
+:root {
+        @include mat.theme-overrides(("background":rgb(235, 232, 232),
+                ));
+        @include mat.dialog-overrides((container-color: $blue-gray,
+
+                ));
+        @include mat.form-field-overrides((filled-container-color:rgba($cool-gray, 0.8),
+                        filled-input-text-color:$blue-gray ,
+                        filled-focus-active-indicator-color: $soft-orange,
+                        filled-input-text-placeholder-color:rgba($blue-gray, 0.4),
+
+                ));
+        @include mat.select-overrides((panel-background-color: rgba($light-gray, 1),
+
+                        enabled-trigger-text-color: $blue-gray,
+                ));
+        @include mat.button-overrides((filled-container-color: $soft-orange,
+                        filled-label-text-color: $light-gray,
+                ));
+        @include mat.expansion-overrides((container-background-color:$light-gray,
+                        header-text-font:cairo,
+                        header-text-size:18px,
+                        header-text-weight:bold,
+                        container-shape:0px));
+
+        @include mat.toolbar-overrides((container-background-color: $blue-gray,
+                        container-text-color: $light-gray,
+
+                        title-text-font:cairo));
+        @include mat.slide-toggle-overrides((track-outline-color: $orange,
+                        label-text-color: $light-gray));
+
+        @include mat.table-overrides((background-color: rgb(201 231 247),
+                        header-headline-weight:bold,
+                        header-headline-size:16px,
+                        header-headline-color: $light-gray,
+                        header-headline-font:cairo,
+                        row-item-outline-color:#000,
+                        row-item-label-text-color:#000));
+
+
+        .dark-mode {
+                @include mat.dialog-overrides((container-color: $night-blue,
+
+                        ));
+                @include mat.theme((color:(primary: mat.$azure-palette,
+
+                                        theme-type:dark)),
+                        $overrides: ("background":#24292e));
+
+
+                @include mat.expansion-overrides((container-background-color:rgba($night-blue, 0.2),
+                                container-text-color: $orange,
+
+                        ));
+
+                @include mat.toolbar-overrides((container-background-color: $dark-slate,
+                                container-text-color: $cool-gray,
+
+                                title-text-font:cairo));
+
+                @include mat.table-overrides((background-color:rgba($night-blue, 0.9),
+                                row-item-outline-color:rgba($black, 0.2),
+                                header-headline-color:$cool-gray,
+                                row-item-label-text-color:$cool-gray ));
+                @include mat.button-overrides((filled-container-color: $night-blue,
+                                filled-label-text-color: $cool-gray,
+                        ));
+                @include mat.form-field-overrides((filled-container-color:rgba($black, 0.8),
+                                filled-input-text-color:rgba($cool-gray, 0.6),
+                                filled-focus-active-indicator-color: $cool-gray,
+                                filled-input-text-placeholder-color:rgba($cool-gray, 0.4),
+                        ));
+                @include mat.select-overrides((panel-background-color: rgba($black, 1),
+                                enabled-trigger-text-color: $cool-gray,
+
+                        ));
+                @include mat.datepicker-overrides((calendar-date-selected-state-text-color: $night-blue,
+                                calendar-date-selected-state-background-color: $soft-orange,
+                                calendar-container-background-color:$night-blue,
+
+                                calendar-container-shape:$night-blue ));
+
+
+        }
+}

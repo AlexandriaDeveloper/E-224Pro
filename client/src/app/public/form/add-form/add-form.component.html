@@ -1,0 +1,174 @@
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <h2 mat-dialog-title class="delete-dialog-title" cdkDragHandle>
+        <button mat-icon-button (click)="onNoClick()" class="dialog-btn-close">
+            <mat-icon>close</mat-icon>
+        </button>
+        <span class="title">إضافة يومية</span>
+    </h2>
+
+    <mat-dialog-content class="form-dialog-content">
+        <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+            <div style="display: flex; justify-content: space-between;">
+                <mat-form-field style="width: 47%;">
+                    <mat-label>اسم الملف</mat-label>
+                    <input matInput placeholder="البحث بالاسم" formControlName="formName" />
+                    <mat-error *ngIf="f['formName']?.hasError('required')">اسم الملف مطلوب</mat-error>
+                </mat-form-field>
+                <mat-form-field style="width: 24%;">
+                    <mat-label>رقم 55</mat-label>
+                    <input matInput placeholder="أدخل الرقم" formControlName="num55" />
+                    <mat-error *ngIf="f['num55']?.hasError('required')">هذا الحقل مطلوب</mat-error>
+                </mat-form-field>
+                <mat-form-field style="width: 24%;">
+                    <mat-label>رقم 224</mat-label>
+                    <input matInput placeholder="أدخل الرقم" formControlName="num224" />
+                    <mat-error *ngIf="f['num224']?.hasError('required')">هذا الحقل مطلوب</mat-error>
+                </mat-form-field>
+            </div>
+
+
+
+            <div style="display: flex; justify-content: space-between;">
+                <mat-form-field style="width: 47%;">
+                    <mat-label>اسم المراجع</mat-label>
+                    <input matInput placeholder="أدخل اسم المدقق" formControlName="auditorName" />
+                    <mat-error *ngIf="f['auditorName']?.hasError('required')">اسم المدقق مطلوب</mat-error>
+                </mat-form-field>
+                <mat-form-field style="width: 24%;">
+                    <mat-label>معرف الكلية</mat-label>
+                    <mat-select formControlName="collageId">
+                        <mat-option value="1">طب</mat-option>
+                        <mat-option value="2">أسنان</mat-option>
+                        <mat-option value="3">صيدلة</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f['collageId']?.hasError('required')">معرف الكلية مطلوب</mat-error>
+                </mat-form-field>
+
+                <mat-form-field style="width: 24%;">
+                    <mat-label>معرف الصندوق</mat-label>
+                    <mat-select formControlName="fundId">
+                        <mat-option value="1">برنامج دولي</mat-option>
+                        <mat-option value="2">مركز المؤتمرات</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f['fundId']?.hasError('required')">معرف الصندوق مطلوب</mat-error>
+                </mat-form-field>
+
+            </div>
+            <div style="display: flex; justify-content: center;">
+
+            </div>
+
+
+
+
+            <!-- FormArray: formDetails -->
+            <div formArrayName="formDetails">
+                <h3>تفاصيل الحسابات</h3>
+                <div *ngFor="let detail of fDetails.controls; let i=index" [formGroupName]="i"
+                    style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    <button mat-icon-button type="button" (click)="getAccount(i)">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-form-field style="flex: 1;">
+                        <mat-label>معرف الحساب</mat-label>
+
+                        <input matInput formControlName="accountNumber"
+                            (blur)="getAccountName(i,detail.get('accountNumber')?.value)" />
+                        <mat-error *ngIf="detail.get('accountNumber')?.hasError('required')">معرف الحساب
+                            مطلوب</mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="flex: 4;">
+                        <mat-label>اسم الحساب الحساب</mat-label>
+                        <input matInput formControlName="accountName" />
+                        <mat-error> </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="flex: 1;">
+                        <mat-label>مدين</mat-label>
+                        <input matInput type="number" formControlName="debit" (blur)="updateTotalCredit()" />
+                        <mat-error *ngIf="detail.get('debit')?.hasError('required')">الخصم مطلوب</mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="flex: 1;">
+                        <mat-label>دائن</mat-label>
+                        <input matInput type="number" formControlName="credit" (blur)="updateTotalCredit()" />
+                        <mat-error *ngIf="detail.get('credit')?.hasError('required')">الائتمان مطلوب</mat-error>
+                    </mat-form-field>
+
+
+                    <button mat-icon-button color="warn" (click)="removeFormDetail(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+                <button mat-button color="primary" type="button" (click)="addFormDetail()">إضافة تفاصيل حساب</button>
+            </div>
+            <div>
+
+
+            </div>
+
+
+
+
+            <!--
+            sum of debit and credit and total debit and total credit using fDetails
+            -->
+
+            <div>
+                أجمالى دائن : {{totalCredit}}
+                أجمالى مدين : {{totalDebit}}
+                <div>
+                    {{totalCredit === totalDebit ? 'متساوى' : 'غير متساوى'}}
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div style="display: flex; justify-content: center;">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>ملاحظات</mat-label>
+                    <textarea matInput formControlName="details"></textarea>
+                    <mat-error *ngIf="f['details']?.hasError('required')">التفاصيل مطلوبة</mat-error>
+                </mat-form-field>
+            </div>
+
+
+
+
+
+
+            <mat-dialog-actions style="display: flex; justify-content: center;">
+                <button mat-raised-button color="primary" type="submit" style="width: 140px;"
+                    [disabled]="!addForm.valid">
+                    إضافة
+                    <mat-icon>add</mat-icon>
+                </button>
+                <div class="spacer"></div>
+                <button mat-raised-button color="warn" (click)="onNoClick()" style="width: 140px;">
+                    إلغاء
+                    <mat-icon>clear</mat-icon>
+                </button>
+            </mat-dialog-actions>
+        </form>
+    </mat-dialog-content>
+</div>
