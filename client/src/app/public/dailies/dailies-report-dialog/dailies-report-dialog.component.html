@@ -1,0 +1,94 @@
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+
+
+    <h2 mat-dialog-title class="form-dialog-title" cdkDragHandle>
+
+        <button mat-icon-button (click)="onNoClick()" class="dialog-btn-close">
+            <mat-icon>close</mat-icon>
+        </button>
+        <span class="title">البحث</span>
+
+    </h2>
+
+    <mat-dialog-content class="form-dialog-content">
+
+
+
+        <!-- <div class="header">
+            <button mat-icon-button (click)="onNoClick()" class="btn-close">
+                <mat-icon>
+                    close
+                </mat-icon>
+            </button>
+        </div> -->
+        <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+            <div style="display: flex; justify-content: center;">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>الاسم</mat-label>
+                    <input matInput placeholder="البحث بالأسم" formControlName="name" />
+                </mat-form-field>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin: 10px;">
+                <mat-form-field style="width: 48%;">
+                    <mat-label>من يوم</mat-label>
+                    <input matInput [matDatepicker]="picker1" formControlName="startDate">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field style="width: 48%;">
+                    <mat-label>حتى يوم</mat-label>
+                    <input matInput [matDatepicker]="picker2" formControlName="endDate">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+
+
+                <mat-form-field style="width: 48%;">
+                    <mat-label>نوع اليوميه</mat-label>
+
+                    <mat-select formControlName="dailyType">
+                        <mat-option [value]="">الكل</mat-option>
+                        @for (dailyType of dailyTypes; track dailyType) {
+                        <mat-option [value]="dailyType.value">{{dailyType.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field style="width: 48%;">
+                    <mat-label>نوع الصرفيه </mat-label>
+                    <mat-select formControlName="accountItem">
+                        <mat-option [value]="">الكل</mat-option>
+                        @for (accountItem of accountItems; track accountItem) {
+                        <mat-option [value]="accountItem.value">{{accountItem.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+
+        </form>
+    </mat-dialog-content>
+
+    <div style="display:flex !important;justify-content: center;">
+
+        <button mat-mini-fab (click)="onSubmit()" style="width: 160px;" class="btn-secondary">
+            ابحث
+            <mat-icon>search</mat-icon>
+        </button>
+        <div class="spacer"></div>
+
+        <div style="width: 30px;">
+
+
+        </div>
+        <button mat-mini-fab (click)="clear()" style="width: 160px; " class="btn-warning">
+            مسح
+            <mat-icon>clear</mat-icon>
+        </button>
+
+
+    </div>
+</div>

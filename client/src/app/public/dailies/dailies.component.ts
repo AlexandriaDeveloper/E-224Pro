@@ -7,6 +7,7 @@ import { GetDailiesRequest } from '../../shared/_requests/getDailiesRequest';
 import { AddDailyComponent } from './add-daily/add-daily.component';
 import { DeleteDialogComponent } from '../../shared/components/dialog/delete-dialog/delete-dialog.component';
 import { Daily } from '../../shared/_models/Daily.model';
+import { DailiesReportDialogComponent } from './dailies-report-dialog/dailies-report-dialog.component';
 
 
 
@@ -82,6 +83,20 @@ export class DailiesComponent implements OnInit {
         //this.animal.set(result);
 
       }
+    });
+  }
+
+  openDailiesReportDialog() {
+    const dialogRef = this.dialog.open(DailiesReportDialogComponent, {
+      data: {
+        param: this.params
+      },
+      disableClose: true,
+      hasBackdrop: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
     });
   }
 

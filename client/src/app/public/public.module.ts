@@ -20,6 +20,7 @@ import { FormDetailsComponent } from './form-details/form-details.component';
 import { FormComponent } from './form/form.component';
 import { AddFormComponent } from './form/add-form/add-form.component';
 import { AccountInfoDialogComponent } from './account/account-info-dialog/account-info-dialog.component';
+import { DailiesReportDialogComponent } from './dailies/dailies-report-dialog/dailies-report-dialog.component';
 
 
 
@@ -30,6 +31,7 @@ import { AccountInfoDialogComponent } from './account/account-info-dialog/accoun
     PublicHomeComponent,
     DailiesComponent,
     DailiesSearchDialogComponent,
+    DailiesReportDialogComponent,
     AddDailyComponent,
     FormDetailsComponent,
     FormComponent,

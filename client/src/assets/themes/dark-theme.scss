@@ -1,41 +1,47 @@
+@use '@angular/material' as mat;
+@use './theme-colors-orange' as primary-orange-palette;
+@use './theme-colors-gray.scss' as primary-gray-palette;
+@use './theme-colors-black.scss' as primary-black-palette;
+@use './variables.scss' as variables;
+
 .dark-mode {
     .background {
         background-color: #1E293B !important;
     }
 
     .btn-primary {
-        background-color: $pastel-orange !important;
+        background-color: variables.$pastel-orange !important;
         color: #000 !important;
     }
 
     .btn-secondary {
-        background-color: $soft-orange !important;
+        background-color: variables.$soft-orange !important;
         color: #000 !important;
     }
 
     .btn-warning {
-        background-color: $dark-red !important;
+        background-color: variables.$dark-red !important;
     }
 
     .btn-default {
-        background-color: $dark-slate !important;
+        background-color: variables.$dark-slate !important;
     }
 
     .mat-icon-danger {
-        color: rgba((mix($soft-red, $dark-red)), 1) !important;
+        color: rgba((mix(variables.$soft-red, variables.$dark-red)), 1) !important;
     }
 
     .dialog-btn-close {
 
-        background-color: $pastel-orange !important;
-        color: $snow-white !important;
+        background-color: variables.$pastel-orange !important;
+        color: variables.$snow-white !important;
         scale: .9;
         transition: .4s ease-in-out;
 
         &:hover {
-            color: $snow-white !important;
+            color: variables.$snow-white !important;
             transform: rotate(180deg);
-            border: $blue-gray solid 2px !important;
+            border: variables.$blue-gray solid 2px !important;
         }
     }
 
@@ -48,38 +54,38 @@
 
         tr:nth-child(1) {
             th {
-                background-color: $dark-orange !important;
+                background-color: variables.$dark-orange !important;
                 height: 70px !important;
 
             }
         }
 
         tr:nth-child(even) {
-            background-color: rgba($blue-gray, 1) !important;
-            // color: $cool-gray;
+            background-color: rgba(variables.$blue-gray, 1) !important;
+            // color: variables.$cool-gray;
         }
 
         tr:nth-child(n+1):nth-child(odd) {
-            background-color: $dark-slate !important;
+            background-color: variables.$dark-slate !important;
 
         }
 
         tbody tr:hover {
             &:nth-child(odd) {
-                background-color: rgba($dark-slate , 0.4) !important;
+                background-color: rgba(variables.$dark-slate , 0.4) !important;
 
                 mat-icon {
-                    color: $blue-gray !important;
+                    color: variables.$blue-gray !important;
                 }
 
 
             }
 
             mat-icon {
-                color: $dark-slate !important;
+                color: variables.$dark-slate !important;
             }
 
-            background-color: rgba($blue-gray, 0.6) !important;
+            background-color: rgba(variables.$blue-gray, 0.6) !important;
 
         }
 
@@ -89,7 +95,7 @@
     //delete dialog
     [mat-dialog-title] {
 
-        background-color: $dark-orange !important;
+        background-color: variables.$dark-orange !important;
 
         .title {
 
@@ -100,28 +106,28 @@
 
     .delete-dialog-container {
 
-        border-top: 2px solid $snow-white;
-        background-color: $dark-red !important;
-        color: $snow-white !important;
+        border-top: 2px solid variables.$snow-white;
+        background-color: variables.$dark-red !important;
+        color: variables.$snow-white !important;
 
         .body {
 
 
-            background-color: $night-blue !important;
+            background-color: variables.$night-blue !important;
         }
     }
 
     .form-dialog-content {
 
-        background-color: $dark-slate !important;
+        background-color: variables.$dark-slate !important;
 
     }
 
 
 
     @include mat.theme((color: (theme-type: dark,
-                primary: ($primary-black-palette),
-                tertiary: $secondary-palette , ),
+                primary: (primary-black-palette.$primary-black-palette),
+                tertiary: primary-gray-palette.$secondary-palette , ),
             typography: Roboto,
             density: 0, ),
     );

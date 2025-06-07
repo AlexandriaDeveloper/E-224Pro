@@ -144,13 +144,16 @@ export class FormComponent implements OnInit {
   }
 
   downloadTemplate() {
-    this.formService.downloadFormTemplate().subscribe({
+    this.formService.downloadDailyPdfFormTemplate(this.id).subscribe({
       next: (response: any) => {
-        const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+        //dowload pdf file 
+
+        const blob = new Blob([response], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'FormTemplate.xlsx';
+        a.download = this.data.daily.name + '.pdf';
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);

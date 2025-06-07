@@ -67,9 +67,12 @@ export class FormService {
     return this.http.put(this.apiUrl + 'forms/update/' + id, value);
   }
 
-  downloadFormTemplate() {
-    return this.http.get(`${this.apiUrl}forms/template`, {
-      responseType: 'blob' as 'json'
+  downloadDailyPdfFormTemplate(dailyId: number) {
+    let params = new HttpParams();
+    params = params.append('dailyId', dailyId.toString());
+    return this.http.get(`${this.apiUrl}Reports/ReportPdf`, {
+      responseType: 'blob' as 'json',
+      params: params
     });
   }
 }

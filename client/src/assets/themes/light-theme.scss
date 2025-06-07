@@ -1,3 +1,9 @@
+@use '@angular/material' as mat;
+@use './theme-colors-gray.scss' as primary-gray-palette;
+@use './theme-colors-orange.scss';
+@use './theme-colors_blue-gray.scss' as primary-blue-gray-palette;
+@use './variables.scss' as variables;
+
 html {
     .background {
         background-color: #607D8B !important;
@@ -8,22 +14,22 @@ html {
     }
 
     .btn-primary {
-        background-color: $light-gray !important;
+        background-color: variables.$light-gray !important;
         font-family: cairo !important;
         font-weight: bold !important;
 
     }
 
     .btn-secondary {
-        background-color: $soft-orange !important;
+        background-color: variables.$soft-orange !important;
         font-family: cairo !important;
     }
 
     .dialog-btn-close {
 
-        background-color: $snow-white !important;
+        background-color: variables.$snow-white !important;
         // color: $dark-slate !important;
-        border: 2px solid $snow-white !important;
+        border: 2px solid variables.$snow-white !important;
         scale: 0.9 !important;
         transition: .4s ease-in-out;
 
@@ -35,9 +41,9 @@ html {
         }
 
         &:hover {
-            background-color: $night-blue !important;
-            color: $snow-white !important;
-            border-color: $snow-white !important;
+            background-color: variables.$night-blue !important;
+            color: variables.$snow-white !important;
+            border-color: variables.$snow-white !important;
             transform: rotate(180deg);
 
 
@@ -47,19 +53,19 @@ html {
 
 
     .btn-warning {
-        background-color: $soft-red !important;
-        color: $snow-white !important;
+        background-color: variables.$soft-red !important;
+        color: variables.$snow-white !important;
         font-family: cairo !important;
         font-weight: bold !important;
     }
 
     .btn-default {
-        background-color: $blue-gray !important;
-        color: $light-gray !important;
+        background-color: variables.$blue-gray !important;
+        color: variables.$light-gray !important;
     }
 
     .mat-icon-danger {
-        color: $soft-red !important;
+        color: variables.$soft-red !important;
     }
 
     .spacer {
@@ -72,7 +78,7 @@ html {
     [mat-dialog-title] {
         height: 60px;
         padding: 0px 10px 0px 10px !important;
-        background-color: $charcoal-gray !important;
+        background-color: variables.$charcoal-gray !important;
 
 
         .title {
@@ -86,15 +92,15 @@ html {
     .delete-dialog-container {
         min-height: 150px !important;
         min-width: 400px !important;
-        background-color: $soft-red !important;
-        color: $snow-white !important;
+        background-color: variables.$soft-red !important;
+        color: variables.$snow-white !important;
 
 
         .body {
             margin: 20px;
             padding: 20px !important;
             text-align: center;
-            background-color: $blue-gray;
+            background-color: variables.$blue-gray;
             border-radius: 20px !important;
             font-family: cairo;
 
@@ -119,7 +125,7 @@ html {
         margin-top: 20px !important;
         padding-top: 30px !important;
         margin: 10px;
-        background-color: $blue-gray !important;
+        background-color: variables.$blue-gray !important;
         border-radius: 20px !important;
     }
 
@@ -139,7 +145,7 @@ html {
 
 
             th {
-                background-color: $dark-gray !important;
+                background-color: variables.$dark-gray !important;
                 height: 70px !important;
                 font-size: 18px !important;
 
@@ -148,26 +154,26 @@ html {
 
 
         tr:nth-child(even) {
-            background-color: $light-gray !important;
+            background-color: variables.$light-gray !important;
         }
 
         tr:nth-child(n+1):nth-child(odd) {
-            background-color: $snow-white !important;
+            background-color: variables.$snow-white !important;
 
         }
 
         tbody tr:hover {
             &:nth-child(odd) {
-                background-color: rgba($dark-gray, 0.4) !important;
-                color: $snow-white !important;
+                background-color: rgba(variables.$dark-gray, 0.4) !important;
+                color: variables.$snow-white !important;
             }
 
             mat-icon {
-                color: $snow-white !important;
+                color: variables.$snow-white !important;
             }
 
-            background-color: rgba($dark-gray, 0.7) !important;
-            color: $snow-white !important;
+            background-color: rgba(variables.$dark-gray, 0.7) !important;
+            color: variables.$snow-white !important;
             //  font-weight: bold !important;
             cursor: pointer;
             transition: 0.3s ease-in-out;
@@ -178,8 +184,8 @@ html {
 
 
     @include mat.theme((color: (theme-type: light,
-                primary: $primary-gray-palette ,
-                tertiary:$primary-blue-gray-palette ,
+                primary: primary-gray-palette.$primary-gray-palette ,
+                tertiary:primary-blue-gray-palette.$primary-blue-gray-palette ,
             ),
 
 
