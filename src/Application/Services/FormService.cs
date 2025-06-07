@@ -17,14 +17,16 @@ public class FormService
     private readonly IFormRepository _formRepository;
     private readonly IAccountRepository _accountRepository;
     private readonly IFormDetailsRepository _formDetailsRepository;
+    private readonly FormDetailsService _formDetailsService;
     private readonly IUow _uow;
     public FormService(IDailyRepository dailyRepository,
-        IFormRepository formRepository, IAccountRepository accountRepository, IFormDetailsRepository formDetailsRepository, IUow uow)
+        IFormRepository formRepository, IAccountRepository accountRepository, IFormDetailsRepository formDetailsRepository, FormDetailsService formDetailsService, IUow uow)
     {
         _dailyRepository = dailyRepository;
         _formRepository = formRepository;
         _accountRepository = accountRepository;
         _formDetailsRepository = formDetailsRepository;
+        _formDetailsService = formDetailsService;
         _uow = uow;
     }
 
@@ -58,7 +60,7 @@ public class FormService
             FormId = form.Id,
             Credit = x.Credit,
             Debit = x.Debit,
-            AccountId = x.AccountId.HasValue ? _accountRepository.GetQueryable().FirstOrDefault(x => x.AccountNumber == x.AccountNumber).Id : 0,
+            AccountId = x.AccountId.HasValue ? x.AccountId.Value : 0,
 
 
         }).ToList();
@@ -242,6 +244,9 @@ public class FormService
         await _formRepository.UpdateAsync(formFromDb);
 
         await _uow.CommitAsync(cancellationToken);
+        await _formDetailsService.UpdateFormDetailsAsync(id, form.FormDetails, cancellationToken);
+
+
         return new FormDto(formFromDb);
 
     }

@@ -45,7 +45,7 @@ public class FormDetailsService
 
         request.FormDetails.ForEach(x =>
         {
-            var formDertail = new FormDetails()
+            var formDetail = new FormDetails()
             {
 
                 AccountId = x.AccountId,
@@ -55,7 +55,7 @@ public class FormDetailsService
             };
 
 
-            FormDetails2.Add(formDertail);
+            FormDetails2.Add(formDetail);
 
 
         });
@@ -139,30 +139,30 @@ public class FormDetailsService
 
     }
 
-    public async Task<FormDto> GetByFormIdAsync(int formId, CancellationToken cancellationToken)
+    public async Task<List<FormDetailDto>> GetByFormIdAsync(int formId, CancellationToken cancellationToken)
     {
-        var form = await _formRepository.GetById(formId);
+        // var form = await _formRepository.GetById(formId);
         var formDetails = await _formDetailsRepository.GetByFormId(formId);
-        var result = new FormDto();
-        result.Id = formId;
-        result.Num224 = form!.Num224!;
-        result.FormName = form.FormName;
-        result.Num55 = form.Num55!;
-        result.DailyId = form.DailyId;
-        result.AuditorName = form.AuditorName;
-        result.TotalDebit = form.TotalDebit;
-        result.TotalCredit = form.TotalCredit;
+        var result = new List<FormDetailDto>();
+        // result.Id = formId;
+        // result.Num224 = form!.Num224!;
+        // result.FormName = form.FormName;
+        // result.Num55 = form.Num55!;
+        // result.DailyId = form.DailyId;
+        // result.AuditorName = form.AuditorName;
+        // result.TotalDebit = form.TotalDebit;
+        // result.TotalCredit = form.TotalCredit;
 
 
 
 
 
-        result.FormDetailsDtos = formDetails!.Select(x => new FormDetailDto()
+        result = formDetails!.Select(x => new FormDetailDto()
         {
-
+            Id = x.Id,
             Debit = x.Debit,
             Credit = x.Credit,
-            Id = x.Id,
+            AccountId = x.AccountId,
             AccountName = x.Account!.AccountName,
             AccountNumber = x.Account.AccountNumber
 
@@ -267,7 +267,7 @@ public class FormDetailsService
 
     }
 
-    public async Task PutFormDetailsAsync(int id, PutFormDetailsRequest formDetails, CancellationToken cancellationToken)
+    public async Task PutFormDetailAsync(int id, PutFormDetailsRequest formDetails, CancellationToken cancellationToken)
     {
         var formDetail = await _formRepository.GetQueryable().Where(x => x.Id == id).Include(x => x.FormDetails).FirstOrDefaultAsync();
         if (formDetail == null)
@@ -288,6 +288,52 @@ public class FormDetailsService
         await UpdateTotalCount(id, cancellationToken);
         await _uow.CommitAsync(cancellationToken);
 
+
+    }
+    //update list of  formdetailsrequest 
+    //to compare between list and list from database if not exist delete it
+    //if exist update it
+    //if not exist add it
+    //and updtae form total credit and debit 
+
+
+    public async Task UpdateFormDetailsAsync(int formId, List<PutFormDetail> formDetails, CancellationToken cancellationToken)
+    {
+        var formDetailsFromDb = await _formDetailsRepository.GetByFormId(formId);
+        var formDetailsToAdd = formDetails.Where(x => !formDetailsFromDb.Any(y => y.Id == x.Id)).ToList();
+        var formDetailsToUpdate = formDetails.Where(x => formDetailsFromDb.Any(y => y.Id == x.Id)).ToList();
+        var formDetailsToDelete = formDetailsFromDb.Where(x => !formDetails.Any(y => y.Id == x.Id)).ToList();
+        foreach (var item in formDetailsToAdd)
+        {
+            var formDetail = new FormDetails()
+            {
+
+                AccountId = item.AccountId,
+                FormId = formId,
+                Debit = item.Debit,
+                Credit = item.Credit
+            };
+            await _formDetailsRepository.AddAsync(formDetail);
+        }
+        foreach (var item in formDetailsToUpdate)
+        {
+            var formDetail = formDetailsFromDb.FirstOrDefault(x => x.Id == item.Id);
+            if (formDetail != null)
+            {
+                formDetail.Credit = item.Credit;
+                formDetail.Debit = item.Debit;
+            }
+            await _formDetailsRepository.UpdateRangeAsync(formDetailsFromDb, cancellationToken);
+        }
+        foreach (var item in formDetailsToDelete)
+        {
+            var formDetail = formDetailsFromDb.FirstOrDefault(x => x.Id == item.Id);
+            _formDetailsRepository.Delete(formDetail);
+        }
+
+        await _uow.CommitAsync(cancellationToken);
+        await UpdateTotalCount(formId, cancellationToken);
+        await _uow.CommitAsync(cancellationToken);
 
     }
 

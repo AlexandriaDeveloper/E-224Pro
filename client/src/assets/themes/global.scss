@@ -1,4 +1,6 @@
+@use '@angular/material' as mat;
 @import "./variables.scss";
+
 
 :root {
         @include mat.theme-overrides(("background":rgb(235, 232, 232),

@@ -18,6 +18,8 @@ public static class ReportsEndpoint
         // formGroup.MapDelete("/Delete/{id}", DeleteForm);
         formGroup.MapGet("/ReportFormDetails", GetFormDetailsBySpecAsync);
         formGroup.MapGet("/ReportSubsidiaryJournal", GetSubsidiaryJournalBySpecAsync);
+        formGroup.MapGet("/ReportPdf", DownloadReports);
+
         // formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync);
         // formGroup.MapGet("/{id}", GetByIdAsync);
         return app;
@@ -33,5 +35,16 @@ public static class ReportsEndpoint
         var result = await service.GetSubsidiaryReportAsync(request, cancellationToken);
         return result == null ? TypedResults.NotFound() : TypedResults.Ok(result);
     }
+
+    private static async Task<IResult> DownloadReports(PDFReportService service, [AsParameters] GetAccountsBalanceBy request, CancellationToken cancellationToken)
+    {
+        var pdfBytes = await service.GenerateReport(request, cancellationToken);
+        if (pdfBytes == null || pdfBytes.Length == 0)
+        {
+            return Results.NotFound("No data found for the specified report criteria.");
+        }
+        return Results.File(pdfBytes, "application/pdf", "report.pdf");
+    }
+
 
 }

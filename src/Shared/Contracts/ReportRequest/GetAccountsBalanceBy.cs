@@ -14,7 +14,11 @@ public class GetAccountsBalanceBy
     public int? FormId { get; set; }
     public DateOnly? SpecificDate { get; set; }
     public int? ByMonth { get; set; }
+
+    public int? ByYear { get; set; }
     // public string? FundName { get; set; }
     public string? AccountType { get; set; }
     public string? AccountItem { get; set; }
+
+
 }

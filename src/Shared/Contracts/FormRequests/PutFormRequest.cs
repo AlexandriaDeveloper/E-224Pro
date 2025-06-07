@@ -1,4 +1,8 @@
+
+using Shared.Contracts.FormDetailsRequest;
+
 namespace Shared.Contracts.FormRequests;
+
 
 public class PutFormRequest
 {
@@ -12,5 +16,6 @@ public class PutFormRequest
     public int? DailyId { get; set; }
     public string? AuditorName { get; set; }
     public string? Details { get; set; }
+    public List<PutFormDetail>? FormDetails { get; set; } = new List<PutFormDetail>();
 
 }

@@ -2,10 +2,22 @@ import { Component, ElementRef, inject, OnInit } from '@angular/core';
 import { FormService } from '../../../shared/services/form.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { accountItems } from '../../../shared/_models/constants';
 import { AccountService } from '../../../shared/services/account.service';
 import { GetAccountRequest } from '../../../shared/_requests/getAccountRequest';
 import { AccountInfoDialogComponent } from '../../account/account-info-dialog/account-info-dialog.component';
+import { FundService } from '../../../shared/services/fund.service';
+import { FormDetailDto, FormDto } from '../../../shared/_models/forms/FormDto.model';
+
+interface Account {
+  id: number;
+  accountName: string;
+  accountNumber: string;
+}
+
+interface Fund {
+  id: number;
+  fundName: string;
+}
 
 @Component({
   selector: 'app-add-form',
@@ -14,129 +26,201 @@ import { AccountInfoDialogComponent } from '../../account/account-info-dialog/ac
   styleUrl: './add-form.component.scss'
 })
 export class AddFormComponent implements OnInit {
-  totalCredit: number;
-  totalDebit: number;
-  readonly dialog2 = inject(MatDialog);
-  ngOnInit(): void {
-    console.log(this.data);
+  // Services
+  private readonly fundService = inject(FundService);
+  private readonly accountService = inject(AccountService);
+  private readonly formService = inject(FormService);
+  private readonly fb = inject(FormBuilder);
+  private readonly dialog = inject(MatDialog);
+  private readonly dialogRef = inject(MatDialogRef<AddFormComponent>);
+  private readonly data = inject<any>(MAT_DIALOG_DATA);
 
-    this.addForm = this.initialForm();
-    this.loadAccounts();
-  }
-  //dailyService = inject(FormService);
-
-  accountService = inject(AccountService);
-  formService = inject(FormService);
-  fb = inject(FormBuilder);
-  readonly data = inject<any>(MAT_DIALOG_DATA);
+  // Form related
   addForm: FormGroup;
-  getAccountRequest = new GetAccountRequest();
-  accounts = [];
+  formDetails: FormDetailDto[] = [];
+  private formDetail: FormDetailDto | null = null;
 
-  readonly dialogRef = inject(MatDialogRef<AddFormComponent>);
-  initialForm() {
+  // Data
+  accounts: Account[] = [];
+  funds: Fund[] = [];
+  totalCredit = 0;
+  totalDebit = 0;
+  update = false;
+
+  // Request objects
+  private getAccountRequest = new GetAccountRequest();
+
+  ngOnInit(): void {
+    this.loadAccounts();
+    this.initializeForm();
+  }
+
+  private initializeForm(): void {
+    console.log(this.data.element);
+
+    if (this.data.element) {
+      this.update = true;
+      this.formDetails = [];
+      this.loadFunds(this.data.element.collageId);
+      this.loadFormDetails();
+    }
+    this.addForm = this.createForm();
+  }
+
+  private createForm(): FormGroup {
+    console.log(this.formDetails);
     return this.fb.group({
-      formName: ['', Validators.required],
-      collageId: ['',],
-      fundId: ['', Validators.required],
-      num224: ['', Validators.required],
-      num55: ['',],
-      auditorName: ['',],
-      details: ['',],
+      formName: [this.data.element?.formName || '', Validators.required],
+      collageId: [this.data.element?.collageId || null],
+      fundId: [this.data.element?.fundId || null, Validators.required],
+      num224: [this.data.element?.num224 || '', Validators.required],
+      num55: [this.data.element?.num55 || ''],
+      auditorName: [this.data.element?.auditorName || ''],
+      details: [this.data.element?.details || ''],
       dailyId: [this.data.param.DailyId, Validators.required],
-      formDetails: this.fb.array([this.initialFormDetails()])
-      // I need Form Array for account id - credit -debit- account type
-
-
+      formDetails: this.fb.array(this.formDetails.map(detail => this.createFormDetail(detail)))
     });
   }
-  // I need Form Array for account id - credit -debit- account type
-  initialFormDetails() {
+
+  private createFormDetail(detail: FormDetailDto): FormGroup {
+    const account = this.accounts.find(acc => acc.id === detail.accountId) || {
+      id: 0,
+      accountName: '',
+      accountNumber: ''
+    };
+
     return this.fb.group({
-      accountId: ['', Validators.required],
-      credit: [null,],
-      debit: [null,],
-      accountName: ['', Validators.required],
-      accountNumber: ['', Validators.required],
+      id: [detail.id || 0],
+      accountId: [detail.accountId, Validators.required],
+      credit: [detail.credit || 0],
+      debit: [detail.debit || 0],
+      accountName: [account.accountName, Validators.required],
+      accountNumber: [account.accountNumber, Validators.required],
     });
   }
 
-  loadAccounts() {
-    return this.accountService.getAccounts(this.getAccountRequest).subscribe((x: []) => {
-      this.accounts = x
-    });
-  }
-  addFormDetail() {
-    this.fDetails.push(this.initialFormDetails());
-  }
-  removeFormDetail(index: number) {
-    this.fDetails.removeAt(index);
-  }
-
+  // Form getters
   get f() { return this.addForm.controls; }
-  get fDetails() {
+  get fDetails() { return this.addForm.get('formDetails') as FormArray; }
 
-
-    return this.addForm.controls['formDetails'] as FormArray;
+  // Form actions
+  addFormDetail(): void {
+    this.fDetails.push(this.createFormDetail(new FormDetailDto()));
   }
 
-  updateTotalCredit() {
-    this.fDetails.controls.forEach(control => {
-      this.totalCredit = this.fDetails.value.reduce((acc, curr) => acc + curr.credit, 0);
-      this.totalDebit = this.fDetails.value.reduce((acc, curr) => acc + curr.debit, 0);
-    })
-  }
-  onSubmit() {
-    console.log(this.addForm.value);
+  removeFormDetail(index: number): void {
+    this.fDetails.removeAt(index);
 
-    if (this.addForm.valid) {
-      this.addForm.value.formDetails.forEach(x => {
-        x.credit = Number(x.credit);
-        x.debit = Number(x.debit);
+
+    this.updateTotals();
+  }
+
+  // Data loading
+  private loadAccounts(): void {
+    this.accountService.getAccounts(this.getAccountRequest).subscribe(
+      (accounts: Account[]) => this.accounts = accounts
+    );
+  }
+
+  private loadFunds(collageId: number): void {
+    this.fundService.getFundsByCollageId({ collageId }).subscribe(
+      (funds: Fund[]) => this.funds = funds
+    );
+  }
+
+  private loadFormDetails(): void {
+
+
+    if (!this.data.element?.id) return;
+
+    this.formService.getFormDetails(this.data.element.id).subscribe(
+      (details: FormDetailDto[]) => {
+        console.log(details);
+        this.formDetails = details;
+        details.forEach(detail => {
+          this.fDetails.push(this.createFormDetail(detail));
+        });
+      }
+    );
+  }
+
+  // Account handling
+  getAccountName(index: number, accountId: string): void {
+    const account = this.accounts.find(acc => acc.accountNumber === accountId);
+    const control = this.fDetails.at(index);
+
+    if (!account) {
+      control.patchValue({
+        accountName: '',
+        accountId: null
       });
-      this.addForm.value.totalCredit = this.totalCredit;
-      this.addForm.value.totalDebit = this.totalDebit;
-      this.formService.addForm(this.addForm.value).subscribe(() => this.dialogRef.close());
+      return;
     }
 
-  }
-  onNoClick() {
-    this.dialogRef.close();
-  }
-  getAccountName(index, accountId: string) {
-    console.log(this.fDetails);
-    let acc = this.accounts.find(x => x.accountNumber == accountId);
-    if (acc == null) {
-      this.fDetails.controls[index].get('accountName').setValue('');
-      this.fDetails.controls[index].get('accountId').setValue(null);
-    }
-    this.fDetails.controls[index].get('accountName').setValue(acc.accountName);
-    this.fDetails.controls[index].get('accountId').setValue(acc.id);
+    control.patchValue({
+      accountName: account.accountName,
+      accountId: account.id
+    });
   }
 
-  getAccount(index) {
-    // let acc = this.accounts[1]
-    // console.log(this.fDetails);
-    // this.fDetails.controls[index].get('accountNumber').setValue(acc.accountNumber);
-    // this.fDetails.controls[index].get('accountName').setValue(acc.accountName);
-    const dialogRef2 = this.dialog2.open(AccountInfoDialogComponent, {
-      data: {
-
-      },
+  getAccount(index: number): void {
+    const dialogRef = this.dialog.open(AccountInfoDialogComponent, {
+      data: {},
       disableClose: true,
       hasBackdrop: true,
       minWidth: '80vw'
     });
 
-    dialogRef2.afterClosed().subscribe(result => {
-      console.log(result);
-      this.fDetails.controls[index].get('accountNumber').setValue(result.accountNumber);
-      this.fDetails.controls[index].get('accountName').setValue(result.accountName);
-      this.fDetails.controls[index].get('accountId').setValue(result.id);
-
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const control = this.fDetails.at(index);
+        control.patchValue({
+          accountNumber: result.accountNumber,
+          accountName: result.accountName,
+          accountId: result.id
+        });
+      }
     });
-
   }
 
+  // Fund handling
+  getFunds(collageId: number): void {
+    this.loadFunds(collageId);
+  }
 
+  // Totals calculation
+  updateTotals(): void {
+    const values = this.fDetails.value;
+    this.totalCredit = values.reduce((sum, curr) => sum + (Number(curr.credit) || 0), 0);
+    this.totalDebit = values.reduce((sum, curr) => sum + (Number(curr.debit) || 0), 0);
+  }
+
+  // Form submission
+  onSubmit(): void {
+    if (!this.addForm.valid) return;
+
+    const formValue = this.addForm.value;
+
+    formValue.formDetails = this.fDetails.value.map(detail => ({
+      ...detail,
+      credit: Number(detail.credit) || 0,
+      debit: Number(detail.debit) || 0
+    }));
+    formValue.totalCredit = this.totalCredit;
+    formValue.totalDebit = this.totalDebit;
+    console.log(formValue);
+    if (this.update) {
+
+      this.formService.updateForm(this.data.element.id, formValue).subscribe(() => this.dialogRef.close());
+
+    }
+    else {
+
+      this.formService.addForm(formValue).subscribe(() => this.dialogRef.close());
+    }
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

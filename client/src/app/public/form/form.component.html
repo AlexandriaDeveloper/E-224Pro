@@ -26,7 +26,8 @@
                 <mat-list-item role="listitem">
                     <div class="list-item-container" style="display: flex; justify-content: space-evenly;">
                         <div class="list-item-title">بند الصرف</div>
-                        <div class="list-item-value">{{data.daily.accountItem ==="StateBudget"?'بيرول':'موازنه'}} </div>
+                        <div class="list-item-value">{{data.daily.accountItem ==="StateBudget"?'صناديق':'موازنه'}}
+                        </div>
                     </div>
                 </mat-list-item>
             </mat-list>
@@ -55,21 +56,23 @@
                 <button mat-icon-button (click)="addDaily(element)" style="color: #fff;">
                     <mat-icon>print</mat-icon>
                 </button>
+                <!-- New button to download template -->
+                <button mat-icon-button (click)="downloadTemplate()" style="color: #fff;"
+                    matTooltip="Download Excel Template">
+                    <mat-icon>download</mat-icon>
+                </button>
             </th>
             <td mat-cell *matCellDef="let element">
                 <button mat-icon-button [routerLink]="['./',element.id]">
                     <mat-icon>visibility</mat-icon>
                 </button>
 
-                <button mat-icon-button (click)="editDaily(element)">
+                <button mat-icon-button (click)="openAddFormDialog(element)">
                     <mat-icon>edit</mat-icon>
                 </button>
-                <button mat-icon-button (click)="openDeleteDialog(element)" class="mat-icon-danger">
+                <button mat-icon-button (click)="deleteForm(element)" class="mat-icon-danger">
                     <mat-icon>delete</mat-icon>
                 </button>
-
-
-
             </td>
         </ng-container>
 

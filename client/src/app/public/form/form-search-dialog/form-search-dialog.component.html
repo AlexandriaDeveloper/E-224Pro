@@ -1,0 +1,48 @@
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+  <h2 mat-dialog-title class="dialog-drag-handle">
+    <span>Search Forms</span>
+    <span class="drag-icon">☰</span>
+  </h2>
+</div>
+<mat-dialog-content>
+  <form [formGroup]="searchForm">
+    <div class="search-form-container">
+      <mat-form-field>
+        <mat-label>ID</mat-label>
+        <input matInput formControlName="id">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Number 224</mat-label>
+        <input matInput formControlName="num224">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Number 55</mat-label>
+        <input matInput formControlName="num55">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Form Name</mat-label>
+        <input matInput formControlName="formName">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>College Name</mat-label>
+        <input matInput formControlName="collageName">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Fund Name</mat-label>
+        <input matInput formControlName="fundName">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Total Credit</mat-label>
+        <input matInput type="number" formControlName="totalCredit">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Total Debit</mat-label>
+        <input matInput type="number" formControlName="totalDebit">
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onClear()">Clear</button>
+  <button mat-button (click)="onSearch()" color="primary">Search</button>
+</mat-dialog-actions>

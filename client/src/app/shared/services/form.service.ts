@@ -7,6 +7,13 @@ import { GetFormRequest } from '../_requests/getFormRequest';
   providedIn: 'root'
 })
 export class FormService {
+  deleteForm(formId: number) {
+    return this.http.delete(`${this.apiUrl}forms/${formId}`);
+  }
+  getFormDetails(formId: number) {
+
+    return this.http.get(`${this.apiUrl}FormDetails/${formId}`);
+  }
 
   apiUrl = environment.apiUrl
   http = inject(HttpClient)
@@ -55,5 +62,14 @@ export class FormService {
   addForm(value: any) {
     return this.http.post(this.apiUrl + 'forms/AddForm', value);
   }
+  updateForm(id: number, value: any) {
 
+    return this.http.put(this.apiUrl + 'forms/update/' + id, value);
+  }
+
+  downloadFormTemplate() {
+    return this.http.get(`${this.apiUrl}forms/template`, {
+      responseType: 'blob' as 'json'
+    });
+  }
 }

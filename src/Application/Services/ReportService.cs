@@ -2,6 +2,8 @@ using System;
 using Core.Interfaces.Repository;
 using Core.Models;
 using Microsoft.EntityFrameworkCore;
+using NPOI.SS.Formula.Functions;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 using Persistence.Specification;
 using Shared.Contracts.ReportRequest;
 using Shared.DTOs.ReportDtos;
@@ -39,57 +41,163 @@ public class ReportService
 
     public async Task<ReportDto> GetFormDetailsReportAsync(GetAccountsBalanceBy getAccountsBalanceByAccount, CancellationToken cancellationToken = default)
     {
+        if (getAccountsBalanceByAccount.DailyId.HasValue)
+        {
+            var daily = await _dailyRepository.GetById(getAccountsBalanceByAccount.DailyId.Value);
+            getAccountsBalanceByAccount.AccountType = daily.DailyType;
+            if (daily == null)
+            {
+                throw new ArgumentException("DailyId does not exist");
+            }
+            getAccountsBalanceByAccount.StartDate = daily.DailyDate;
+            getAccountsBalanceByAccount.EndDate = daily.DailyDate;
+
+        }
+        if (getAccountsBalanceByAccount.StartDate == null)
+        {
+            throw new ArgumentException("StartDate is required");
+        }
+
+        if (getAccountsBalanceByAccount.EndDate == null)
+        {
+            getAccountsBalanceByAccount.EndDate = getAccountsBalanceByAccount.StartDate.Value;
+        }
+
         var spec = new GetReportyBySpecification(getAccountsBalanceByAccount);
-        var reportSpec = _formDetailsRepository.GetQueryable(spec);
-        if (!reportSpec.Any())
+        var FullAccountsParam = new GetAccountsBalanceBy()
         {
-            return new ReportDto()!;
-        }
-
-        // Calculate the total balance
-        var ByAccounts = reportSpec.GroupBy(x => x.AccountId);
-        Fund? fund = null;
-        Collage? collage = null;
-
-        //create 2 variables  in same line
-
-
-        if (getAccountsBalanceByAccount.FunId.HasValue)
-        {
-            fund = await _fundRepository.GetById(getAccountsBalanceByAccount.FunId.Value);
-        }
-        if (getAccountsBalanceByAccount.CollageId.HasValue)
-        {
-            collage = await _collageRepository.GetById(getAccountsBalanceByAccount.CollageId.Value);
-        }
-
-
-        var result = new ReportDto()
-        {
-
-
+            // StartDate = getAccountsBalanceByAccount.StartDate,
+            EndDate = getAccountsBalanceByAccount.EndDate,
+            CollageId = getAccountsBalanceByAccount.CollageId,
+            FunId = getAccountsBalanceByAccount.FunId,
             AccountType = getAccountsBalanceByAccount.AccountType,
-            AccountItem = getAccountsBalanceByAccount.AccountItem,
-            ReportDetailsDtos = await ByAccounts.Select(g => new ReportDetailsDto()
+            AccountItem = getAccountsBalanceByAccount.AccountItem
+        };
+        var spec2 = new GetReportyBySpecification(FullAccountsParam);
+        var accountsBalance = await _formDetailsRepository.GetQueryable(spec2)
+            .Include(x => x.Account)
+            .Include(x => x.Form)
+            .Include(x => x.Form!.Daily)
+
+        .ToListAsync();
+        var accountsResult = accountsBalance.GroupBy(x => x.AccountId);
+        var reportDetailsList = new List<ReportDetailsDto>();
+
+        foreach (var g in accountsResult)
+        {
+            var reportDetails = new ReportDetailsDto
             {
                 AccountId = g.Key,
                 AccountName = g.FirstOrDefault()!.Account!.AccountName,
                 AccountNumber = g.FirstOrDefault()!.Account!.AccountNumber,
-                Credit = g.Sum(x => x.Credit),
-                Debit = g.Sum(x => x.Debit)
-            }).ToListAsync()
+                OpeningBalance = await GetOpeningBalanceByAccount(g.Key, getAccountsBalanceByAccount, cancellationToken),
+                MonthlyTransAction = await GetMonthlyAccountBalance(g.Key, getAccountsBalanceByAccount),
+            };
+
+            reportDetailsList.Add(reportDetails);
+        }
+
+        var accounType = "الكل";
+        if (!string.IsNullOrEmpty(getAccountsBalanceByAccount.AccountType))
+        {
+            accounType = getAccountsBalanceByAccount.AccountType == "Payroll" ? "بيرول" : "عادية";
+        }
+
+
+        var result = new ReportDto
+        {
+
+
+            AccountType = accounType,
+            AccountItem = getAccountsBalanceByAccount.AccountItem,
+            FundName = getAccountsBalanceByAccount.FunId.HasValue ? (await _fundRepository.GetById(getAccountsBalanceByAccount.FunId.Value))?.FundName : "الكل",
+            CollageName = getAccountsBalanceByAccount.CollageId.HasValue ? (await _collageRepository.GetById(getAccountsBalanceByAccount.CollageId.Value))?.CollageName : "الكل",
+
+            ReportDetailsDtos = reportDetailsList
         };
-        if (fund != null)
-        {
-            result.FundName = fund.FundName;
-            result.FundCode = fund.FundCode;
-        }
-        if (collage != null)
-        {
-            result.CollageName = collage.CollageName;
-        }
+
         return result;
     }
+
+    private async Task<AccountBalance?> GetMonthlyAccountBalance(int accountId, GetAccountsBalanceBy request)
+    {
+        var spec = new GetReportyBySpecification(request);
+        var accountBalance = await _formDetailsRepository.GetQueryable(spec)
+            .Include(x => x.Form)
+            .Include(x => x.Form!.Daily)
+            .Where(x => x.AccountId == accountId)
+            .GroupBy(x => x.AccountId)
+            .Select(g => new AccountBalance
+            {
+                Credit = g.Sum(x => x.Credit),
+                Debit = g.Sum(x => x.Debit)
+            }).FirstOrDefaultAsync();
+        if (accountBalance == null)
+        {
+            return new AccountBalance
+            {
+                Credit = 0,
+                Debit = 0
+            };
+        }
+        return accountBalance;
+
+    }
+
+    private AccountBalance GetClosingBalanceByAccount(AccountBalance openingAccount, AccountBalance monthlyAccount)
+    {
+        var closingBalance = new AccountBalance
+        {
+            Credit = openingAccount.Credit + monthlyAccount.Credit,
+            Debit = openingAccount.Debit + monthlyAccount.Debit
+        };
+
+        return closingBalance;
+    }
+
+    private async Task<AccountBalance?> GetOpeningBalanceByAccount(int AccountId, GetAccountsBalanceBy getAccountsBalanceByAccount, CancellationToken cancellationToken)
+    {
+        // Get the opening balance by account
+        var GetOpeningBalanceByAccount = new GetAccountsBalanceBy()
+        {
+            EndDate = getAccountsBalanceByAccount.StartDate.Value.AddDays(-1), // Set the end date to one day before the start date
+            CollageId = getAccountsBalanceByAccount.CollageId,
+            FunId = getAccountsBalanceByAccount.FunId,
+            AccountType = getAccountsBalanceByAccount.AccountType,
+            AccountItem = getAccountsBalanceByAccount.AccountItem,
+
+            //ByMonth = getAccountsBalanceByAccount.ByMonth,
+            //ByYear = getAccountsBalanceByAccount.ByYear
+
+
+        };
+
+
+        var spec = new GetReportyBySpecification(GetOpeningBalanceByAccount);
+
+        var reportSpec = await _formDetailsRepository.GetQueryable(spec)
+            .Where(x => x.AccountId == AccountId)
+            .Include(x => x.Form)
+            .Include(x => x.Form!.Daily)
+            .ToListAsync();
+
+        if (!reportSpec.Any())
+        {
+            return new AccountBalance()
+            {
+                Credit = 0,
+                Debit = 0
+            };
+        }
+        var ByAccounts = reportSpec.GroupBy(x => x.AccountId);
+        return ByAccounts.Select(g => new AccountBalance
+        {
+            Credit = g.Sum(x => x.Credit),
+            Debit = g.Sum(x => x.Debit)
+        }).FirstOrDefault();
+
+    }
+
     public async Task<ReportDto> GetSubsidiaryReportAsync(GetSubSidiaryBalanceBy getSubSidiaryBalanceBy, CancellationToken cancellationToken = default)
     {
         var spec = new GetSubsidiaryReportyBySpecification(getSubSidiaryBalanceBy);
@@ -129,8 +237,8 @@ public class ReportService
                 AccountId = g.Key,
                 AccountName = g.FirstOrDefault()!.SubAccount!.SubAccountName,
                 AccountNumber = g.FirstOrDefault()!.SubAccount!.SubAccountNumber,
-                Credit = g.Where(x => x.TransactionSide == "Credit").Sum(x => x.Amount),
-                Debit = g.Where(x => x.TransactionSide == "Debit").Sum(x => x.Amount),
+                // Credit = g.Where(x => x.TransactionSide == "Credit").Sum(x => x.Amount),
+                // Debit = g.Where(x => x.TransactionSide == "Debit").Sum(x => x.Amount),
 
             }).ToListAsync()
         };

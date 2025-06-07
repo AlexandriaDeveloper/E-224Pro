@@ -4,6 +4,7 @@ using API.EndPoints.Reports;
 using API.Forms;
 using FastEndpoints;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Persistence.Extensions;
 using Scalar.AspNetCore;
 
@@ -69,9 +70,13 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), @"Content")),
+    RequestPath = "/content"
+});
 
-
-;
 
 
 app.Run();

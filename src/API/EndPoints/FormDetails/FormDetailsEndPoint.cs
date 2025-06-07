@@ -25,7 +25,7 @@ public static class FormDetailsEndPoint
         return app;
     }
 
-    private static async Task<FormDto> GetByFormIdAsync(FormDetailsService service, int formId, CancellationToken cancellationToken = default)
+    private static async Task<List<FormDetailDto>> GetByFormIdAsync(FormDetailsService service, int formId, CancellationToken cancellationToken = default)
     {
         return await service.GetByFormIdAsync(formId, cancellationToken);
 
@@ -39,7 +39,7 @@ public static class FormDetailsEndPoint
 
     private static async Task<IResult> PutFormDetails(FormDetailsService service, int id, PutFormDetailsRequest formDetails, CancellationToken cancellationToken)
     {
-        await service.PutFormDetailsAsync(id, formDetails, cancellationToken);
+        await service.PutFormDetailAsync(id, formDetails, cancellationToken);
         return TypedResults.Created();
     }
     private static async Task<IResult> TestPostFormDetails(FormDetailsService service, CancellationToken cancellationToken)

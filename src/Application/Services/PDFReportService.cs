@@ -1,0 +1,202 @@
+
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using NPOI.SS.Formula.Functions;
+using QuestPDF.Companion;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
+using QuestPDF.Previewer;
+using Shared.Contracts.ReportRequest;
+namespace Application.Services;
+
+public class PDFReportService
+{
+  private readonly ReportService reportService;
+  private readonly IConfiguration _config;
+
+  public PDFReportService(ReportService reportService, IConfiguration config)
+  {
+    this.reportService = reportService;
+    this._config = config;
+  }
+
+  public async Task<byte[]> GenerateReport(GetAccountsBalanceBy request, CancellationToken cancellationToken)
+  {
+    var report = await reportService.GetFormDetailsReportAsync(request, cancellationToken);
+    if (report == null)
+    {
+      return Array.Empty<byte>();
+    }
+
+
+    using var stream = new MemoryStream();
+
+    var openingColor = Color.FromHex("#f0f0f0");
+    var monthlyColor = Color.FromHex("#d1d1d1");
+    var closingColor = Color.FromHex("#fafafa");
+    var accountColor = Color.FromHex("#e1e1e1");
+
+
+    Document.Create(Container =>
+    {
+
+      // Set Content Right To Left
+
+      Container.Page(page =>
+          {
+
+            page.ContentFromRightToLeft();
+            page.Size(PageSizes.A4);
+            //page.Content().Image(_config["ApiContent"] + "images/logo.png"); ;
+            page.Margin(1, Unit.Centimetre);
+            page.PageColor(Colors.White);
+            page.DefaultTextStyle(x => x.FontSize(8).FontFamily("Arial"));
+
+            page.Header().Column(c =>
+                {
+                  c.Item().AlignRight().Text("جامعة الاسكندريه").FontSize(12).Bold();
+                  c.Item().AlignRight().Text("الوحدة الحسابيه المركزيه للمجمع الطبى").FontSize(12).Bold().Underline();
+                  c.Item().AlignLeft().Text("تاريخ الطباعة : " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")).FontSize(10);
+
+                  c.Item().AlignCenter().Text("تقرير أرصدة الحسابات").FontSize(16).Bold();
+                  c.Item().AlignCenter().Text($"من : {request.StartDate:yyyy-MM-dd} إلى : {request.EndDate:yyyy-MM-dd}").FontSize(12).Underline().Bold();
+                  c.Item().AlignRight().Text($"الكلية : {report.CollageName}").FontSize(12).Bold();
+                  c.Item().AlignRight().Text($"الصندوق : {report.FundName}").FontSize(12).Bold();
+                  c.Item().AlignRight().Text($"نوع الحساب : {report.AccountType}").FontSize(12).Bold();
+
+                });
+
+
+            page.Content().Table(table =>
+                {
+                  //i need table with borders
+
+
+
+                  table.ColumnsDefinition(columns =>
+                    {
+
+                      columns.RelativeColumn(2);
+
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+
+                    });
+                  table.Header(header =>
+                    {
+                      //i need 2 2 hader rows
+
+
+                      header.Cell().Row(1).Column(2).ColumnSpan(3).AlignCenter().Scale(1.4f).Element(cell => MainHeaderStyle(cell, Colors.Transparent)).Text("رصيد افتتاحى").Bold().FontSize(10);
+                      header.Cell().Row(1).Column(5).ColumnSpan(3).AlignCenter().Scale(1.4f).Element(cell => MainHeaderStyle(cell, Colors.Transparent)).Text("عمليات الشهر").Bold().FontSize(10);
+                      header.Cell().Row(1).Column(8).ColumnSpan(3).AlignCenter().Scale(1.4f).Element(cell => MainHeaderStyle(cell, Colors.Transparent)).Text("أخر الفترة").Bold().FontSize(10);
+                      header.Cell().Row(2).Column(1).Element(cell => AccountCellStyle(cell, accountColor)).Text("الحساب ")
+
+                        .ExtraBold();
+
+
+
+
+
+
+                      header.Cell().Column(2).Row(2).Element(cell => HeaderStyle(cell, openingColor)).Text(" مدين").ExtraBold();
+                      header.Cell().Row(2).Column(3).Element(cell => HeaderStyle(cell, openingColor)).Text(" دائن").ExtraBold();
+                      header.Cell().Row(2).Column(4).Element(cell => HeaderStyle(cell, openingColor)).Text(" رصيد").ExtraBold();
+
+                      header.Cell().Row(2).Column(5).Element(cell => HeaderStyle(cell, monthlyColor)).Text(" مدين ").ExtraBold();
+                      header.Cell().Row(2).Column(6).Element(cell => HeaderStyle(cell, monthlyColor)).Text(" دائن ").ExtraBold();
+                      header.Cell().Row(2).Column(7).Element(cell => HeaderStyle(cell, monthlyColor)).Text(" رصيد ").ExtraBold();
+
+
+
+
+                      header.Cell().Row(2).Column(8).Element(cell => HeaderStyle(cell, closingColor)).Text(" مدين").ExtraBold();
+                      header.Cell().Row(2).Column(9).Element(cell => HeaderStyle(cell, closingColor)).Text(" دائن").ExtraBold();
+                      header.Cell().Row(2).Column(10).Element(cell => HeaderStyle(cell, closingColor)).Text(" رصيد").ExtraBold();
+                    });
+
+                  report.ReportDetailsDtos.ForEach(x =>
+                    {
+
+
+                      table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(x.AccountName);
+                      table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Debit.ToString());
+                      table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Credit.ToString());
+                      table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Balance.ToString());
+                      table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction.Debit.ToString());
+                      table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction.Credit.ToString());
+                      table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction?.Balance.ToString() ?? "0");
+                      table.Cell().Element(cell => ClosingCellStyle(cell, closingColor)).Text(x.ClosingBalance?.Debit.ToString() ?? "0");
+                      table.Cell().Element(cell => ClosingCellStyle(cell, closingColor)).Text(x.ClosingBalance?.Credit.ToString() ?? "0");
+                      table.Cell().Element(cell => ClosingCellStyle(cell, closingColor)).Text(x.ClosingBalance?.Balance.ToString() ?? "0");
+
+
+
+                      //table.Cell().Text(x.ClosingBalance?.Balance.ToString() ?? "0");
+                    });
+                  table.Footer(footer =>
+                    {
+                      footer.Cell().Element(cell => FooterCellStyle(cell, accountColor)).Text("المجموع").Bold();
+                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Debit).ToString());
+                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Credit).ToString());
+                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Balance).ToString());
+                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction.Debit).ToString());
+                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction.Credit).ToString());
+                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction?.Balance ?? 0).ToString());
+                      footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Debit ?? 0).ToString());
+                      footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Credit ?? 0).ToString());
+                      footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Balance ?? 0).ToString());
+
+                    });
+
+                  static IContainer CellStyle(IContainer container, Color color)
+                    => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(2).AlignCenter().AlignMiddle();
+
+
+                  static IContainer HeaderStyle(IContainer container, Color color)
+                      => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(3).AlignCenter().AlignMiddle();
+
+
+                  static IContainer MainHeaderStyle(IContainer container, Color color)
+                      => container.Border(0).Background(color).Width(100).PaddingHorizontal(1).PaddingVertical(1).AlignCenter().AlignMiddle();
+
+                  static IContainer FooterCellStyle(IContainer container, Color color)
+                      => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(2).AlignCenter().AlignMiddle();
+
+                  static IContainer OpeningCellStyle(IContainer container, Color color)
+                      => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(1).AlignCenter().AlignMiddle();
+
+
+                  static IContainer MonthlyCellStyle(IContainer container, Color color)
+                      => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(1).AlignCenter().AlignMiddle();
+
+
+                  static IContainer ClosingCellStyle(IContainer container, Color color)
+                      => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(1).AlignCenter().AlignMiddle();
+
+                  static IContainer AccountCellStyle(IContainer container, Color color)
+                      => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(1).AlignCenter().AlignMiddle();
+
+                  page.Footer().AlignCenter().Text(x =>
+                    {
+                      x.CurrentPageNumber();
+                      x.Span(" / ");
+                      x.TotalPages();
+                    });
+                });
+          })
+
+              ;
+    }).GeneratePdf(stream);
+    return stream.ToArray();
+  }
+
+}

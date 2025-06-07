@@ -125,4 +125,22 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         }
         return _context.Set<T>().Max(x => x.Id);
     }
+
+    public Task UpdateRangeAsync(List<T> entities, CancellationToken cancellationToken = default)
+    {
+        _context.Set<T>().UpdateRange(entities);
+        return Task.CompletedTask;
+    }
+
+    public async Task<bool> ExistsAsync(ISpecification<T>? specification, CancellationToken cancellationToken = default)
+    {
+        if (specification is null)
+            return await _context.Set<T>().AnyAsync(cancellationToken);
+        return await ApplySpecification(specification).AnyAsync(cancellationToken);
+    }
+
+    public void RemoveRange(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+    {
+        _context.Set<T>().RemoveRange(entities);
+    }
 }

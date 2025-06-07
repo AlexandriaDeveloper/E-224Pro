@@ -36,10 +36,10 @@
                 </mat-form-field>
                 <mat-form-field style="width: 24%;">
                     <mat-label>معرف الكلية</mat-label>
-                    <mat-select formControlName="collageId">
-                        <mat-option value="1">طب</mat-option>
-                        <mat-option value="2">أسنان</mat-option>
-                        <mat-option value="3">صيدلة</mat-option>
+                    <mat-select formControlName="collageId" (selectionChange)="getFunds($event.value)">
+                        <mat-option [value]=1>طب</mat-option>
+                        <mat-option [value]=2>أسنان</mat-option>
+                        <mat-option [value]=3>صيدلة</mat-option>
                     </mat-select>
                     <mat-error *ngIf="f['collageId']?.hasError('required')">معرف الكلية مطلوب</mat-error>
                 </mat-form-field>
@@ -47,8 +47,8 @@
                 <mat-form-field style="width: 24%;">
                     <mat-label>معرف الصندوق</mat-label>
                     <mat-select formControlName="fundId">
-                        <mat-option value="1">برنامج دولي</mat-option>
-                        <mat-option value="2">مركز المؤتمرات</mat-option>
+                        <mat-option>اختار</mat-option>
+                        <mat-option *ngFor="let fund of funds" [value]="fund.id"> {{fund.fundName}}</mat-option>
                     </mat-select>
                     <mat-error *ngIf="f['fundId']?.hasError('required')">معرف الصندوق مطلوب</mat-error>
                 </mat-form-field>
@@ -77,6 +77,8 @@
                         <mat-error *ngIf="detail.get('accountNumber')?.hasError('required')">معرف الحساب
                             مطلوب</mat-error>
                     </mat-form-field>
+
+
                     <mat-form-field style="flex: 4;">
                         <mat-label>اسم الحساب الحساب</mat-label>
                         <input matInput formControlName="accountName" />
@@ -94,7 +96,7 @@
                     </mat-form-field>
 
 
-                    <button mat-icon-button color="warn" (click)="removeFormDetail(i)">
+                    <button mat-icon-button color="warn" (click)="removeFormDetail(i)" type="button">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>

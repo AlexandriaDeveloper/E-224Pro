@@ -1,3 +1,4 @@
+using Azure.Core;
 using Core.Models;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Contracts.FormRequests;
@@ -16,10 +17,15 @@ public class GetReportyBySpecification : Specification<FormDetails>
         {
             AddCriteries(x => x.Form!.Daily!.DailyDate == request.SpecificDate);
         }
-
-        if (request.ByMonth.HasValue)
+        if (request.DailyId.HasValue)
         {
-            AddCriteries(x => x.Form!.Daily!.DailyDate.Month == request.ByMonth);
+            AddInclude(x => x.Form!.Daily!);
+            AddCriteries(x => x.Form!.Daily!.Id == request.DailyId);
+        }
+
+        if (request.ByMonth.HasValue && request.ByYear.HasValue)
+        {
+            AddCriteries(x => x.Form!.Daily!.DailyDate.Month == request.ByMonth && x.Form.Daily.DailyDate.Year == request.ByYear);
         }
 
         if (!request.AccountItem.IsNullOrEmpty())
@@ -35,6 +41,7 @@ public class GetReportyBySpecification : Specification<FormDetails>
         {
             AddCriteries(x => x.Form!.Daily!.DailyDate <= request.EndDate);
         }
+
         if (request.CollageId.HasValue)
         {
             AddInclude(x => x.Form!.Collage!);
