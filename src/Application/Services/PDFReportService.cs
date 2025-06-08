@@ -47,17 +47,23 @@ public class PDFReportService
           {
 
             page.ContentFromRightToLeft();
-            page.Size(PageSizes.A4);
+
+            page.Size(PageSizes.A4.Landscape());
+            // page.orientation(Orientation.Portrait);
+
+
             //page.Content().Image(_config["ApiContent"] + "images/logo.png"); ;
-            page.Margin(1, Unit.Centimetre);
+            page.Margin(.5f, Unit.Centimetre);
             page.PageColor(Colors.White);
             page.DefaultTextStyle(x => x.FontSize(8).FontFamily("Arial"));
 
             page.Header().Column(c =>
                 {
-                  c.Item().AlignRight().Text("جامعة الاسكندريه").FontSize(12).Bold();
-                  c.Item().AlignRight().Text("الوحدة الحسابيه المركزيه للمجمع الطبى").FontSize(12).Bold().Underline();
                   c.Item().AlignLeft().Text("تاريخ الطباعة : " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")).FontSize(10);
+                  c.Item().AlignRight().Text("جامعة الاسكندريه").FontSize(12).Bold();
+
+                  c.Item().AlignRight().Text("الوحدة الحسابيه المركزيه للمجمع الطبى").FontSize(12).Bold().Underline();
+
 
                   c.Item().AlignCenter().Text("تقرير أرصدة الحسابات").FontSize(16).Bold();
                   c.Item().AlignCenter().Text($"من : {request.StartDate:yyyy-MM-dd} إلى : {request.EndDate:yyyy-MM-dd}").FontSize(12).Underline().Bold();
@@ -76,18 +82,19 @@ public class PDFReportService
 
                   table.ColumnsDefinition(columns =>
                     {
+                      columns.RelativeColumn(.5f);
+                      columns.RelativeColumn(1.5f);
 
-                      columns.RelativeColumn(2);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
+                      columns.RelativeColumn(1);
 
-                      columns.RelativeColumn(1);
-                      columns.RelativeColumn(1);
-                      columns.RelativeColumn(1);
-                      columns.RelativeColumn(1);
-                      columns.RelativeColumn(1);
-                      columns.RelativeColumn(1);
-                      columns.RelativeColumn(1);
-                      columns.RelativeColumn(1);
-                      columns.RelativeColumn(1);
 
                     });
                   table.Header(header =>
@@ -95,38 +102,39 @@ public class PDFReportService
                       //i need 2 2 hader rows
 
 
-                      header.Cell().Row(1).Column(2).ColumnSpan(3).AlignCenter().Scale(1.4f).Element(cell => MainHeaderStyle(cell, Colors.Transparent)).Text("رصيد افتتاحى").Bold().FontSize(10);
-                      header.Cell().Row(1).Column(5).ColumnSpan(3).AlignCenter().Scale(1.4f).Element(cell => MainHeaderStyle(cell, Colors.Transparent)).Text("عمليات الشهر").Bold().FontSize(10);
-                      header.Cell().Row(1).Column(8).ColumnSpan(3).AlignCenter().Scale(1.4f).Element(cell => MainHeaderStyle(cell, Colors.Transparent)).Text("أخر الفترة").Bold().FontSize(10);
-                      header.Cell().Row(2).Column(1).Element(cell => AccountCellStyle(cell, accountColor)).Text("الحساب ")
-
-                        .ExtraBold();
+                      header.Cell().Row(1).Column(3).ColumnSpan(3).AlignCenter().Scale(1.4f).Element(cell => MainHeaderStyle(cell, Colors.Transparent)).Text("رصيد افتتاحى").Bold().FontSize(10);
+                      header.Cell().Row(1).Column(6).ColumnSpan(3).AlignCenter().Scale(1.4f).Element(cell => MainHeaderStyle(cell, Colors.Transparent)).Text("عمليات الشهر").Bold().FontSize(10);
+                      header.Cell().Row(1).Column(9).ColumnSpan(3).AlignCenter().Scale(1.4f).Element(cell => MainHeaderStyle(cell, Colors.Transparent)).Text("أخر الفترة").Bold().FontSize(10);
 
 
 
 
 
 
-                      header.Cell().Column(2).Row(2).Element(cell => HeaderStyle(cell, openingColor)).Text(" مدين").ExtraBold();
-                      header.Cell().Row(2).Column(3).Element(cell => HeaderStyle(cell, openingColor)).Text(" دائن").ExtraBold();
-                      header.Cell().Row(2).Column(4).Element(cell => HeaderStyle(cell, openingColor)).Text(" رصيد").ExtraBold();
-
-                      header.Cell().Row(2).Column(5).Element(cell => HeaderStyle(cell, monthlyColor)).Text(" مدين ").ExtraBold();
-                      header.Cell().Row(2).Column(6).Element(cell => HeaderStyle(cell, monthlyColor)).Text(" دائن ").ExtraBold();
-                      header.Cell().Row(2).Column(7).Element(cell => HeaderStyle(cell, monthlyColor)).Text(" رصيد ").ExtraBold();
+                      header.Cell().Row(2).Column(2).Element(cell => AccountCellStyle(cell, accountColor)).Text("الحساب ").ExtraBold();
+                      header.Cell().Row(2).Column(1).Element(cell => AccountCellStyle(cell, accountColor)).Text("كود ").ExtraBold();
 
 
+                      header.Cell().Column(3).Row(2).Element(cell => HeaderStyle(cell, openingColor)).Text(" مدين").ExtraBold();
+                      header.Cell().Row(2).Column(3 + 1).Element(cell => HeaderStyle(cell, openingColor)).Text(" دائن").ExtraBold();
+                      header.Cell().Row(2).Column(4 + 1).Element(cell => HeaderStyle(cell, openingColor)).Text(" رصيد").ExtraBold();
+
+                      header.Cell().Row(2).Column(5 + 1).Element(cell => HeaderStyle(cell, monthlyColor)).Text(" مدين ").ExtraBold();
+                      header.Cell().Row(2).Column(6 + 1).Element(cell => HeaderStyle(cell, monthlyColor)).Text(" دائن ").ExtraBold();
+                      header.Cell().Row(2).Column(7 + 1).Element(cell => HeaderStyle(cell, monthlyColor)).Text(" رصيد ").ExtraBold();
 
 
-                      header.Cell().Row(2).Column(8).Element(cell => HeaderStyle(cell, closingColor)).Text(" مدين").ExtraBold();
-                      header.Cell().Row(2).Column(9).Element(cell => HeaderStyle(cell, closingColor)).Text(" دائن").ExtraBold();
-                      header.Cell().Row(2).Column(10).Element(cell => HeaderStyle(cell, closingColor)).Text(" رصيد").ExtraBold();
+
+
+                      header.Cell().Row(2).Column(8 + 1).Element(cell => HeaderStyle(cell, closingColor)).Text(" مدين").ExtraBold();
+                      header.Cell().Row(2).Column(9 + 1).Element(cell => HeaderStyle(cell, closingColor)).Text(" دائن").ExtraBold();
+                      header.Cell().Row(2).Column(10 + 1).Element(cell => HeaderStyle(cell, closingColor)).Text(" رصيد").ExtraBold();
                     });
 
                   report.ReportDetailsDtos.ForEach(x =>
                     {
 
-
+                      table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(x.AccountNumber);
                       table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(x.AccountName);
                       table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Debit.ToString());
                       table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Credit.ToString());
@@ -144,16 +152,16 @@ public class PDFReportService
                     });
                   table.Footer(footer =>
                     {
-                      footer.Cell().Element(cell => FooterCellStyle(cell, accountColor)).Text("المجموع").Bold();
-                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Debit).ToString());
-                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Credit).ToString());
-                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Balance).ToString());
-                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction.Debit).ToString());
-                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction.Credit).ToString());
-                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction?.Balance ?? 0).ToString());
-                      footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Debit ?? 0).ToString());
-                      footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Credit ?? 0).ToString());
-                      footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Balance ?? 0).ToString());
+                      footer.Cell().ColumnSpan(2).Element(cell => FooterCellStyle(cell, accountColor)).Text("المجموع").Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Debit).ToString()).Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Credit).ToString()).Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Balance).ToString()).Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction.Debit).ToString()).Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction.Credit).ToString()).Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction?.Balance ?? 0).ToString()).Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Debit ?? 0).ToString()).Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Credit ?? 0).ToString()).Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Balance ?? 0).ToString()).Bold().FontSize(10);
 
                     });
 

@@ -6,7 +6,7 @@
         <button mat-icon-button (click)="onNoClick()" class="dialog-btn-close">
             <mat-icon>close</mat-icon>
         </button>
-        <span class="title">البحث</span>
+        <span class="title">تقرير</span>
 
     </h2>
 
@@ -23,10 +23,10 @@
         </div> -->
         <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
             <div style="display: flex; justify-content: center;">
-                <mat-form-field style="width: 100%;">
+                <!-- <mat-form-field style="width: 100%;">
                     <mat-label>الاسم</mat-label>
                     <input matInput placeholder="البحث بالأسم" formControlName="name" />
-                </mat-form-field>
+                </mat-form-field> -->
             </div>
             <div style="display: flex; justify-content: space-between; margin: 10px;">
                 <mat-form-field style="width: 48%;">
@@ -47,7 +47,7 @@
             <div style="display: flex; justify-content: space-between;">
 
 
-                <mat-form-field style="width: 48%;">
+                <mat-form-field style="width: 100%;">
                     <mat-label>نوع اليوميه</mat-label>
 
                     <mat-select formControlName="dailyType">
@@ -57,12 +57,27 @@
                         }
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field style="width: 48%;">
-                    <mat-label>نوع الصرفيه </mat-label>
-                    <mat-select formControlName="accountItem">
+
+            </div>
+            <div>
+
+
+                <mat-form-field style="width: 100%;">
+                    <mat-label>الكليه</mat-label>
+
+                    <mat-select formControlName="collageId" (selectionChange)="getFunds($event.value)">
                         <mat-option [value]="">الكل</mat-option>
-                        @for (accountItem of accountItems; track accountItem) {
-                        <mat-option [value]="accountItem.value">{{accountItem.name}}</mat-option>
+                        @for (collage of collages; track collage.id) {
+                        <mat-option [value]="collage.id">{{collage.collageName}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field style="width: 100%;">
+                    <mat-label> الصندوق </mat-label>
+                    <mat-select formControlName="fundId">
+                        <mat-option [value]="">الكل</mat-option>
+                        @for (fund of funds; track fund.id) {
+                        <mat-option [value]="fund.id">{{fund.fundName}}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
@@ -75,8 +90,8 @@
     <div style="display:flex !important;justify-content: center;">
 
         <button mat-mini-fab (click)="onSubmit()" style="width: 160px;" class="btn-secondary">
-            ابحث
-            <mat-icon>search</mat-icon>
+            استخرج تقرير
+            <mat-icon>print</mat-icon>
         </button>
         <div class="spacer"></div>
 

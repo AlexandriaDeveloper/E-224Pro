@@ -21,6 +21,7 @@ public static class ApplicationExt
         services.AddScoped<AccountService>();
         services.AddScoped<FundService>();
         services.AddScoped<PDFReportService>();
+        services.AddScoped<CollageService>();
 
         return services;
     }

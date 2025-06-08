@@ -57,6 +57,7 @@ app.MapFormsDetailsEndPoint();
 app.MapReportEndPoint();
 app.MapSubsidiaryJournalEndPoint();
 app.MapAccountsEndPoint();
+app.MapCollgaesEndPoint();
 app.MapFundsEndpoint();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

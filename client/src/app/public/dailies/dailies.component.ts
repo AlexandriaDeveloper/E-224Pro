@@ -8,6 +8,8 @@ import { AddDailyComponent } from './add-daily/add-daily.component';
 import { DeleteDialogComponent } from '../../shared/components/dialog/delete-dialog/delete-dialog.component';
 import { Daily } from '../../shared/_models/Daily.model';
 import { DailiesReportDialogComponent } from './dailies-report-dialog/dailies-report-dialog.component';
+import { CollageService } from '../../shared/services/collage.service';
+import { Collage } from '../../shared/_models/collage.model';
 
 
 
@@ -37,20 +39,29 @@ export class DailiesComponent implements OnInit {
   pageSizeOptions = [5, 15, 30];
   pageEvent: PageEvent;
   readonly dialog = inject(MatDialog);
+  collages: Collage[] = [];
+  collageService = inject(CollageService);
 
 
   constructor(private dailiesService: DailiesService) {
 
   }
   ngOnInit(): void {
+    this.loadCollages();
     this.loadDailies(this.params);
   }
 
   loadDailies(param: GetDailiesRequest) {
     this.dailiesService.getDailies(param).subscribe((dailies: any) => {
-      console.log(dailies);
+
       this.dataSource = dailies.dailies;
       this.length = dailies.totalCount;
+    });
+  }
+  loadCollages() {
+    this.collageService.getCollages().subscribe((collages: Collage[]) => {
+      console.log(collages);
+      this.collages = collages;
     });
   }
   handlePageEvent(e: PageEvent) {
@@ -89,10 +100,12 @@ export class DailiesComponent implements OnInit {
   openDailiesReportDialog() {
     const dialogRef = this.dialog.open(DailiesReportDialogComponent, {
       data: {
-        param: this.params
+        param: this.params,
+        collages: this.collages
       },
       disableClose: true,
-      hasBackdrop: true
+      hasBackdrop: true,
+      minWidth: '40vw'
     });
 
     dialogRef.afterClosed().subscribe(result => {

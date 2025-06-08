@@ -6,7 +6,7 @@ public class GetAccountsBalanceBy
 {
 
     public int? DailyId { get; set; }
-    public int? FunId { get; set; }
+    public int? FundId { get; set; }
     public int? CollageId { get; set; }
 
     public DateOnly? StartDate { get; set; }

@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { GetDailiesRequest } from '../_requests/getDailiesRequest';
 import { StringToDateOnlyProviderService } from '../_helper/string-to-date-only-provider.service';
-import { Daily } from '../_models/Daily.model';
+import { Daily, ReportRequest } from '../_models/Daily.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -56,6 +56,32 @@ export class DailiesService {
   }
   deleteDaily(id: any) {
     return this.http.delete(`${this.apiUrl}dailies/delete/${id}`);
+  }
+
+  downloadDailieRportPdf(getDailiesReportRequest: ReportRequest) {
+    var params = new HttpParams();
+
+    if (getDailiesReportRequest.startDate != null) {
+      params = params.append('startDate', this.dateProvider.stringToDateOnlyProvider(getDailiesReportRequest.startDate.toString()));
+    }
+    if (getDailiesReportRequest.endDate != null) {
+      params = params.append('endDate', this.dateProvider.stringToDateOnlyProvider(getDailiesReportRequest.endDate.toString()));
+    }
+    if (getDailiesReportRequest.dailyType != null) {
+      params = params.append('dailyType', getDailiesReportRequest.dailyType);
+    }
+    if (getDailiesReportRequest.collageId != null) {
+      params = params.append('collageId', getDailiesReportRequest.collageId);
+    }
+    if (getDailiesReportRequest.fundId != null) {
+      params = params.append('fundId', getDailiesReportRequest.fundId);
+    }
+
+    return this.http.get(`${this.apiUrl}reports/reportPdf`, {
+      responseType: 'blob' as 'json',
+      params: params
+    });
+
   }
 
 

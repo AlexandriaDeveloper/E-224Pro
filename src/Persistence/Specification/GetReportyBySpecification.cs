@@ -48,10 +48,10 @@ public class GetReportyBySpecification : Specification<FormDetails>
             AddCriteries(x => x.Form!.CollageId == request.CollageId);
         }
 
-        if (request.FunId.HasValue)
+        if (request.FundId.HasValue)
         {
             AddInclude(x => x.Form!.Fund!);
-            AddCriteries(x => x.Form!.FundId == request.FunId);
+            AddCriteries(x => x.Form!.FundId == request.FundId);
         }
         if (request.FormId.HasValue)
         {

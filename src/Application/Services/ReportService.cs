@@ -69,7 +69,7 @@ public class ReportService
             // StartDate = getAccountsBalanceByAccount.StartDate,
             EndDate = getAccountsBalanceByAccount.EndDate,
             CollageId = getAccountsBalanceByAccount.CollageId,
-            FunId = getAccountsBalanceByAccount.FunId,
+            FundId = getAccountsBalanceByAccount.FundId,
             AccountType = getAccountsBalanceByAccount.AccountType,
             AccountItem = getAccountsBalanceByAccount.AccountItem
         };
@@ -110,10 +110,10 @@ public class ReportService
 
             AccountType = accounType,
             AccountItem = getAccountsBalanceByAccount.AccountItem,
-            FundName = getAccountsBalanceByAccount.FunId.HasValue ? (await _fundRepository.GetById(getAccountsBalanceByAccount.FunId.Value))?.FundName : "الكل",
+            FundName = getAccountsBalanceByAccount.FundId.HasValue ? (await _fundRepository.GetById(getAccountsBalanceByAccount.FundId.Value))?.FundName : "الكل",
             CollageName = getAccountsBalanceByAccount.CollageId.HasValue ? (await _collageRepository.GetById(getAccountsBalanceByAccount.CollageId.Value))?.CollageName : "الكل",
 
-            ReportDetailsDtos = reportDetailsList
+            ReportDetailsDtos = reportDetailsList.OrderBy(x => x.AccountNumber).ToList()
         };
 
         return result;
@@ -162,7 +162,7 @@ public class ReportService
         {
             EndDate = getAccountsBalanceByAccount.StartDate.Value.AddDays(-1), // Set the end date to one day before the start date
             CollageId = getAccountsBalanceByAccount.CollageId,
-            FunId = getAccountsBalanceByAccount.FunId,
+            FundId = getAccountsBalanceByAccount.FundId,
             AccountType = getAccountsBalanceByAccount.AccountType,
             AccountItem = getAccountsBalanceByAccount.AccountItem,
 

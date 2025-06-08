@@ -6,3 +6,11 @@ export class Daily {
   accountItem: string;
 
 }
+
+export class ReportRequest {
+  startDate?: Date;
+  endDate?: Date;
+  dailyType?: string;
+  collageId?: number;
+  fundId?: number;
+}
