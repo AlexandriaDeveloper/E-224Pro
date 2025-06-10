@@ -1,0 +1,79 @@
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+
+
+    <h2 mat-dialog-title class="form-dialog-title" cdkDragHandle>
+
+        <button mat-icon-button (click)="onNoClick()" class="dialog-btn-close">
+            <mat-icon>close</mat-icon>
+        </button>
+        <span class="title">تقرير</span>
+
+    </h2>
+
+    <mat-dialog-content class="form-dialog-content">
+
+
+
+
+        <form [formGroup]="addFundForm" (ngSubmit)="onSubmit()">
+
+
+            <div style="display: flex; justify-content: space-between;">
+
+
+                <mat-form-field style="width: 100%;">
+                    <mat-label>الكليه </mat-label>
+                    <mat-select formControlName="collageId" (selectionChange)="getCollageId($event.value)">
+                        <mat-option [value]="">الكل</mat-option>
+                        @for (collage of collages; track collage.id) {
+                        <mat-option [value]="collage.id">{{collage.collageName}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+            </div>
+            <div>
+
+                <mat-form-field style="width: 100%;">
+
+                    <mat-label>كود الصندوق</mat-label>
+                    <input matInput placeholder="البحث بالاسم" formControlName="fundCode" />
+                    <mat-error *ngIf="f['fundCode']?.hasError('required')">اسم الصندوق مطلوب</mat-error>
+
+                </mat-form-field>
+            </div>
+            <div>
+
+                <mat-form-field style="width: 100%;">
+
+                    <mat-label>اسم الصندوق</mat-label>
+                    <input matInput placeholder="البحث بالاسم" formControlName="fundName" />
+                    <mat-error *ngIf="f['fundName']?.hasError('required')">اسم الصندوق مطلوب</mat-error>
+
+                </mat-form-field>
+            </div>
+
+
+        </form>
+    </mat-dialog-content>
+
+    <div style="display:flex !important;justify-content: center;">
+
+        <button mat-mini-fab (click)="onSubmit()" style="width: 160px;" class="btn-secondary">
+            استخرج تقرير
+            <mat-icon>print</mat-icon>
+        </button>
+        <div class="spacer"></div>
+
+        <div style="width: 30px;">
+
+
+        </div>
+        <button mat-mini-fab (click)="clear()" style="width: 160px; " class="btn-warning">
+            مسح
+            <mat-icon>clear</mat-icon>
+        </button>
+
+
+    </div>
+</div>

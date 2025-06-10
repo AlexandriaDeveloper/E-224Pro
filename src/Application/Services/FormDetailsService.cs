@@ -375,13 +375,13 @@ public class FormDetailsService
             {
                 var sub = new SubsidiaryJournal()
                 {
-                    SubAccountId = rand.Next(1, 2),
-                    TransactionSide = FormDetail.Credit.HasValue ? TransactionSideEnum.Credit.ToString() : TransactionSideEnum.Debit.ToString(),
-                    AccountItem = daily.AccountItem,
-                    AccountType = daily.DailyType,
+                    // SubAccountId = rand.Next(1, 2),
+                    // TransactionSide = FormDetail.Credit.HasValue ? TransactionSideEnum.Credit.ToString() : TransactionSideEnum.Debit.ToString(),
+                    // AccountItem = daily.AccountItem,
+                    // AccountType = daily.DailyType,
                     FormDetailsId = FormDetail.Id,
-                    FundId = form.FundId,
-                    CollageId = form.CollageId,
+                    // FundId = form.FundId,
+                    // CollageId = form.CollageId,
                     Amount = null,
 
 

@@ -6,6 +6,8 @@ import { AddDailyComponent } from './dailies/add-daily/add-daily.component';
 import { DailiesComponent } from './dailies/dailies.component';
 import { FormDetailsComponent } from './form-details/form-details.component';
 import { FormComponent } from './form/form.component';
+import { FundHomeComponent } from './fund-home/fund-home.component';
+
 
 const routes: Routes = [
   {
@@ -17,11 +19,13 @@ const routes: Routes = [
       { path: 'dailies/add', component: AddDailyComponent },
       //path with param 
       { path: 'dailies/:id', component: FormComponent },
+      { path: 'funds', component: FundHomeComponent },
       { path: '', redirectTo: 'public/home', pathMatch: 'full' }
 
 
     ]
-  }];
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

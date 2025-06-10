@@ -14,6 +14,7 @@ public static class Accounts
 
         // dailiesGroup.MapPut("/Update/{id}", UpdateAsync);
         accountsGroup.MapGet("/", GetBySpecAsync);
+        accountsGroup.MapGet("/AccountsWithSubsidaries", GetAccountsWithSubsidaries);
         // dailiesGroup.MapGet("/{id}", GetByIdAsync);
         // dailiesGroup.MapDelete("delete/{id}", DeleteAsync);
         return app;
@@ -25,4 +26,14 @@ public static class Accounts
         return TypedResults.Ok(accounts);
 
     }
+
+
+    private static async Task<IResult> GetAccountsWithSubsidaries(AccountService service)
+    {
+        var accounts = await service.GetAccountsWithSubsidariesOnly();
+        return TypedResults.Ok(accounts);
+
+    }
+
+
 }

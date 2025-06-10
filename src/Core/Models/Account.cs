@@ -16,10 +16,6 @@ public class Account : BaseEntity
     [StringLength(50)]
     public string AccountStatus { get; set; } = string.Empty;
 
-    // public int ParentAccountId { get; set; }
-
-    // public Account? ParentAccount { get; set; }
-    // public List<Account> ChildAccounts { get; set; } = new List<Account>();
 
     public List<SubAccount>? SubAccounts { get; set; }
 

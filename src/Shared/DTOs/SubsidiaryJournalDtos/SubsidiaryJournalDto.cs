@@ -12,13 +12,13 @@ public class SubsidiaryJournalDto
         SubAccountName = existingSubsidiaryJournal.SubAccount != null ? existingSubsidiaryJournal.SubAccount.SubAccountName : null;
         SubAccountCode = existingSubsidiaryJournal.SubAccount != null ? existingSubsidiaryJournal.SubAccount.SubAccountNumber : null;
         Amount = existingSubsidiaryJournal.Amount;
-        CollageId = existingSubsidiaryJournal.CollageId;
-        CollageName = existingSubsidiaryJournal.Collage != null ? existingSubsidiaryJournal.Collage.CollageName : null;
-        FundId = existingSubsidiaryJournal.FundId;
-        FundName = existingSubsidiaryJournal.Fund != null ? existingSubsidiaryJournal.Fund.FundName : null;
-        TransactionSide = existingSubsidiaryJournal.TransactionSide;
-        AccountType = existingSubsidiaryJournal.AccountType;
-        AccountItem = existingSubsidiaryJournal.AccountItem;
+        // CollageId = existingSubsidiaryJournal.CollageId;
+        // CollageName = existingSubsidiaryJournal.Collage != null ? existingSubsidiaryJournal.Collage.CollageName : null;
+        // FundId = existingSubsidiaryJournal.FundId;
+        // FundName = existingSubsidiaryJournal.Fund != null ? existingSubsidiaryJournal.Fund.FundName : null;
+        // TransactionSide = existingSubsidiaryJournal.TransactionSide;
+        // AccountType = existingSubsidiaryJournal.AccountType;
+        // AccountItem = existingSubsidiaryJournal.AccountItem;
     }
     public SubsidiaryJournalDto()
     { }
@@ -52,11 +52,7 @@ public class SubsidiaryJournalDto
             FormDetailsId = FormDetailsId.HasValue ? FormDetailsId.Value : 0,
             SubAccountId = SubAccountId.HasValue ? SubAccountId.Value : 0,
             Amount = Amount,
-            CollageId = CollageId,
-            FundId = FundId,
-            TransactionSide = TransactionSide,
-            AccountType = AccountType,
-            AccountItem = AccountItem
+
         };
     }
 }

@@ -88,11 +88,11 @@ public class SubsidiaryJournalService
              //...
              FormDetailsId = formDetailsId,
              Amount = subsidiaryJournal.Amount,
-             CollageId = formDetails.Form.CollageId,
-             FundId = formDetails.Form.FundId,
-             TransactionSide = formDetails.Credit.HasValue ? "Credit" : "Debit",
-             AccountType = formDetails.Form.Daily.DailyType,
-             AccountItem = formDetails.Form.Daily.AccountItem,
+             //  CollageId = formDetails.Form.CollageId,
+             //  FundId = formDetails.Form.FundId,
+             //  TransactionSide = formDetails.Credit.HasValue ? "Credit" : "Debit",
+             //  AccountType = formDetails.Form.Daily.DailyType,
+             //  AccountItem = formDetails.Form.Daily.AccountItem,
          }
         // Other mapping logic as needed
 
@@ -144,20 +144,20 @@ public class SubsidiaryJournalService
         // Logic to update the existing subsidiary journal record
         if (subsidiaryJournal.Amount.HasValue)
             existingSubsidiaryJournal.Amount = subsidiaryJournal.Amount;
-        if (subsidiaryJournal.CollageId.HasValue)
-            existingSubsidiaryJournal.CollageId = subsidiaryJournal.CollageId;
-        if (subsidiaryJournal.FundId.HasValue)
-            existingSubsidiaryJournal.FundId = subsidiaryJournal.FundId;
+        // if (subsidiaryJournal.CollageId.HasValue)
+        //     existingSubsidiaryJournal.CollageId = subsidiaryJournal.CollageId;
+        // if (subsidiaryJournal.FundId.HasValue)
+        //     existingSubsidiaryJournal.FundId = subsidiaryJournal.FundId;
         if (subsidiaryJournal.FormDetailsId.HasValue)
             existingSubsidiaryJournal.FormDetailsId = subsidiaryJournal.FormDetailsId.Value;
         if (subsidiaryJournal.SubAccountId.HasValue)
             existingSubsidiaryJournal.SubAccountId = subsidiaryJournal.SubAccountId.Value;
-        if (!subsidiaryJournal.AccountItem.IsNullOrEmpty())
-            existingSubsidiaryJournal.AccountItem = subsidiaryJournal.AccountItem;
-        if (!subsidiaryJournal.AccountType.IsNullOrEmpty())
-            existingSubsidiaryJournal.AccountType = subsidiaryJournal.AccountType;
-        if (!subsidiaryJournal.TransactionSide.IsNullOrEmpty())
-            existingSubsidiaryJournal.TransactionSide = subsidiaryJournal.TransactionSide;
+        // if (!subsidiaryJournal.AccountItem.IsNullOrEmpty())
+        //     existingSubsidiaryJournal.AccountItem = subsidiaryJournal.AccountItem;
+        // if (!subsidiaryJournal.AccountType.IsNullOrEmpty())
+        //     existingSubsidiaryJournal.AccountType = subsidiaryJournal.AccountType;
+        // if (!subsidiaryJournal.TransactionSide.IsNullOrEmpty())
+        //     existingSubsidiaryJournal.TransactionSide = subsidiaryJournal.TransactionSide;
         // Logic to create a new subsidiary journal record
 
         await _subsidiaryJournalRepository.UpdateAsync(

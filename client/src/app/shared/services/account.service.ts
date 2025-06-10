@@ -24,4 +24,8 @@ export class AccountService {
     return this.http.get(`${this.apiUrl}accounts`, { params: params });
   }
 
+  getAccountsHasSubAccounts() {
+    return this.http.get(`${this.apiUrl}accounts/AccountsWithSubsidaries`);
+  }
+
 }
