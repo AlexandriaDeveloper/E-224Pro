@@ -9,7 +9,8 @@ public class SubsidiaryJournal : BaseEntity
     public override string? Name { get => base.Name; set => base.Name = value; }
     public int FormDetailsId { get; set; }
     public int SubAccountId { get; set; }
-    public decimal? Amount { get; set; }
+    public decimal? Debit { get; set; }
+    public decimal? Credit { get; set; }
 
 
 

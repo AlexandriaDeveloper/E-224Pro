@@ -18,55 +18,7 @@ public class SubsidiaryJournalService
         _uow = uow;
     }
 
-    //Add 100 records
-    public async Task TestCreateSubsidiaryJournals(CancellationToken cancellationToken = default)
-    {
-        for (int i = 1; i < 240000; i++)
-        {
-            var random = new Random();
-            var formDetailsId = i;
-            var formDetails = await _formDetailsRepository.GetById(formDetailsId, false, cancellationToken);
 
-            decimal amount = formDetails.Credit.HasValue ? formDetails.Credit.Value : formDetails.Debit.Value;
-            decimal amount2 = random.Next(1, (int)amount);
-
-
-
-            var collageId = random.Next(1, 4);
-            var fundId = random.Next(1, 5);
-            await CreateSubsidiaryJournal(formDetailsId, new SubsidiaryJournalDto
-            {
-                // Logic to create a new subsidiary journal record
-                // Other mapping logic as needed
-                // Example:
-                SubAccountId = random.Next(1, 3),
-                // ...
-                FormDetailsId = formDetailsId,
-                Amount = amount2,
-                CollageId = collageId,
-                FundId = fundId,
-
-
-
-            });
-            await CreateSubsidiaryJournal(formDetailsId, new SubsidiaryJournalDto
-            {
-                // Logic to create a new subsidiary journal record
-                // Other mapping logic as needed
-                // Example:
-                SubAccountId = random.Next(1, 2),
-                // ...
-                FormDetailsId = formDetailsId,
-                Amount = amount - amount2,
-                CollageId = collageId,
-                FundId = fundId,
-
-
-
-            });
-        }
-        await _uow.CommitAsync(cancellationToken);
-    }
     public async Task CreateSubsidiaryJournal(int formDetailsId, SubsidiaryJournalDto subsidiaryJournal, CancellationToken cancellationToken = default)
     {
         // Logic to create a new subsidiary journal record
@@ -87,7 +39,8 @@ public class SubsidiaryJournalService
              SubAccountId = subsidiaryJournal.SubAccountId.Value,
              //...
              FormDetailsId = formDetailsId,
-             Amount = subsidiaryJournal.Amount,
+             Credit = subsidiaryJournal.Credit,
+             Debit = subsidiaryJournal.Debit
              //  CollageId = formDetails.Form.CollageId,
              //  FundId = formDetails.Form.FundId,
              //  TransactionSide = formDetails.Credit.HasValue ? "Credit" : "Debit",
@@ -142,8 +95,10 @@ public class SubsidiaryJournalService
             throw new ArgumentException("SubsidiaryJournal not found");
         }
         // Logic to update the existing subsidiary journal record
-        if (subsidiaryJournal.Amount.HasValue)
-            existingSubsidiaryJournal.Amount = subsidiaryJournal.Amount;
+        if (subsidiaryJournal.Credit.HasValue)
+            existingSubsidiaryJournal.Credit = subsidiaryJournal.Credit;
+        if (subsidiaryJournal.Debit.HasValue)
+            existingSubsidiaryJournal.Debit = subsidiaryJournal.Debit;
         // if (subsidiaryJournal.CollageId.HasValue)
         //     existingSubsidiaryJournal.CollageId = subsidiaryJournal.CollageId;
         // if (subsidiaryJournal.FundId.HasValue)

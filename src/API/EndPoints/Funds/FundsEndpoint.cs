@@ -15,6 +15,7 @@ public static class FundsEndpoint
         fundGroup.MapPut("/{id}", PutFund);
         fundGroup.MapDelete("/{id}", DeleteFund);
         fundGroup.MapGet("/", GetBySpecAsync);
+
         // formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync);
         // formGroup.MapGet("/{id}", GetByIdAsync);
         return app;

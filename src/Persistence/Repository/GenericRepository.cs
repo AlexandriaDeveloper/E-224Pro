@@ -14,6 +14,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {
     private readonly ApplicationDbContext _context;
     private readonly IHttpContextAccessor _accessor;
+    private int? maxId = null;
     public GenericRepository(ApplicationDbContext context, IHttpContextAccessor accessor)
     {
         _context = context;

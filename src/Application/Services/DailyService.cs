@@ -3,6 +3,7 @@ using Core.Interfaces.Repository;
 using Core.Models;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Specification;
+using Shared.Common;
 using Shared.Constants.Enums;
 using Shared.Contracts;
 using Shared.DTOs;
@@ -83,7 +84,7 @@ public class DailyService
 
     }
 
-    public async Task<DailiesResponse> GetDailiesBySpec(GetDailyRequest request, CancellationToken cancellationToken = default)
+    public async Task<PaginatedResult<DailyDto>> GetDailiesBySpec(GetDailyRequest request, CancellationToken cancellationToken = default)
     {
         var spec = new DailySpecification(request);
 
@@ -92,11 +93,11 @@ public class DailyService
         var dailyCountResult = await _dailyRepository.CountAsync(dailyCountSpec);
 
         // Return the daily
-        DailiesResponse dailiesResponse = new DailiesResponse(); //
-        dailiesResponse.Dailies = dailies.Select(x => new DailyDto(x!)).ToList();
 
-        dailiesResponse.TotalCount = dailyCountResult.HasValue ? dailyCountResult.Value : 0;
-        return dailiesResponse;
+        var dailiesResponse = dailies.Select(x => new DailyDto(x!)).ToList();
+
+
+        return PaginatedResult<DailyDto>.Create(dailiesResponse, request.PageIndex, request.PageSize, dailyCountResult);
 
     }
 

@@ -10,6 +10,7 @@ import { Daily } from '../../shared/_models/Daily.model';
 import { DailiesReportDialogComponent } from './dailies-report-dialog/dailies-report-dialog.component';
 import { CollageService } from '../../shared/services/collage.service';
 import { Collage } from '../../shared/_models/collage.model';
+import { PaginatorModel } from '../../shared/_models/paginator.model';
 
 
 
@@ -33,10 +34,7 @@ export class DailiesComponent implements OnInit {
   params: GetDailiesRequest = new GetDailiesRequest();
   daily: Daily = null;
 
-  length = 50;
-  pageSize = 30;
-  pageIndex = 0;
-  pageSizeOptions = [5, 15, 30];
+  paginator: PaginatorModel = new PaginatorModel();
   pageEvent: PageEvent;
   readonly dialog = inject(MatDialog);
   collages: Collage[] = [];
@@ -54,8 +52,8 @@ export class DailiesComponent implements OnInit {
   loadDailies(param: GetDailiesRequest) {
     this.dailiesService.getDailies(param).subscribe((dailies: any) => {
 
-      this.dataSource = dailies.dailies;
-      this.length = dailies.totalCount;
+      this.dataSource = dailies.items;
+      this.paginator.length = dailies.totalCount;
     });
   }
   loadCollages() {
@@ -68,7 +66,7 @@ export class DailiesComponent implements OnInit {
 
     console.log('Page Event:', e);
     this.pageEvent = e;
-    this.length = e.length;
+    this.paginator.length = e.length;
     this.params.pageSize = e.pageSize;
     this.params.pageIndex = e.pageIndex;
     this.loadDailies(this.params);

@@ -11,7 +11,8 @@ public class SubsidiaryJournalDto
         SubAccountId = existingSubsidiaryJournal.SubAccountId;
         SubAccountName = existingSubsidiaryJournal.SubAccount != null ? existingSubsidiaryJournal.SubAccount.SubAccountName : null;
         SubAccountCode = existingSubsidiaryJournal.SubAccount != null ? existingSubsidiaryJournal.SubAccount.SubAccountNumber : null;
-        Amount = existingSubsidiaryJournal.Amount;
+        Debit = existingSubsidiaryJournal.Debit;
+        Credit = existingSubsidiaryJournal.Credit;
         // CollageId = existingSubsidiaryJournal.CollageId;
         // CollageName = existingSubsidiaryJournal.Collage != null ? existingSubsidiaryJournal.Collage.CollageName : null;
         // FundId = existingSubsidiaryJournal.FundId;
@@ -28,16 +29,14 @@ public class SubsidiaryJournalDto
     public int? SubAccountId { get; set; }
     public string? SubAccountName { get; set; }
     public string? SubAccountCode { get; set; }
-    public decimal? Amount { get; set; }
+    public decimal? Debit { get; set; }
+    public decimal? Credit { get; set; }
 
     public int? CollageId { get; set; }
     public string? CollageName { get; set; }
     public int? FundId { get; set; }
     public string? FundName { get; set; }
-    // Account  Credit or debit 
-    //جانب المعامله مدين او دائن
 
-    public string TransactionSide { get; set; } = "Credit";
 
     // PayRoll or General
     public string? AccountType { get; set; }
@@ -51,8 +50,28 @@ public class SubsidiaryJournalDto
             Id = Id.HasValue ? Id.Value : 0,
             FormDetailsId = FormDetailsId.HasValue ? FormDetailsId.Value : 0,
             SubAccountId = SubAccountId.HasValue ? SubAccountId.Value : 0,
-            Amount = Amount,
+            Debit = Debit,
+            Credit = Credit
 
         };
     }
+}
+
+public class SubsidiaryFormDto
+{
+    public int Id { get; set; }
+    public int DailyId { get; set; }
+    public decimal? TotalCredit { get; set; }
+    public decimal? TotalDebit { get; set; }
+    public string FormName { get; set; }
+    public string Num55 { get; set; }
+    public string Num224 { get; set; }
+    public int? CollageId { get; set; }
+    public string? CollageName { get; set; }
+    public int? FundId { get; set; }
+    public string? FundName { get; set; }
+
+    public string? AuditorName { get; set; }
+
+
 }

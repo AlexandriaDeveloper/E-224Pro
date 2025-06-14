@@ -13,6 +13,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<SubsidiaryJournal> SubsidiaryJournals { get; set; }
     public DbSet<Form> Forms { get; set; }
     public DbSet<Account> Accounts { get; set; }
+    public DbSet<SubAccount> SubAccounts { get; set; }
     public DbSet<Fund> Funds { get; set; }
     public DbSet<Collage> Collages { get; set; }
     public DbSet<FormDetails> FormDetails { get; set; }
@@ -30,6 +31,14 @@ public class ApplicationDbContext : DbContext
         .HasOne(x => x.FormDetails)
         .WithMany(x => x.SubsidiaryJournals)
         .OnDelete(DeleteBehavior.NoAction);
+
+
+        //account with subaccounts
+        // modelBuilder.Entity<SubAccount>()
+        // .HasOne(x => x.Account)
+        // .WithMany(x => x.SubAccounts)
+        // .HasForeignKey(x => x.AccountId)
+        // .OnDelete(DeleteBehavior.NoAction);
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

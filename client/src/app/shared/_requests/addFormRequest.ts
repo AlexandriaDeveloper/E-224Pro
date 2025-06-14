@@ -18,6 +18,8 @@
 //     "formDetailsDtos": null
 // }
 
+import { Param } from "./Param"
+
 export class AddFormRequest {
     public Id?: number
     public FormName?: string
@@ -41,3 +43,4 @@ export class AddFormDetailsRequest {
     public Credit?: number
     public AccountType?: string
 }
+

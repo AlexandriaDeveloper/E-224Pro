@@ -4,11 +4,7 @@ namespace Shared.DTOs;
 
 
 
-public class DailiesResponse
-{
-    public List<DailyDto> Dailies { get; set; } = new List<DailyDto>();
-    public int TotalCount { get; set; }
-}
+
 public class DailyDto
 {
     public int Id { get; set; }

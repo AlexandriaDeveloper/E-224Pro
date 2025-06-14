@@ -18,10 +18,12 @@ public static class ApplicationExt
         services.AddScoped<FormDetailsService>();
         services.AddScoped<ReportService>();
         services.AddScoped<SubsidiaryJournalService>();
+        services.AddScoped<SubSidaryDailyService>();
         services.AddScoped<AccountService>();
         services.AddScoped<FundService>();
         services.AddScoped<PDFReportService>();
         services.AddScoped<CollageService>();
+
 
         return services;
     }

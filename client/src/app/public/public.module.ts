@@ -23,6 +23,8 @@ import { AccountInfoDialogComponent } from './account/account-info-dialog/accoun
 import { DailiesReportDialogComponent } from './dailies/dailies-report-dialog/dailies-report-dialog.component';
 import { FundHomeComponent } from './fund-home/fund-home.component';
 import { AddFundDialogComponent } from './fund-home/add-fund-dialog/add-fund-dialog.component';
+import { SubsidaryDailiesComponent } from './subsidary-dailies/subsidary-dailies.component';
+import { SubsidaryDailyComponent } from './subsidary-dailies/subsidary-daily/subsidary-daily.component';
 
 
 
@@ -40,7 +42,9 @@ import { AddFundDialogComponent } from './fund-home/add-fund-dialog/add-fund-dia
     AddFormComponent,
     AccountInfoDialogComponent,
     FundHomeComponent,
-    AddFundDialogComponent
+    AddFundDialogComponent,
+    SubsidaryDailiesComponent,
+    SubsidaryDailyComponent
   ],
   imports: [
     CommonModule,

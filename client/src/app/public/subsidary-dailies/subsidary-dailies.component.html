@@ -1,5 +1,8 @@
 <div class="table-container">
+    <!-- <div class="search-form-container">
 
+
+    </div> -->
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 fixed-table" color="primary">
 
         <!--- Note that these columns can be defined in any order.
@@ -7,11 +10,10 @@
         <!-- Action Column -->
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>
-                <button mat-icon-button (click)="openAddDialog(null)" style="color: #fff;">
-                    <mat-icon>add</mat-icon>
-                </button>
+
                 <button mat-icon-button (click)="openSearchDialog()" style="color: #fff;">
                     <mat-icon>search</mat-icon>
+
                 </button>
                 <button mat-icon-button (click)="openDailiesReportDialog()" style="color: #fff;">
                     <mat-icon>print</mat-icon>
@@ -22,12 +24,6 @@
                     <mat-icon>visibility</mat-icon>
                 </button>
 
-                <button mat-icon-button (click)="editDaily(element)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button (click)="openDeleteDialog(element)" class="mat-icon-danger">
-                    <mat-icon>delete</mat-icon>
-                </button>
 
 
 
@@ -81,8 +77,8 @@
                 للعرض</td>
         </tr>
     </table>
-    <mat-paginator [length]="paginator.length" [pageSize]="paginator.pageSize"
-        [pageSizeOptions]="paginator.pageSizeOptions" showFirstLastButtons showFirstLastButtons aria-label="Select page"
-        aria-label="Select page" (page)="handlePageEvent($event)" class="fixed-table">
+    <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons
+        showFirstLastButtons aria-label="Select page" aria-label="Select page" (page)="handlePageEvent($event)"
+        class="fixed-table">
     </mat-paginator>
 </div>

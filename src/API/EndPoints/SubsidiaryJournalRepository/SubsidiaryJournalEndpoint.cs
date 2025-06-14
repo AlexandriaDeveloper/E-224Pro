@@ -11,11 +11,19 @@ public static class SubsidiaryJournal
 
         subsidiaryJournalGroup.MapGet("/", GetSubsidiaryJournal);
 
+        subsidiaryJournalGroup.MapGet("/{subAccountId}", GetSubsidiaryFormsByDailyId);
+
         subsidiaryJournalGroup.MapPost("/Creat", PostSubsidiaryJournal);
-        subsidiaryJournalGroup.MapPost("/TestCreat", PostTestSubsidiaryJournal);
+        // subsidiaryJournalGroup.MapPost("/TestCreat", PostTestSubsidiaryJournal);
         subsidiaryJournalGroup.MapPut("/Update/{id}", UpdateSubsidiaryJournal);
         subsidiaryJournalGroup.MapDelete("/Delete/{id}", DeleteSubsidiaryJournal);
         return app;
+    }
+
+    private static async Task<IResult> GetSubsidiaryFormsByDailyId(SubSidaryDailyService service, int subAccountId, [AsParameters] GetSubsidiaryFormsByDailyIdRequest request, CancellationToken cancellationToken = default)
+    {
+        var subsidiaryForms = await service.GetSubsidaryDailyFormsByDailyIdAndSubsidaryId(subAccountId, request, cancellationToken);
+        return TypedResults.Ok(subsidiaryForms);
     }
 
     private static async Task<IResult> DeleteSubsidiaryJournal(SubsidiaryJournalService service, int id, CancellationToken cancellationToken = default)
@@ -29,11 +37,11 @@ public static class SubsidiaryJournal
         await service.CreateSubsidiaryJournal(formDerailsId, subsidiaryJournalDto, cancellationToken);
         return TypedResults.Created();
     }
-    private static async Task<IResult> PostTestSubsidiaryJournal(SubsidiaryJournalService service, CancellationToken cancellationToken)
-    {
-        await service.TestCreateSubsidiaryJournals(cancellationToken);
-        return TypedResults.Created();
-    }
+    // private static async Task<IResult> PostTestSubsidiaryJournal(SubsidiaryJournalService service, CancellationToken cancellationToken)
+    // {
+    //     await service.TestCreateSubsidiaryJournals(cancellationToken);
+    //     return TypedResults.Created();
+    // }
     private static async Task<IResult> UpdateSubsidiaryJournal(SubsidiaryJournalService service, int id, SubsidiaryJournalDto subsidiaryJournalDto, CancellationToken cancellationToken)
     {
         await service.UpdateSubsidiaryJournal(id, subsidiaryJournalDto, cancellationToken);

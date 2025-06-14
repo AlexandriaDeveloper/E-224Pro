@@ -303,17 +303,23 @@ public class FormDetailsService
         var formDetailsToAdd = formDetails.Where(x => !formDetailsFromDb.Any(y => y.Id == x.Id)).ToList();
         var formDetailsToUpdate = formDetails.Where(x => formDetailsFromDb.Any(y => y.Id == x.Id)).ToList();
         var formDetailsToDelete = formDetailsFromDb.Where(x => !formDetails.Any(y => y.Id == x.Id)).ToList();
+        List<FormDetails> FormDetailsList = new List<FormDetails>(); ;
         foreach (var item in formDetailsToAdd)
         {
-            var formDetail = new FormDetails()
+            FormDetailsList.Add(new FormDetails()
             {
 
                 AccountId = item.AccountId,
                 FormId = formId,
                 Debit = item.Debit,
                 Credit = item.Credit
-            };
-            await _formDetailsRepository.AddAsync(formDetail);
+            });
+
+
+        }
+        if (FormDetailsList != null && FormDetailsList.Count > 0)
+        {
+            await _formDetailsRepository.AddRange2Async(FormDetailsList, cancellationToken);
         }
         foreach (var item in formDetailsToUpdate)
         {
@@ -324,11 +330,13 @@ public class FormDetailsService
                 formDetail.Debit = item.Debit;
             }
             await _formDetailsRepository.UpdateRangeAsync(formDetailsFromDb, cancellationToken);
+
         }
         foreach (var item in formDetailsToDelete)
         {
             var formDetail = formDetailsFromDb.FirstOrDefault(x => x.Id == item.Id);
             _formDetailsRepository.Delete(formDetail);
+
         }
 
         await _uow.CommitAsync(cancellationToken);
@@ -382,7 +390,8 @@ public class FormDetailsService
                     FormDetailsId = FormDetail.Id,
                     // FundId = form.FundId,
                     // CollageId = form.CollageId,
-                    Amount = null,
+                    Credit = null,
+                    Debit = null
 
 
 
