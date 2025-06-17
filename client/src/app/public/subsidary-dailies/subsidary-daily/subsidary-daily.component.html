@@ -16,6 +16,7 @@
                 <mat-option *ngFor="let fund of filterdFunds" [value]="fund.id">{{fund.fundName}}</mat-option>
             </mat-select>
         </mat-form-field>
+
     </div>
 
 </div>
@@ -30,7 +31,7 @@
         <!-- Action Column -->
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>
-                <button mat-icon-button (click)="openAddFormDialog(null)" style="color: #fff;">
+                <button mat-icon-button (click)="openAddSubsidaryDailyDialog(null)" style="color: #fff;">
                     <mat-icon>add</mat-icon>
                 </button>
                 <button mat-icon-button (click)="openSearchDialog()" style="color: #fff;">
@@ -50,7 +51,7 @@
                     <mat-icon>visibility</mat-icon>
                 </button>
 
-                <button mat-icon-button (click)="openAddFormDialog(element)">
+                <button mat-icon-button (click)="openAddSubsidaryDailyDialog(element)">
                     <mat-icon>edit</mat-icon>
                 </button>
                 <button mat-icon-button (click)="deleteForm(element)" class="mat-icon-danger">

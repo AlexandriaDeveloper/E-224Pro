@@ -59,6 +59,7 @@ app.MapSubsidiaryJournalEndPoint();
 app.MapAccountsEndPoint();
 app.MapCollgaesEndPoint();
 app.MapFundsEndpoint();
+app.MapSubAccountsEndPoint();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

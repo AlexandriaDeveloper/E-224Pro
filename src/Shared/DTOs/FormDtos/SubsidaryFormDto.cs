@@ -22,6 +22,7 @@ public class SubsidaryFormDto
     public decimal? TotalDebit { get; set; }
     public decimal? SubsidaryTotalCredit { get; set; }
     public decimal? SubsidaryTotalDebit { get; set; }
+    public int FormDetailsId { get; set; }
 
 
 

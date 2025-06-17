@@ -1,6 +1,7 @@
 
 using Core.Interfaces.Repository;
 using Core.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Specification;
 using Shared.Common;
@@ -88,7 +89,7 @@ public class DailyService
     {
         var spec = new DailySpecification(request);
 
-        var dailies = await _dailyRepository.GetAll(spec, cancellationToken);
+        var dailies = _dailyRepository.GetQueryable(spec).Include(x => x.Forms).ThenInclude(x => x.FormDetails);
         var dailyCountSpec = new DailyCountAsyncSpecification(request);
         var dailyCountResult = await _dailyRepository.CountAsync(dailyCountSpec);
 

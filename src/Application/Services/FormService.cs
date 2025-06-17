@@ -140,7 +140,8 @@ public class FormService
             response.Daily = new DailyDto(daily);
         }
         var spec = new GetFormSpecification(request);
-        var forms = await _formRepository.GetAll(spec);
+        var forms = _formRepository.GetQueryable(spec).Include(x => x.FormDetails).ToList();
+
 
 
         var countSpec = new GetFormCountAsyncSpecification(request);
@@ -149,7 +150,24 @@ public class FormService
         var formsList = new List<FormDto>();
         if (forms.Any())
         {
-            response.FormDtos = forms.Select(form => new FormDto(form!)).ToList();
+            response.FormDtos = forms.Select(form => new FormDto
+            {
+
+
+                Id = form.Id,
+                FormName = form.FormName,
+                CollageId = form.CollageId,
+                CollageName = form.Collage?.CollageName,
+                FundName = form.Fund?.FundName,
+                FundId = form.FundId,
+                Num224 = form.Num224,
+                Num55 = form.Num55,
+                DailyId = form.DailyId,
+                AuditorName = form.AuditorName,
+                Details = form.Details,
+                TotalCredit = form.TotalCredit.HasValue ? form.TotalCredit : null,
+                TotalDebit = form.TotalDebit.HasValue ? form.TotalDebit : null,
+            }).ToList();
         }
         response.TotalCount = count;
 

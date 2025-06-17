@@ -1,8 +1,28 @@
 <div class="table-container">
-    <!-- <div class="search-form-container">
+    <div class="search-form-container">
+
+        <mat-form-field appearance="fill">
+            <mat-label>الصندوق</mat-label>
+            <mat-select #fundId (selectionChange)="onDailyTypeChange($event.value)">
+                <mat-option>كل الصناديق</mat-option>
+                <mat-option [value]="'payroll'">بايرول</mat-option>
+                <mat-option [value]="'General'"> عادية</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <!-- mat date range-->
+        <mat-form-field>
+            <mat-label>Date range</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate [(ngModel)]="range.start" name="start">
+                <input matEndDate [(ngModel)]="range.end" name="end">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
 
 
-    </div> -->
+        <button (click)="submit()">Submit</button>
+    </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 fixed-table" color="primary">
 
         <!--- Note that these columns can be defined in any order.
@@ -20,7 +40,7 @@
                 </button>
             </th>
             <td mat-cell *matCellDef="let element">
-                <button mat-icon-button [routerLink]="['./',element.id]">
+                <button mat-icon-button [routerLink]="['./dailyId/',element.id]">
                     <mat-icon>visibility</mat-icon>
                 </button>
 
@@ -64,6 +84,15 @@
             <td mat-cell *matCellDef="let element"> {{element.dailyType==='General'?'عاديه':'بايرول'}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="totalDebit">
+            <th mat-header-cell *matHeaderCellDef> المدين </th>
+            <td mat-cell *matCellDef="let element"> {{element.totalDebit}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalCredit">
+            <th mat-header-cell *matHeaderCellDef> الدائن </th>
+            <td mat-cell *matCellDef="let element"> {{element.totalCredit}} </td>
+        </ng-container>
         <!-- Symbol Column -->
         <ng-container matColumnDef="accountItem">
             <th mat-header-cell *matHeaderCellDef> بند الصرف </th>

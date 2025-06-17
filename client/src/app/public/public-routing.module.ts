@@ -4,7 +4,7 @@ import { PublicHomeComponent } from './public-home.component';
 import { HomeComponent } from './home/home.component';
 import { AddDailyComponent } from './dailies/add-daily/add-daily.component';
 import { DailiesComponent } from './dailies/dailies.component';
-import { FormDetailsComponent } from './form-details/form-details.component';
+
 import { FormComponent } from './form/form.component';
 import { FundHomeComponent } from './fund-home/fund-home.component';
 import { SubsidaryDailiesComponent } from './subsidary-dailies/subsidary-dailies.component';
@@ -22,8 +22,8 @@ const routes: Routes = [
       //path with param 
       { path: 'dailies/:id', component: FormComponent },
       { path: 'funds', component: FundHomeComponent },
-      { path: 'subsidary-dailies/:id', component: SubsidaryDailiesComponent },
-      { path: 'subsidary-dailies/:subAccountId/:dailyId', component: SubsidaryDailyComponent },
+      { path: 'subsidary-dailies/subId/:subaccountId', component: SubsidaryDailiesComponent },
+      { path: 'subsidary-dailies/subId/:subAccountId/dailyId/:dailyId', component: SubsidaryDailyComponent },
       { path: '', redirectTo: 'public/home', pathMatch: 'full' }
 
 

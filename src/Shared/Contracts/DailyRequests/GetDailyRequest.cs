@@ -9,6 +9,7 @@ public class GetDailyRequest : Param
     public DateOnly? EndDate { get; set; }
     public string? DailyType { get; set; }
     public string? AccountItem { get; set; }
+    public int? AccountId { get; set; }
 
 
 }

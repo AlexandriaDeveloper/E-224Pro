@@ -63,7 +63,7 @@
 
         <!--use for loop-->
         @for(subAccount of subAccounts; track subAccount.id) {
-        <a mat-list-item routerLink="subsidary-dailies/{{subAccount.id}}">
+        <a mat-list-item routerLink="subsidary-dailies/subId/{{subAccount.id}}">
           <mat-icon style="margin-left: 10px;padding-top: 5px;">add</mat-icon>
           {{subAccount.accountName}}
         </a>

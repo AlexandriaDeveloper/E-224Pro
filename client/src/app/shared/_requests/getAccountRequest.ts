@@ -3,3 +3,6 @@ export class GetAccountRequest {
     public accountNumber?: number = null;
     public accountName?: string = null;
 }
+
+
+

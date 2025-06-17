@@ -5,3 +5,10 @@ export class Fund {
     fundName: string = '';
     fundCode: string = '';
 }
+
+export class SubAccount {
+    id?: number = 0;
+    subAccountName: string = '';
+    subAccountNumber: string = '';
+    accountId: number = 0;
+}

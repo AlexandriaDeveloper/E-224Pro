@@ -34,7 +34,8 @@ export class AddFormComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly dialogRef = inject(MatDialogRef<AddFormComponent>);
   private readonly data = inject<any>(MAT_DIALOG_DATA);
-
+  summedCredit = 0;
+  summedDebit = 0;
   // Form related
   addForm: FormGroup;
   formDetails: FormDetailDto[] = [];
@@ -43,8 +44,8 @@ export class AddFormComponent implements OnInit {
   // Data
   accounts: Account[] = [];
   funds: Fund[] = [];
-  totalCredit = 0;
-  totalDebit = 0;
+  totalCredit = 200;
+  totalDebit;
   update = false;
 
   // Request objects
@@ -53,6 +54,7 @@ export class AddFormComponent implements OnInit {
   ngOnInit(): void {
     this.loadAccounts();
     this.initializeForm();
+    this.updateTotals();
   }
 
   private initializeForm(): void {
@@ -65,6 +67,7 @@ export class AddFormComponent implements OnInit {
       this.loadFormDetails();
     }
     this.addForm = this.createForm();
+    this.updateTotals();
   }
 
   private createForm(): FormGroup {
@@ -80,6 +83,7 @@ export class AddFormComponent implements OnInit {
       dailyId: [this.data.param.DailyId, Validators.required],
       formDetails: this.fb.array(this.formDetails.map(detail => this.createFormDetail(detail)))
     });
+
   }
 
   private createFormDetail(detail: FormDetailDto): FormGroup {
@@ -89,6 +93,7 @@ export class AddFormComponent implements OnInit {
       accountNumber: ''
     };
 
+
     return this.fb.group({
       id: [detail.id || 0],
       accountId: [detail.accountId, Validators.required],
@@ -97,6 +102,7 @@ export class AddFormComponent implements OnInit {
       accountName: [account.accountName, Validators.required],
       accountNumber: [account.accountNumber, Validators.required],
     });
+
   }
 
   // Form getters
@@ -106,13 +112,13 @@ export class AddFormComponent implements OnInit {
   // Form actions
   addFormDetail(): void {
     this.fDetails.push(this.createFormDetail(new FormDetailDto()));
+
+
   }
 
   removeFormDetail(index: number): void {
     this.fDetails.removeAt(index);
 
-
-    this.updateTotals();
   }
 
   // Data loading
@@ -189,12 +195,15 @@ export class AddFormComponent implements OnInit {
   }
 
   // Totals calculation
-  updateTotals(): void {
+  updateTotals(): string {
     const values = this.fDetails.value;
     this.totalCredit = values.reduce((sum, curr) => sum + (Number(curr.credit) || 0), 0);
     this.totalDebit = values.reduce((sum, curr) => sum + (Number(curr.debit) || 0), 0);
+    return `اجمالى دائن ${this.totalCredit} -  اجمالى مدين ${this.totalDebit}`;
   }
-
+  isBalanced(): boolean {
+    return this.totalDebit === this.totalCredit;
+  }
   // Form submission
   onSubmit(): void {
     if (!this.addForm.valid) return;

@@ -13,6 +13,8 @@ public class DailyDto
 
     public string DailyType { get; set; } = string.Empty;
     public string AccountItem { get; set; }
+    public decimal? TotalCredit { get; set; }
+    public decimal? TotalDebit { get; set; }
 
     public DailyDto(Core.Models.Daily daily)
     {
@@ -21,6 +23,8 @@ public class DailyDto
         DailyDate = daily.DailyDate;
         DailyType = daily.DailyType;
         AccountItem = daily.AccountItem ?? string.Empty;
+        TotalCredit = daily.Forms != null ? daily.Forms.Sum(x => x.FormDetails.Sum(x => x.Credit)) : 0;
+        TotalDebit = daily.Forms != null ? daily.Forms.Sum(x => x.FormDetails.Sum(x => x.Debit)) : 0;
 
 
     }

@@ -31,7 +31,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     DragDropModule,
     MatExpansionModule,
     MatListModule,
-    MatGridListModule
+    MatGridListModule,
 
   ]
 })

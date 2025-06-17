@@ -16,7 +16,6 @@ import { HeaderComponent } from '../shared/components/header/header.component';
 import { SidebarComponent } from '../shared/components/sidebar/sidebar.component';
 import { AddDailyComponent } from './dailies/add-daily/add-daily.component';
 import { DeleteDialogComponent } from '../shared/components/dialog/delete-dialog/delete-dialog.component';
-import { FormDetailsComponent } from './form-details/form-details.component';
 import { FormComponent } from './form/form.component';
 import { AddFormComponent } from './form/add-form/add-form.component';
 import { AccountInfoDialogComponent } from './account/account-info-dialog/account-info-dialog.component';
@@ -25,6 +24,7 @@ import { FundHomeComponent } from './fund-home/fund-home.component';
 import { AddFundDialogComponent } from './fund-home/add-fund-dialog/add-fund-dialog.component';
 import { SubsidaryDailiesComponent } from './subsidary-dailies/subsidary-dailies.component';
 import { SubsidaryDailyComponent } from './subsidary-dailies/subsidary-daily/subsidary-daily.component';
+import { AddSubsidaryFormDetailsDialogComponent } from './subsidary-dailies/subsidary-daily/add-subsidary-form-details-dialog/add-subsidary-form-details-dialog.component';
 
 
 
@@ -37,14 +37,15 @@ import { SubsidaryDailyComponent } from './subsidary-dailies/subsidary-daily/sub
     DailiesSearchDialogComponent,
     DailiesReportDialogComponent,
     AddDailyComponent,
-    FormDetailsComponent,
+
     FormComponent,
     AddFormComponent,
     AccountInfoDialogComponent,
     FundHomeComponent,
     AddFundDialogComponent,
     SubsidaryDailiesComponent,
-    SubsidaryDailyComponent
+    SubsidaryDailyComponent,
+    AddSubsidaryFormDetailsDialogComponent
   ],
   imports: [
     CommonModule,

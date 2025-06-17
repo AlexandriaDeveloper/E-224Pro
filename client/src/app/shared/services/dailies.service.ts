@@ -26,6 +26,9 @@ export class DailiesService {
     if (getDailiesRequest.direction != null) {
       parms = parms.append('direction', getDailiesRequest.direction);
     }
+    if (getDailiesRequest.accountId != null) {
+      parms = parms.append('accountId', getDailiesRequest.accountId);
+    }
 
     if (getDailiesRequest.name != null) {
       parms = parms.append('name', getDailiesRequest.name);

@@ -1,5 +1,6 @@
 
 using Core.Interfaces.Repository;
+using Core.Interfaces.Specification;
 using Core.Models;
 using Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -18,8 +19,8 @@ public class SubAccountRepository : GenericRepository<SubAccount>, ISubAccountRe
 
     }
 
-    public async Task<List<SubAccount>> GetSubAccountsByAccountId(int value, CancellationToken cancellationToken)
+    public async Task<List<SubAccount>> GetSubAccountsByAccountId(int value, CancellationToken cancellationToken, ISpecification<SubAccount>? spec = null)
     {
-        return await _context.SubAccounts.Where(x => x.AccountId == value).ToListAsync(cancellationToken);
+        return await this.GetQueryable(spec).Where(x => x.AccountId == value).ToListAsync(cancellationToken);
     }
 }

@@ -15,6 +15,7 @@ import { CollageService } from '../../../shared/services/collage.service';
 import { GetSubsidiaryFormsByDailyIdRequest } from '../../../shared/_requests/getSubsidiaryFormsByDailyIdRequest';
 import { Fund } from '../../../shared/_models/fund.model';
 import { FundService } from '../../../shared/services/fund.service';
+import { AddSubsidaryFormDetailsDialogComponent } from './add-subsidary-form-details-dialog/add-subsidary-form-details-dialog.component';
 
 @Component({
   selector: 'app-subsidary-daily',
@@ -41,6 +42,7 @@ export class SubsidaryDailyComponent implements OnInit {
   collages: Collage[] = []
   funds: Fund[] = [];
   filterdFunds: Fund[] = [];
+  subAccounts: any = [];
 
   paginator: PaginatorModel = new PaginatorModel();
   constructor() {
@@ -58,7 +60,7 @@ export class SubsidaryDailyComponent implements OnInit {
   }
 
   loadForms(param: GetSubsidiaryFormsByDailyIdRequest) {
-    this.subsidaryService.GetSubsidaryDailyFormsByDailyId(this.subsidaryId, this.params).subscribe({
+    this.subsidaryService.GetSubsidaryDailyFormsByDailyId(this.subsidaryId, this.dailyId, this.params).subscribe({
       next: (response: any) => {
 
         this.dataSource = response.items;
@@ -97,6 +99,7 @@ export class SubsidaryDailyComponent implements OnInit {
     })
   }
   getCollageById(collageId) {
+    console.log(collageId);
     return this.collages.find(x => x.id == collageId).collageName;
   }
   getFundById(fundId) {
@@ -187,26 +190,24 @@ export class SubsidaryDailyComponent implements OnInit {
     this.loadForms(this.params);
   }
 
-  downloadTemplate() {
-    // this.formService.downloadDailyPdfFormTemplate(this.id).subscribe({
-    //   next: (response: any) => {
+  openAddSubsidaryDailyDialog(element) {
+    const dialogRef = this.dialog.open(AddSubsidaryFormDetailsDialogComponent, {
+      data: {
 
-    //     //dowload pdf file 
+        element: element
+      },
+      disableClose: true,
+      hasBackdrop: true,
+      minWidth: '60vw',
+      maxHeight: '90vh'
+    });
 
-    //     const blob = new Blob([response], { type: 'application/pdf' });
-    //     const url = window.URL.createObjectURL(blob);
-    //     const a = document.createElement('a');
-    //     a.href = url;
-    //     a.download = this.data.daily.name + '.pdf';
-    //     document.body.appendChild(a);
-    //     a.click();
-    //     window.URL.revokeObjectURL(url);
-    //     a.remove();
-    //   },
-    //   error: (error) => {
-    //     console.error('Error downloading template:', error);
-    //   }
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadForms(this.params);
+
+    });
   }
+
+
 }
 

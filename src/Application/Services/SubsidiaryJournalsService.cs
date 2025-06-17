@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Core.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Common;
 using Shared.Contracts.ReportRequest;
 
 public class SubsidiaryJournalService
@@ -52,16 +53,15 @@ public class SubsidiaryJournalService
         );
         await _uow.CommitAsync(cancellationToken);
     }
-    public async Task<GetSubsidiaryJournalResponse> GetSubsidiaryJournals(GetSubsidiaryJournalsRequest getSubsidiaryJournals, CancellationToken cancellationToken = default)
+    public async Task<PaginatedResult<SubsidiaryJournalDto>> GetSubsidiaryJournals(GetSubsidiaryJournalsRequest getSubsidiaryJournals, CancellationToken cancellationToken = default)
     {
         var spec = new GetSubsidiaryJournalsSpecification(getSubsidiaryJournals);
+        var specCount = new GetSubsidiaryJournalsCountSpecification(getSubsidiaryJournals);
         var subsidiaryJournals = await _subsidiaryJournalRepository.GetAll(spec, cancellationToken);
+        var totalCount = await _subsidiaryJournalRepository.CountAsync(specCount, cancellationToken);
         // Logic to retrieve the subsidiary journal records
-        var subs = subsidiaryJournals.Select(sj => new SubsidiaryJournalDto(sj));
-        return new GetSubsidiaryJournalResponse()
-        {
-            subsidiaryJournalDtos = subs.ToList()
-        };
+        var subs = subsidiaryJournals.Select(x => new SubsidiaryJournalDto(x)).ToList();
+        return new PaginatedResult<SubsidiaryJournalDto>(subs, getSubsidiaryJournals.PageIndex.Value, getSubsidiaryJournals.PageSize.Value, totalCount.Value);
 
     }
     public async Task<SubsidiaryJournalDto> GetSubsidiaryJournalById(int id, CancellationToken cancellationToken = default)

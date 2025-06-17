@@ -39,8 +39,8 @@ public class DailySpecification : Specification<Daily>
 
         }
         AddOrderByDescending(x => x.Id);
-
-        ApplyPaging(request.PageIndex.Value, request.PageSize.Value);
+        if (request.PageIndex.HasValue && request.PageSize.HasValue)
+            ApplyPaging(request.PageIndex.Value, request.PageSize.Value);
 
 
     }
@@ -52,6 +52,7 @@ public class DailyCountAsyncSpecification : Specification<Daily>
 {
     public DailyCountAsyncSpecification(GetDailyRequest request)
     {
+
 
         if (!request.Name.IsNullOrEmpty())
         {
@@ -67,6 +68,7 @@ public class DailyCountAsyncSpecification : Specification<Daily>
         {
             AddCriteries(x => x.DailyDate <= request.EndDate);
         }
+
 
 
         if (!request.DailyType.IsNullOrEmpty())

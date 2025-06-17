@@ -63,7 +63,12 @@
 
             <!-- FormArray: formDetails -->
             <div formArrayName="formDetails">
-                <h3>تفاصيل الحسابات</h3>
+                <div style="display: flex;justify-content: center;">
+                    <h3>تفاصيل الحسابات</h3>
+                    <mat-icon *ngIf="isBalanced()" color="primary"
+                        style="color: green;font-weight: bold;">check</mat-icon>
+                    <mat-icon *ngIf="!isBalanced()" color="warn" style="color: red; font-weight: bold;">close</mat-icon>
+                </div>
                 <div *ngFor="let detail of fDetails.controls; let i=index" [formGroupName]="i"
                     style="display: flex; flex-wrap: wrap; gap: 10px;">
                     <button mat-icon-button type="button" (click)="getAccount(i)">
@@ -115,10 +120,12 @@
             -->
 
             <div>
-                أجمالى دائن : {{totalCredit}}
-                أجمالى مدين : {{totalDebit}}
+
                 <div>
-                    {{totalCredit === totalDebit ? 'متساوى' : 'غير متساوى'}}
+                    {{updateTotals()}} {{isBalanced() ? 'متساوى' : 'غير متساوى'}}
+
+                    <!--if balance use check icon else use close icon-->
+
                 </div>
 
             </div>
@@ -161,6 +168,7 @@
 
             <mat-dialog-actions style="display: flex; justify-content: center;">
                 <button mat-raised-button color="primary" type="submit" style="width: 140px;"
+                    [ngClass]="{'isBalanced': isBalanced(), 'isNotBalanced': !isBalanced()}"
                     [disabled]="!addForm.valid">
                     إضافة
                     <mat-icon>add</mat-icon>
