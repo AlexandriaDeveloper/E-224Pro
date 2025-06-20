@@ -22,11 +22,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     }
     public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
     {
-        entity.Id = GetMaxId() + 1;
+        entity.Id = entity.Id == 0 ? GetMaxId() + 1 : entity.Id; // Ensure Id is set if not already
         entity.CreatedDate = DateTime.Now;
         entity.CreatedBy = GetCurrentUserId() ?? "Anonymous";
         await _context.Set<T>().AddAsync(entity);
     }
+
 
     public async Task AddRangeAsync(List<T> entities, CancellationToken cancellationToken = default)
     {

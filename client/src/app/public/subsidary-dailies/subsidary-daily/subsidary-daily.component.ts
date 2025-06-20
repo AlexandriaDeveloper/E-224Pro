@@ -16,6 +16,7 @@ import { GetSubsidiaryFormsByDailyIdRequest } from '../../../shared/_requests/ge
 import { Fund } from '../../../shared/_models/fund.model';
 import { FundService } from '../../../shared/services/fund.service';
 import { AddSubsidaryFormDetailsDialogComponent } from './add-subsidary-form-details-dialog/add-subsidary-form-details-dialog.component';
+import { SubaccountService } from '../../../shared/services/subaccount.service';
 
 @Component({
   selector: 'app-subsidary-daily',
@@ -26,6 +27,7 @@ import { AddSubsidaryFormDetailsDialogComponent } from './add-subsidary-form-det
 export class SubsidaryDailyComponent implements OnInit {
   router = inject(ActivatedRoute);
   subsidaryService = inject(SubsidiaryService);
+  subAccountService = inject(SubaccountService);
   collageService = inject(CollageService);
   fundService = inject(FundService);
   readonly dialog = inject(MatDialog);
@@ -55,6 +57,7 @@ export class SubsidaryDailyComponent implements OnInit {
   ngOnInit(): void {
     this.loadCollages();
     this.loadFunds();
+    this.loadSubAccounts();
     this.params.DailyId = this.dailyId;
     this.loadForms(this.params);
   }
@@ -67,6 +70,17 @@ export class SubsidaryDailyComponent implements OnInit {
         this.originalDataSource = [...response.items];
         this.data = response.items;
         this.paginator.length = response.totalCount;
+      },
+      error: (error) => {
+        // Handle error
+        console.error('Error loading forms', error);
+      }
+    });
+  }
+  loadSubAccounts() {
+    this.subAccountService.getAccounts(this.subsidaryId, {}).subscribe({
+      next: (response: any) => {
+        this.subAccounts = response.items;
       },
       error: (error) => {
         // Handle error
@@ -99,7 +113,7 @@ export class SubsidaryDailyComponent implements OnInit {
     })
   }
   getCollageById(collageId) {
-    console.log(collageId);
+
     return this.collages.find(x => x.id == collageId).collageName;
   }
   getFundById(fundId) {
@@ -110,39 +124,7 @@ export class SubsidaryDailyComponent implements OnInit {
 
 
 
-  openSearchDialog() {
-    // Determine which data to pass to search dialog
-    const dataToSearch = this.dataSource.length !== this.originalDataSource.length
-      ? this.dataSource
-      : (this.lastSearchedDataSource.length > 0 ? this.lastSearchedDataSource : this.originalDataSource);
 
-    const dialogRef = this.dialog.open(FormSearchDialogComponent, {
-      width: '500px',
-      data: {
-        formData: this.originalDataSource, // Always pass original data
-        currentData: dataToSearch, // Pass last searched or current filtered data
-        // If we have previous search values, pass them to pre-fill the form
-        previousSearchValues: this.lastSearchedDataSource.length > 0 ? this.lastSearchedDataSource[0] : null
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // If result is the original data source, reset filtering
-        if (result === this.originalDataSource) {
-          this.dataSource = [...this.originalDataSource];
-          this.lastSearchedDataSource = []; // Clear last searched data
-        } else {
-          // Destructure the result to get search results and search values
-          const { results, searchValues } = result;
-
-          // Store the search result as last searched data with search values
-          this.lastSearchedDataSource = results.map(item => ({ ...item, searchValues }));
-          this.dataSource = results;
-        }
-      }
-    });
-  }
 
   handlePageEvent(e: PageEvent) {
     this.paginator.pageEvent = e;
@@ -151,23 +133,7 @@ export class SubsidaryDailyComponent implements OnInit {
     this.params.pageIndex = e.pageIndex;
     this.loadForms(this.params);
   }
-  openAddFormDialog(element: any = null) {
-    const dialogRef = this.dialog.open(AddFormComponent, {
-      data: {
-        param: this.params,
-        element: element
-      },
-      disableClose: true,
-      hasBackdrop: true,
-      minWidth: '60vw',
-      maxHeight: '90vh'
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadForms(this.params);
-
-    });
-  }
   onCollageIdChange(collageId) {
     console.log(collageId);
     this.filterdFunds = [];
@@ -194,7 +160,11 @@ export class SubsidaryDailyComponent implements OnInit {
     const dialogRef = this.dialog.open(AddSubsidaryFormDetailsDialogComponent, {
       data: {
 
-        element: element
+        element: element,
+
+
+        subAccounts: this.subAccounts,
+        accountId: this.subsidaryId
       },
       disableClose: true,
       hasBackdrop: true,

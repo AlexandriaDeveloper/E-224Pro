@@ -23,11 +23,23 @@ public class SubsidaryFormDto
     public decimal? SubsidaryTotalCredit { get; set; }
     public decimal? SubsidaryTotalDebit { get; set; }
     public int FormDetailsId { get; set; }
+}
 
+public class SubsidaryFormDetailsDto
+{
 
+    public int Id { get; set; }
 
+    public int SubAccountId { get; set; }
+    public string? SubAccountNumber { get; set; }
+    public string? SubAccountName { get; set; }
+    public decimal? Debit { get; set; }
+    public decimal? Credit { get; set; }
 
+}
 
-
-
+public class AddOrUpdateSubsidaryFormDetailsRequest
+{
+    public int FormDetailsId { get; set; }
+    public List<SubsidaryFormDetailsDto> SubsidaryFormDetailsDtos { get; set; } = new List<SubsidaryFormDetailsDto>();
 }

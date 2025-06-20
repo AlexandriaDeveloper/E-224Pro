@@ -34,8 +34,7 @@ export class AddFormComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly dialogRef = inject(MatDialogRef<AddFormComponent>);
   private readonly data = inject<any>(MAT_DIALOG_DATA);
-  summedCredit = 0;
-  summedDebit = 0;
+
   // Form related
   addForm: FormGroup;
   formDetails: FormDetailDto[] = [];
@@ -44,7 +43,7 @@ export class AddFormComponent implements OnInit {
   // Data
   accounts: Account[] = [];
   funds: Fund[] = [];
-  totalCredit = 200;
+  totalCredit;
   totalDebit;
   update = false;
 

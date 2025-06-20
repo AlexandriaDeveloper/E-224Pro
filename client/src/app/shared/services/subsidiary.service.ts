@@ -72,6 +72,12 @@ export class SubsidiaryService {
 
     return this.http.get(`${this.apiUrl}SubsidiaryJournal/subId/${accountId}/dailyId/${dailyId}`, { params });
 
+  } getSubsidartFormDetails(accountId: number, formDetailsId: number) {
+    return this.http.get(`${this.apiUrl}SubsidiaryJournal/subId/${accountId}/formDetailsId/${formDetailsId}`);
+  }
+
+  addOrUpdateSubsidaryFormDetails(request: any) {
+    return this.http.post(`${this.apiUrl}SubsidiaryJournal/AddOrUpdate`, request);
   }
 
 }
