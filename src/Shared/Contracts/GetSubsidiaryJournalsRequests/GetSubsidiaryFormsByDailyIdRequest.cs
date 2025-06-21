@@ -9,4 +9,6 @@ public class GetSubsidiaryFormsByDailyIdRequest : Param
     public int? FormDetailsId { get; set; }
     public int? CollageId { get; set; }
     public int? FundId { get; set; }
+    public string? Num224 { get; set; }
+    public string? Num55 { get; set; }
 }

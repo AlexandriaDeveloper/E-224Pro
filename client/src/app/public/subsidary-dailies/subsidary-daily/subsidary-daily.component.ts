@@ -44,7 +44,7 @@ export class SubsidaryDailyComponent implements OnInit {
   collages: Collage[] = []
   funds: Fund[] = [];
   filterdFunds: Fund[] = [];
-  subAccounts: any = [];
+
 
   paginator: PaginatorModel = new PaginatorModel();
   constructor() {
@@ -57,7 +57,7 @@ export class SubsidaryDailyComponent implements OnInit {
   ngOnInit(): void {
     this.loadCollages();
     this.loadFunds();
-    this.loadSubAccounts();
+
     this.params.DailyId = this.dailyId;
     this.loadForms(this.params);
   }
@@ -67,6 +67,7 @@ export class SubsidaryDailyComponent implements OnInit {
       next: (response: any) => {
 
         this.dataSource = response.items;
+
         this.originalDataSource = [...response.items];
         this.data = response.items;
         this.paginator.length = response.totalCount;
@@ -77,17 +78,7 @@ export class SubsidaryDailyComponent implements OnInit {
       }
     });
   }
-  loadSubAccounts() {
-    this.subAccountService.getAccounts(this.subsidaryId, {}).subscribe({
-      next: (response: any) => {
-        this.subAccounts = response.items;
-      },
-      error: (error) => {
-        // Handle error
-        console.error('Error loading forms', error);
-      }
-    });
-  }
+
   loadCollages() {
     this.collageService.getCollages().subscribe({
       next: (response: Collage[]) => {
@@ -141,29 +132,25 @@ export class SubsidaryDailyComponent implements OnInit {
 
     if (collageId !== 0) {
       this.filterdFunds = this.funds.filter(x => x.collageId == collageId);
-      console.log(this.funds);
-      console.log(this.filterdFunds);
+
     }
     else {
       this.filterdFunds = []
     }
-    console.log(this.filterdFunds);
-    this.loadForms(this.params);
+
   }
   onFundIdChange(fundId) {
     this.params.FundId = fundId;
     //this.filterdFunds = this.funds.filter(x => x.collageId == this.params.CollageId);
-    this.loadForms(this.params);
+
   }
 
   openAddSubsidaryDailyDialog(element) {
+
     const dialogRef = this.dialog.open(AddSubsidaryFormDetailsDialogComponent, {
       data: {
 
         element: element,
-
-
-        subAccounts: this.subAccounts,
         accountId: this.subsidaryId
       },
       disableClose: true,
@@ -176,6 +163,12 @@ export class SubsidaryDailyComponent implements OnInit {
       this.loadForms(this.params);
 
     });
+  }
+  onSearch() {
+    this.loadForms(this.params);
+  }
+  onPrint() {
+
   }
 
 

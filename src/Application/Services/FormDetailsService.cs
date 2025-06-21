@@ -326,6 +326,7 @@ public class FormDetailsService
             var formDetail = formDetailsFromDb.FirstOrDefault(x => x.Id == item.Id);
             if (formDetail != null)
             {
+                formDetail.AccountId = item.AccountId;
                 formDetail.Credit = item.Credit;
                 formDetail.Debit = item.Debit;
             }

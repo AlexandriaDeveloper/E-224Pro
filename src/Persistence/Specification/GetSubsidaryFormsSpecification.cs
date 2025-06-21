@@ -1,4 +1,5 @@
 using Core.Models;
+using Microsoft.IdentityModel.Tokens;
 using Persistence.Specification;
 
 public class GetSubsidaryFormsSpecification : Specification<Form>
@@ -40,7 +41,16 @@ public class GetSubsidaryFormsSpecification : Specification<Form>
         {
             AddCriteries(x => x.FundId! == request.FundId.Value);
         }
+        if (!request.Num55.IsNullOrEmpty())
+        {
+            AddCriteries(x => x.Num55! == request.Num55);
 
+        }
+        if (!request.Num224.IsNullOrEmpty())
+        {
+            AddCriteries(x => x.Num224! == request.Num224);
+
+        }
 
         AddOrderByDescending(x => x.Id);
         if (request.PageIndex.HasValue)

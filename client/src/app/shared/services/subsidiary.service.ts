@@ -58,6 +58,8 @@ export class SubsidiaryService {
     if (param.FormDetailsId) params = params.append('FormDetailsId', param.FormDetailsId.toString());
     if (param.CollageId) params = params.append('CollageId', param.CollageId.toString());
     if (param.FundId) params = params.append('FundId', param.FundId.toString());
+    if (param.num55) params = params.set('num55', param.num55);
+    if (param.num224) params = params.set('num224', param.num224);
 
     params = params.append('pageIndex', param.pageIndex);
     params = params.append('pageSize', param.pageSize);

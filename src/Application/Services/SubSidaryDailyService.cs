@@ -69,7 +69,10 @@ public class SubSidaryDailyService
 
 
         var subsidaryDailyForms = await _formRepository.GetQueryable(spec)
+        .Include(x => x.Collage)
+        .Include(x => x.Fund)
         .Include(x => x.Daily)
+
         .Include(x => x.FormDetails)
         .ThenInclude(x => x.SubsidiaryJournals)
          .Where(x => x.DailyId == dailyId && x.FormDetails.Any(x => x.AccountId == subaccountId))
@@ -89,11 +92,11 @@ public class SubSidaryDailyService
                    SubsidaryTotalDebit = x.FormDetails.Where(x => x.AccountId == subaccountId).Sum(x => x.SubsidiaryJournals?.Sum(x => x.Debit) ?? 0),
                    FormDetailsId = x.FormDetails.Where(x => x.AccountId == subaccountId).FirstOrDefault()!.Id,
                    CollageId = x.CollageId ?? 0,
-
+                   CollageName = x.Collage.CollageName,
                    FundId = x.FundId ?? 0,
+                   FundName = x.Fund.FundName,
                    Num224 = x.Num224 ?? string.Empty,
                    Num55 = x.Num55 ?? string.Empty,
-
 
                    DailyId = x.DailyId,
                    AuditorName = x.AuditorName,
@@ -152,7 +155,9 @@ public class SubSidaryDailyService
 
         return subSidaryFormDetails;
     }
+
     public async Task<bool> AddOrUpdateSubsidaryFormDetail(AddOrUpdateSubsidaryFormDetailsRequest dto, CancellationToken cancellationToken = default)
+
     {
         if (dto == null) throw new ArgumentNullException(nameof(dto));
 
@@ -206,5 +211,17 @@ public class SubSidaryDailyService
         }
         await _uow.CommitAsync(cancellationToken);
         return true;
+    }
+    public async Task<SubsidaryDailyReportDto> GetSubsidaryDaily(GetSubsidartDailyRequest request)
+    {
+        var spec = new GetSubsidaryDailyBySpecification(request);
+        var subs = _subsidiaryJournalRepository.GetQueryable(spec);
+        SubsidaryDailyReportDto result = new SubsidaryDailyReportDto();
+        foreach (var sub in subs)
+        {
+            //TODO
+
+        }
+        return null;
     }
 }

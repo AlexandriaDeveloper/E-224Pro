@@ -23,6 +23,8 @@ public class SubsidaryFormDto
     public decimal? SubsidaryTotalCredit { get; set; }
     public decimal? SubsidaryTotalDebit { get; set; }
     public int FormDetailsId { get; set; }
+    public string? CollageName { get; set; }
+    public string? DailyType { get; set; }
 }
 
 public class SubsidaryFormDetailsDto
@@ -43,3 +45,41 @@ public class AddOrUpdateSubsidaryFormDetailsRequest
     public int FormDetailsId { get; set; }
     public List<SubsidaryFormDetailsDto> SubsidaryFormDetailsDtos { get; set; } = new List<SubsidaryFormDetailsDto>();
 }
+
+public class GetSubsidartDailyRequest
+{
+    public int? FundId { get; set; }
+    public int? CollageId { get; set; }
+    public int? DailyId { get; set; }
+    public int? AccountId { get; set; }
+    public string? DailyType { get; set; }
+}
+
+public class SubsidaryDailyReportDto
+{
+
+    List<SubsidaryDailyCollageReportDto> Collages { get; set; }
+    public decimal? Credit => Collages.Sum(x => x.Credit);
+    public decimal? Debit => Collages.Sum(x => x.Debit);
+
+}
+public class SubsidaryDailyCollageReportDto
+{
+    public int? CollageId { get; set; }
+    public string CollageName { get; set; }
+    public List<SubsidaryDailyFundsReportDto> Funds { get; set; }
+    public decimal? Credit => Funds.Sum(x => x.Credit);
+    public decimal? Debit => Funds.Sum(x => x.Debit);
+
+}
+
+
+public class SubsidaryDailyFundsReportDto
+{
+    public int FundId { get; set; }
+    public string FundName { get; set; }
+    public decimal Credit { get; set; }
+    public decimal? Debit { get; set; }
+
+}
+

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AddFormComponent } from '../../../form/add-form/add-form.component';
@@ -31,6 +31,9 @@ export class AddSubsidaryFormDetailsDialogComponent implements OnInit, AfterView
   addSubsidaryForm: FormGroup;
   router = inject(ActivatedRoute);
 
+  private cdr = inject(ChangeDetectorRef);
+
+
   subsidaryDetails: any = [];
   accountId: number;
   funds = [];
@@ -56,9 +59,9 @@ export class AddSubsidaryFormDetailsDialogComponent implements OnInit, AfterView
     //loadSubsidaryFormDetails then initialize form
     this.loadSubsidaryFormDetails();
     // this.addSubsidaryForm = this.initilizeForm();
-    this.fDetails.valueChanges.subscribe(() => {
-      this.updateTotals();
-    });
+    // this.fDetails.valueChanges.subscribe(() => {
+    //   this.updateTotals();
+    // });
 
 
   }
@@ -66,37 +69,43 @@ export class AddSubsidaryFormDetailsDialogComponent implements OnInit, AfterView
 
   loadSubsidaryFormDetails() {
 
-    this.subSidatyService.getSubsidartFormDetails(this.data.accountId, this.data.element.formDetailsId).subscribe((res: SubsidaryFormDetailDto[]) => {
-      this.subsidaryDetails = res;
-
-
-
-
-    }, (error) => {
-      console.error('Error loading subsidary form details:', error);
-    }, () => {
-      this.addSubsidaryForm = this.initilizeForm();
-      this.totalCredit = this.addSubsidaryForm.get('totalCredit').value;
-      this.totalDebit = this.addSubsidaryForm.get('totalDebit').value;
-      console.log(this.addSubsidaryForm);
-    });
+    this.subSidatyService.getSubsidartFormDetails(this.data.accountId, this.data.element.formDetailsId).subscribe(
+      (res: SubsidaryFormDetailDto[]) => {
+        this.subsidaryDetails = res;
+      },
+      (error) => {
+        console.error('Error loading subsidary form details:', error);
+      },
+      () => {
+        this.addSubsidaryForm = this.initilizeForm();
+        this.totalCredit = this.form.totalCredit;
+        this.totalDebit = this.form.totalDebit;
+        // Move the subscription here:
+        this.fDetails.valueChanges.subscribe(() => {
+          this.updateTotals();
+          this.cdr.detectChanges();
+        });
+        console.log(this.addSubsidaryForm);
+      }
+    );
   }
   initilizeForm() {
 
     return this.fb.group({
-      id: [this.form.id],
-      num224: [this.form.num224],
-      num55: [this.form.num55],
-      formName: [this.form.formName],
+      // id: [this.form.id],
+      // num224: [this.form.num224],
+      // num55: [this.form.num55],
+      // formName: [this.form.formName],
+      // formDetailsId: [this.form.formDetailsId],
+      // collageName: [this.form.collageName],
+      // fundName: [this.form.fundName],
+      // fundId: [this.form.fundId],
+      // auditorName: [this.form.auditorName],
+      // collageId: [this.form.collageId],
+      // totalCredit: [this.form.totalCredit],
+      // totalDebit: [this.form.totalDebit],
+      // details: [this.form.details],
       formDetailsId: [this.form.formDetailsId],
-      collageName: [this.form.collageName],
-      fundName: [this.form.fundName],
-      fundId: [this.form.fundId],
-      auditorName: [this.form.auditorName],
-      collageId: [this.form.collageId],
-      totalCredit: [this.form.totalCredit],
-      totalDebit: [this.form.totalDebit],
-      details: [this.form.details],
       formDetails: this.fb.array(this.subsidaryDetails.map(detail => this.createFormDetail(detail))),
     })
   }
@@ -125,10 +134,10 @@ export class AddSubsidaryFormDetailsDialogComponent implements OnInit, AfterView
     const values = this.fDetails.value;
     this.totalCredit = values.reduce((sum, curr) => sum + (Number(curr.credit) || 0), 0);
     this.totalDebit = values.reduce((sum, curr) => sum + (Number(curr.debit) || 0), 0);
-    return `اجمالى دائن ${this.totalCredit} -  اجمالى مدين ${this.totalDebit}`;
+    return `فرق دائن ${this.form.totalCredit - this.totalCredit} -  فرق  مدين ${this.form.totalDebit - this.totalDebit}`;
   }
   isBalanced(): boolean {
-    return this.totalDebit === this.form.subsidaryTotalDebit && this.totalCredit === this.form.subsidaryTotalCredit;
+    return this.form.totalDebit === this.totalDebit && this.form.totalCredit === this.totalCredit;
   }
   getFunds(value) {
 
