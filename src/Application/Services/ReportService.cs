@@ -6,6 +6,7 @@ using NPOI.SS.Formula.Functions;
 using Org.BouncyCastle.Math.EC.Rfc7748;
 using Persistence.Specification;
 using Shared.Contracts.ReportRequest;
+using Shared.DTOs.FormDtos;
 using Shared.DTOs.ReportDtos;
 
 namespace Application.Services;
@@ -19,6 +20,7 @@ public class ReportService
     private readonly IFormDetailsRepository _formDetailsRepository;
     private readonly IAccountRepository _accountRepository;
     private readonly ISubsidiaryJournalRepository _subsidiaryJournalRepository;
+
     private readonly IUow _uow;
     public ReportService(IFormRepository formRepository,
     IAccountRepository accountRepository,
@@ -27,6 +29,7 @@ public class ReportService
     IFundRepository fundRepository,
     IFormDetailsRepository formDetailsRepository,
     ISubsidiaryJournalRepository subsidiaryJournalRepository,
+    SubSidaryDailyService subsidaryDailyService,
     IUow uow)
     {
         _formRepository = formRepository;
@@ -36,6 +39,8 @@ public class ReportService
         _fundRepository = fundRepository;
         _formDetailsRepository = formDetailsRepository;
         _subsidiaryJournalRepository = subsidiaryJournalRepository;
+
+
         _uow = uow;
     }
 
@@ -253,5 +258,7 @@ public class ReportService
         }
         return result;
     }
+
+
 
 }

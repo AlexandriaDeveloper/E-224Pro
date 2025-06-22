@@ -53,14 +53,22 @@ public class GetSubsidartDailyRequest
     public int? DailyId { get; set; }
     public int? AccountId { get; set; }
     public string? DailyType { get; set; }
+    public DateOnly? StartDate { get; set; }
+    public DateOnly? EndDate { get; set; }
+    public string? AccountType { get; set; }
+
 }
 
 public class SubsidaryDailyReportDto
 {
+    public string? CollageName { get; set; } = "الكل";
+    public string? FundName { get; set; } = "الكل";
+    public string? Daily { get; set; } = "الكل";
+    public string AccountType { get; set; } = "الكل";
+    public string AccountName { get; set; } = "الكل";
+    public List<SubsidaryDailyCollageReportDto> Collages { get; set; }
 
-    List<SubsidaryDailyCollageReportDto> Collages { get; set; }
-    public decimal? Credit => Collages.Sum(x => x.Credit);
-    public decimal? Debit => Collages.Sum(x => x.Debit);
+    public List<SubsidaryDailyDetailsReportDto> TotalSubsidaries { get; set; }
 
 }
 public class SubsidaryDailyCollageReportDto
@@ -76,10 +84,22 @@ public class SubsidaryDailyCollageReportDto
 
 public class SubsidaryDailyFundsReportDto
 {
+    public int AccountId { get; set; }
+    public string AccountName { get; set; }
     public int FundId { get; set; }
     public string FundName { get; set; }
-    public decimal Credit { get; set; }
-    public decimal? Debit { get; set; }
+    public decimal? Credit => SubsidaryDetails.Sum(x => x.Credit);
+    public decimal? Debit => SubsidaryDetails.Sum(x => x.Debit);
+    public List<SubsidaryDailyDetailsReportDto> SubsidaryDetails { get; set; }
 
+
+}
+public class SubsidaryDailyDetailsReportDto
+{
+    public int SubsidaryId { get; set; }
+    public string SubsidaryName { get; set; }
+
+    public decimal? Credit { get; set; }
+    public decimal? Debit { get; set; }
 }
 

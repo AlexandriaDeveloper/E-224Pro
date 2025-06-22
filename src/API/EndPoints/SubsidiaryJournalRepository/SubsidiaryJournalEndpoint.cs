@@ -20,6 +20,7 @@ public static class SubsidiaryJournal
         // subsidiaryJournalGroup.MapPost("/TestCreat", PostTestSubsidiaryJournal);
         // subsidiaryJournalGroup.MapPut("/Update/{id}", UpdateSubsidiaryJournal);
         subsidiaryJournalGroup.MapDelete("/Delete/{id}", DeleteSubsidiaryJournal);
+        subsidiaryJournalGroup.MapGet("/DailyRepot", GetSubsidaryDaily);
         return app;
     }
 
@@ -54,6 +55,12 @@ public static class SubsidiaryJournal
     private static async Task<IResult> AddOrUpdateSubsidaryFormDetail(SubSidaryDailyService service, AddOrUpdateSubsidaryFormDetailsRequest request, CancellationToken cancellationToken = default)
     {
         var result = await service.AddOrUpdateSubsidaryFormDetail(request, cancellationToken);
+        return TypedResults.Ok(result);
+    }
+
+    private static async Task<IResult> GetSubsidaryDaily([AsParameters] GetSubsidartDailyRequest request, SubSidaryDailyService service)
+    {
+        var result = await service.GetSubsidaryDaily(request);
         return TypedResults.Ok(result);
     }
     // private static async Task<IResult> PostTestSubsidiaryJournal(SubsidiaryJournalService service, CancellationToken cancellationToken)

@@ -10,4 +10,6 @@ public class Collage : BaseEntity
     [MaxLength(100)]
     public string CollageName { get; set; } = string.Empty;
 
+    public List<Form> Forms { get; set; }
+
 }

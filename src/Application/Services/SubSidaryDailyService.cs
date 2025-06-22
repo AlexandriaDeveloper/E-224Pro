@@ -1,6 +1,7 @@
 using Core.Interfaces.Repository;
 using Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NPOI.SS.Formula.Eval;
 using NPOI.SS.Formula.Functions;
 using Persistence.Specification;
@@ -9,6 +10,7 @@ using Shared.Contracts;
 using Shared.DTOs;
 using Shared.DTOs.FormDetailsDtos;
 using Shared.DTOs.FormDtos;
+using Shared.DTOs.ReportDtos; // Add this if SubsidaryDailyFormDetailsDto is in ReportDtos namespace
 
 public class SubSidaryDailyService
 {
@@ -16,16 +18,21 @@ public class SubSidaryDailyService
     private readonly IFormRepository _formRepository;
     private readonly IFormDetailsRepository _formDetailsRepository;
     private readonly ISubAccountRepository _subAccountRepository;
-
+    private readonly ICollageRepository _collageRepository;
+    private readonly IFundRepository _fundRepository;
+    private readonly IAccountRepository _accountRepository;
     private readonly ISubsidiaryJournalRepository _subsidiaryJournalRepository;
     private readonly IUow _uow;
-    public SubSidaryDailyService(IDailyRepository dailyRepository, IFormRepository formRepository, IFormDetailsRepository formDetailsRepository, ISubAccountRepository subAccountRepository, ISubsidiaryJournalRepository subsidiaryJournalRepository, IUow uow)
+    public SubSidaryDailyService(IDailyRepository dailyRepository, IAccountRepository accountRepository, IFormRepository formRepository, IFundRepository fundRepository, IFormDetailsRepository formDetailsRepository, ISubAccountRepository subAccountRepository, ISubsidiaryJournalRepository subsidiaryJournalRepository, IUow uow, ICollageRepository? collageRepository)
     {
         _dailyRepository = dailyRepository;
         this._formRepository = formRepository;
         this._formDetailsRepository = formDetailsRepository;
         this._subAccountRepository = subAccountRepository;
         this._subsidiaryJournalRepository = subsidiaryJournalRepository;
+        this._collageRepository = collageRepository;
+        this._fundRepository = fundRepository;
+        this._accountRepository = accountRepository;
 
         _uow = uow;
     }
@@ -215,13 +222,75 @@ public class SubSidaryDailyService
     public async Task<SubsidaryDailyReportDto> GetSubsidaryDaily(GetSubsidartDailyRequest request)
     {
         var spec = new GetSubsidaryDailyBySpecification(request);
-        var subs = _subsidiaryJournalRepository.GetQueryable(spec);
-        SubsidaryDailyReportDto result = new SubsidaryDailyReportDto();
-        foreach (var sub in subs)
-        {
-            //TODO
+        var subs = _formDetailsRepository.GetQueryable(spec)
+            .Include(fd => fd.Form)
+            .Include(fd => fd.Account) // Make sure Account is included if needed
+            .ToList();
 
-        }
-        return null;
+        var subsResult = subs
+            .GroupBy(x => x.Form?.CollageId)
+            .Select(x =>
+            {
+                var collageId = x.Key;
+
+                var collage = collageId.HasValue ? _collageRepository.GetById(collageId.Value).Result : null;
+                return new SubsidaryDailyCollageReportDto
+                {
+                    CollageId = collageId ?? 0,
+                    CollageName = collage?.CollageName ?? string.Empty,
+
+                    Funds = x.GroupBy(y => y.Form?.FundId)
+                        .Where(y => y.Key.HasValue)
+                        .Select(y =>
+                        {
+                            var fundId = y.Key.Value;
+                            var fund = _fundRepository.GetById(fundId).Result;
+                            return new SubsidaryDailyFundsReportDto()
+                            {
+                                AccountId = y.FirstOrDefault().AccountId,
+                                AccountName = y.FirstOrDefault().Account.AccountName ?? string.Empty,
+                                FundId = fundId,
+                                FundName = fund?.FundName ?? string.Empty,
+                                SubsidaryDetails = subs
+                                    .Where(fd => fd.Form?.FundId == fundId)
+                                    .SelectMany(fd => fd.SubsidiaryJournals ?? new List<SubsidiaryJournal>())
+                                    .GroupBy(j => j.SubAccountId)
+                                    .Select(g =>
+                                    {
+                                        var subAccount = g.FirstOrDefault()?.SubAccount;
+                                        return new SubsidaryDailyDetailsReportDto
+                                        {
+                                            SubsidaryId = g.Key,
+                                            SubsidaryName = subAccount?.SubAccountName ?? string.Empty,
+                                            Credit = g.Sum(j => j.Credit ?? 0),
+                                            Debit = g.Sum(j => j.Debit ?? 0)
+                                        };
+                                    }).ToList()
+                            };
+                        }).ToList()
+                };
+            }).ToList();
+
+        return new SubsidaryDailyReportDto()
+        {
+            CollageName = request.CollageId.HasValue ? _collageRepository.GetById(request.CollageId.Value).Result.CollageName : "الكل",
+            FundName = request.FundId.HasValue ? _fundRepository.GetById(request.FundId.Value).Result.FundName : "الكل",
+            Daily = subs.FirstOrDefault().Form.Daily.Name,
+            AccountType = !request.AccountType.IsNullOrEmpty() ? request.AccountType : "الكل",
+            AccountName = request.AccountId.HasValue ? _accountRepository.GetById(request.AccountId.Value).Result.AccountName : "الكل",
+            Collages = subsResult,
+
+            TotalSubsidaries = subsResult
+                .SelectMany(x => x.Funds)
+                .SelectMany(x => x.SubsidaryDetails)
+                .GroupBy(x => x.SubsidaryId)
+                .Select(x => new SubsidaryDailyDetailsReportDto()
+                {
+                    SubsidaryId = x.Key,
+                    SubsidaryName = x.FirstOrDefault()?.SubsidaryName ?? string.Empty,
+                    Credit = x.Sum(j => j.Credit ?? 0),
+                    Debit = x.Sum(j => j.Debit ?? 0)
+                }).ToList()
+        };
     }
 }

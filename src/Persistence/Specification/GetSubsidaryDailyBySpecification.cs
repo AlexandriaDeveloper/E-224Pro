@@ -4,43 +4,58 @@ using Shared.DTOs.FormDtos;
 
 namespace Persistence.Specification;
 
-public class GetSubsidaryDailyBySpecification : Specification<SubsidiaryJournal>
+public class GetSubsidaryDailyBySpecification : Specification<FormDetails>
 {
 
     public GetSubsidaryDailyBySpecification(GetSubsidartDailyRequest request)
     {
-        AddInclude(x => x.FormDetails);
-        AddInclude(x => x.FormDetails.Form!);
-        AddInclude(x => x.FormDetails.Form!.Daily!);
-        AddInclude(x => x.FormDetails.Form!.Collage!);
-        AddInclude(x => x.FormDetails.Form!.Fund!);
+        AddInclude(x => x.SubsidiaryJournals!);
+        AddInclude(x => x.Form!);
+        AddInclude(x => x.Form!.Daily!);
+        AddInclude(x => x.Form!.Collage!);
+        AddInclude(x => x.Form!.Fund!);
+        AddInclude(x => x.Account);
+        AddInclude(x => x.Account.SubAccounts);
 
         if (request.AccountId.HasValue)
         {
-            AddCriteries(x => x.FormDetails.AccountId == request.AccountId);
+            AddCriteries(x => x.AccountId == request.AccountId);
         }
 
-        if (!request.CollageId.HasValue)
+        if (request.CollageId.HasValue)
         {
-            AddCriteries(x => x.FormDetails.Form.CollageId! == request.CollageId);
+            AddCriteries(x => x.Form.CollageId! == request.CollageId);
         }
         if (request.FundId.HasValue)
         {
-            AddCriteries(x => x.FormDetails.Form!.FundId! == request.FundId);
+            AddCriteries(x => x.Form!.FundId! == request.FundId);
         }
 
         if (request.DailyId.HasValue)
         {
 
-            AddCriteries(x => x.FormDetails.Form!.DailyId == request.DailyId.Value);
+            AddCriteries(x => x.Form!.DailyId == request.DailyId.Value);
         }
         if (!request.DailyType.IsNullOrEmpty())
         {
 
-            AddCriteries(x => x.FormDetails.Form.DailyId == request.DailyId.Value);
+            AddCriteries(x => x.Form.DailyId == request.DailyId.Value);
+        }
+        if (request.AccountId.HasValue)
+        {
+
+            AddCriteries(x => x.AccountId == request.AccountId.Value);
         }
 
+        if (request.StartDate.HasValue)
+        {
+            AddCriteries(x => x.Form!.Daily!.DailyDate >= request.StartDate);
+        }
 
+        if (request.EndDate.HasValue)
+        {
+            AddCriteries(x => x.Form!.Daily!.DailyDate <= request.EndDate);
+        }
 
 
     }

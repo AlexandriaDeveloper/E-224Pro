@@ -1,6 +1,7 @@
 using System;
 using Application.Services;
 using Shared.Contracts.ReportRequest;
+using Shared.DTOs.FormDtos;
 using Shared.DTOs.ReportDtos;
 
 namespace API.EndPoints.Reports;
@@ -17,7 +18,7 @@ public static class ReportsEndpoint
         // formGroup.MapPut("/Update/{id}", PutForm);
         // formGroup.MapDelete("/Delete/{id}", DeleteForm);
         formGroup.MapGet("/ReportFormDetails", GetFormDetailsBySpecAsync);
-        formGroup.MapGet("/ReportSubsidiaryJournal", GetSubsidiaryJournalBySpecAsync);
+        formGroup.MapGet("/ReportSubsidiaryJournalPdf", DownloadSubsidiaryReport);
         formGroup.MapGet("/ReportPdf", DownloadReports);
 
         // formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync);
@@ -46,5 +47,14 @@ public static class ReportsEndpoint
         return Results.File(pdfBytes, "application/pdf", "report.pdf");
     }
 
+    private static async Task<IResult> DownloadSubsidiaryReport(PDFReportService service, [AsParameters] GetSubsidartDailyRequest request, CancellationToken cancellationToken)
+    {
+        var pdfBytes = await service.GenerateSubsidaryReport(request, cancellationToken);
+        if (pdfBytes == null || pdfBytes.Length == 0)
+        {
+            return Results.NotFound("No data found for the specified report criteria.");
+        }
+        return Results.File(pdfBytes, "application/pdf", "report.pdf");
+    }
 
 }

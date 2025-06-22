@@ -8,16 +8,20 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using QuestPDF.Previewer;
 using Shared.Contracts.ReportRequest;
+using Shared.DTOs.FormDtos;
 namespace Application.Services;
 
 public class PDFReportService
 {
   private readonly ReportService reportService;
+  private readonly SubSidaryDailyService _subsidaryDailyService;
   private readonly IConfiguration _config;
 
-  public PDFReportService(ReportService reportService, IConfiguration config)
+  public PDFReportService(ReportService reportService, SubSidaryDailyService subsidaryDailyService, IConfiguration config)
   {
     this.reportService = reportService;
+    this._subsidaryDailyService = subsidaryDailyService;
+
     this._config = config;
   }
 
@@ -208,9 +212,9 @@ public class PDFReportService
   }
 
 
-  public async Task<byte[]> GenerateSubsidaryReport(GetAccountsBalanceBy request, CancellationToken cancellationToken)
+  public async Task<byte[]> GenerateSubsidaryReport(GetSubsidartDailyRequest request, CancellationToken cancellationToken)
   {
-    var report = await reportService.GetFormDetailsReportAsync(request, cancellationToken);
+    var report = await _subsidaryDailyService.GetSubsidaryDaily(request);
     if (report == null)
     {
       return Array.Empty<byte>();
@@ -252,11 +256,13 @@ public class PDFReportService
                   c.Item().AlignRight().Text("الوحدة الحسابيه المركزيه للمجمع الطبى").FontSize(12).Bold().Underline();
 
 
-                  c.Item().AlignCenter().Text("تقرير أرصدة الحسابات").FontSize(16).Bold();
+                  c.Item().AlignCenter().Text(report.Daily).FontSize(16).Bold();
                   c.Item().AlignCenter().Text($"من : {request.StartDate:yyyy-MM-dd} إلى : {request.EndDate:yyyy-MM-dd}").FontSize(12).Underline().Bold();
                   c.Item().AlignRight().Text($"الكلية : {report.CollageName}").FontSize(12).Bold();
                   c.Item().AlignRight().Text($"الصندوق : {report.FundName}").FontSize(12).Bold();
-                  c.Item().AlignRight().Text($"نوع الحساب : {report.AccountType}").FontSize(12).Bold();
+                  c.Item().AlignRight().Text($"اسم الحساب : {report.AccountName}").FontSize(12).Bold();
+                  c.Item().AlignRight().Text($"نوع اليوميه : {report.AccountType}").FontSize(12).Bold();
+
 
                 });
 
@@ -318,20 +324,20 @@ public class PDFReportService
                       header.Cell().Row(2).Column(10 + 1).Element(cell => HeaderStyle(cell, closingColor)).Text(" رصيد").ExtraBold();
                     });
 
-                  report.ReportDetailsDtos.ForEach(x =>
+                  report.Collages.ForEach(x =>
                     {
 
-                      table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(x.AccountNumber);
-                      table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(x.AccountName);
-                      table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Debit.ToString());
-                      table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Credit.ToString());
-                      table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Balance.ToString());
-                      table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction.Debit.ToString());
-                      table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction.Credit.ToString());
-                      table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction?.Balance.ToString() ?? "0");
-                      table.Cell().Element(cell => ClosingCellStyle(cell, closingColor)).Text(x.ClosingBalance?.Debit.ToString() ?? "0");
-                      table.Cell().Element(cell => ClosingCellStyle(cell, closingColor)).Text(x.ClosingBalance?.Credit.ToString() ?? "0");
-                      table.Cell().Element(cell => ClosingCellStyle(cell, closingColor)).Text(x.ClosingBalance?.Balance.ToString() ?? "0");
+                      // table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(x.AccountNumber);
+                      // table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(x.AccountName);
+                      // table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Debit.ToString());
+                      // table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Credit.ToString());
+                      // table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Balance.ToString());
+                      // table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction.Debit.ToString());
+                      // table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction.Credit.ToString());
+                      // table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction?.Balance.ToString() ?? "0");
+                      // table.Cell().Element(cell => ClosingCellStyle(cell, closingColor)).Text(x.ClosingBalance?.Debit.ToString() ?? "0");
+                      // table.Cell().Element(cell => ClosingCellStyle(cell, closingColor)).Text(x.ClosingBalance?.Credit.ToString() ?? "0");
+                      // table.Cell().Element(cell => ClosingCellStyle(cell, closingColor)).Text(x.ClosingBalance?.Balance.ToString() ?? "0");
 
 
 
@@ -339,16 +345,16 @@ public class PDFReportService
                     });
                   table.Footer(footer =>
                     {
-                      footer.Cell().ColumnSpan(2).Element(cell => FooterCellStyle(cell, accountColor)).Text("المجموع").Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Debit).ToString()).Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Credit).ToString()).Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Balance).ToString()).Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction.Debit).ToString()).Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction.Credit).ToString()).Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction?.Balance ?? 0).ToString()).Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Debit ?? 0).ToString()).Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Credit ?? 0).ToString()).Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Balance ?? 0).ToString()).Bold().FontSize(10);
+                      // footer.Cell().ColumnSpan(2).Element(cell => FooterCellStyle(cell, accountColor)).Text("المجموع").Bold().FontSize(10);
+                      // footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Debit).ToString()).Bold().FontSize(10);
+                      // footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Credit).ToString()).Bold().FontSize(10);
+                      // footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Balance).ToString()).Bold().FontSize(10);
+                      // footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction.Debit).ToString()).Bold().FontSize(10);
+                      // footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction.Credit).ToString()).Bold().FontSize(10);
+                      // footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction?.Balance ?? 0).ToString()).Bold().FontSize(10);
+                      // footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Debit ?? 0).ToString()).Bold().FontSize(10);
+                      // footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Credit ?? 0).ToString()).Bold().FontSize(10);
+                      // footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Balance ?? 0).ToString()).Bold().FontSize(10);
 
                     });
 
