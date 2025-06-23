@@ -56,6 +56,8 @@ public class GetSubsidartDailyRequest
     public DateOnly? StartDate { get; set; }
     public DateOnly? EndDate { get; set; }
     public string? AccountType { get; set; }
+    public string? Num224 { get; set; }
+    public string? Num55 { get; set; }
 
 }
 
@@ -85,9 +87,9 @@ public class SubsidaryDailyCollageReportDto
 public class SubsidaryDailyFundsReportDto
 {
     public int AccountId { get; set; }
-    public string AccountName { get; set; }
+    public string? AccountName { get; set; }
     public int FundId { get; set; }
-    public string FundName { get; set; }
+    public string? FundName { get; set; }
     public decimal? Credit => SubsidaryDetails.Sum(x => x.Credit);
     public decimal? Debit => SubsidaryDetails.Sum(x => x.Debit);
     public List<SubsidaryDailyDetailsReportDto> SubsidaryDetails { get; set; }
@@ -97,7 +99,8 @@ public class SubsidaryDailyFundsReportDto
 public class SubsidaryDailyDetailsReportDto
 {
     public int SubsidaryId { get; set; }
-    public string SubsidaryName { get; set; }
+    public string? SubsidaryNumber { get; set; }
+    public string? SubsidaryName { get; set; }
 
     public decimal? Credit { get; set; }
     public decimal? Debit { get; set; }

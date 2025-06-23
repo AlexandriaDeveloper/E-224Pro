@@ -17,7 +17,7 @@ public class GetAccountsBalanceBy
 
     public int? ByYear { get; set; }
     // public string? FundName { get; set; }
-    public string? AccountType { get; set; }
+    public string? DailyType { get; set; }
     public string? AccountItem { get; set; }
 
 

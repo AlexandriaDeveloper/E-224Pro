@@ -262,10 +262,11 @@ public class SubSidaryDailyService
                                         {
                                             SubsidaryId = g.Key,
                                             SubsidaryName = subAccount?.SubAccountName ?? string.Empty,
+                                            SubsidaryNumber = subAccount?.SubAccountNumber ?? string.Empty,
                                             Credit = g.Sum(j => j.Credit ?? 0),
                                             Debit = g.Sum(j => j.Debit ?? 0)
                                         };
-                                    }).ToList()
+                                    }).OrderBy(x => x.SubsidaryNumber).ToList()
                             };
                         }).ToList()
                 };
@@ -288,9 +289,11 @@ public class SubSidaryDailyService
                 {
                     SubsidaryId = x.Key,
                     SubsidaryName = x.FirstOrDefault()?.SubsidaryName ?? string.Empty,
+
+                    SubsidaryNumber = x.FirstOrDefault()?.SubsidaryNumber ?? string.Empty,
                     Credit = x.Sum(j => j.Credit ?? 0),
                     Debit = x.Sum(j => j.Debit ?? 0)
-                }).ToList()
+                }).OrderBy(x => x.SubsidaryNumber).ToList()
         };
     }
 }

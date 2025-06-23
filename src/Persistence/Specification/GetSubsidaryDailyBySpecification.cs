@@ -57,6 +57,16 @@ public class GetSubsidaryDailyBySpecification : Specification<FormDetails>
             AddCriteries(x => x.Form!.Daily!.DailyDate <= request.EndDate);
         }
 
+        if (!request.Num55.IsNullOrEmpty())
+        {
+            AddCriteries(x => x.Form!.Num55.Contains(request.Num55));
+        }
+        if (!request.Num224.IsNullOrEmpty())
+        {
+            AddCriteries(x => x.Form!.Num224.Contains(request.Num224));
+        }
+
+
 
     }
 }

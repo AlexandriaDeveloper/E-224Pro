@@ -49,7 +49,7 @@ public class ReportService
         if (getAccountsBalanceByAccount.DailyId.HasValue)
         {
             var daily = await _dailyRepository.GetById(getAccountsBalanceByAccount.DailyId.Value);
-            getAccountsBalanceByAccount.AccountType = daily.DailyType;
+            getAccountsBalanceByAccount.DailyType = daily.DailyType;
             if (daily == null)
             {
                 throw new ArgumentException("DailyId does not exist");
@@ -75,7 +75,7 @@ public class ReportService
             EndDate = getAccountsBalanceByAccount.EndDate,
             CollageId = getAccountsBalanceByAccount.CollageId,
             FundId = getAccountsBalanceByAccount.FundId,
-            AccountType = getAccountsBalanceByAccount.AccountType,
+            DailyType = getAccountsBalanceByAccount.DailyType,
             AccountItem = getAccountsBalanceByAccount.AccountItem
         };
         var spec2 = new GetReportyBySpecification(FullAccountsParam);
@@ -103,9 +103,9 @@ public class ReportService
         }
 
         var accounType = "الكل";
-        if (!string.IsNullOrEmpty(getAccountsBalanceByAccount.AccountType))
+        if (!string.IsNullOrEmpty(getAccountsBalanceByAccount.DailyType))
         {
-            accounType = getAccountsBalanceByAccount.AccountType == "Payroll" ? "بيرول" : "عادية";
+            accounType = getAccountsBalanceByAccount.DailyType == "Payroll" ? "بيرول" : "عادية";
         }
 
 
@@ -168,7 +168,7 @@ public class ReportService
             EndDate = getAccountsBalanceByAccount.StartDate.Value.AddDays(-1), // Set the end date to one day before the start date
             CollageId = getAccountsBalanceByAccount.CollageId,
             FundId = getAccountsBalanceByAccount.FundId,
-            AccountType = getAccountsBalanceByAccount.AccountType,
+            DailyType = getAccountsBalanceByAccount.DailyType,
             AccountItem = getAccountsBalanceByAccount.AccountItem,
 
             //ByMonth = getAccountsBalanceByAccount.ByMonth,

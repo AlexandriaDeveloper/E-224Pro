@@ -63,10 +63,10 @@ public class GetReportyBySpecification : Specification<FormDetails>
         //     AddInclude(x => x.Form!.Fund!);
         //     AddCriteries(x => x.Form!.Fund!.FundName == request.FundName);
         // }
-        if (!string.IsNullOrEmpty(request.AccountType))
+        if (!string.IsNullOrEmpty(request.DailyType))
         {
 
-            AddCriteries(x => x.Form!.Daily!.DailyType == request.AccountType);
+            AddCriteries(x => x.Form!.Daily!.DailyType == request.DailyType);
         }
 
 

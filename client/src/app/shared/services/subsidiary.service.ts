@@ -82,4 +82,20 @@ export class SubsidiaryService {
     return this.http.post(`${this.apiUrl}SubsidiaryJournal/AddOrUpdate`, request);
   }
 
+  downloadSubsidaryDailyPdf(param: GetSubsidiaryFormsByDailyIdRequest) {
+    let params = new HttpParams();
+
+    if (param.Id) params = params.append('Id', param.Id.toString());
+    if (param.AccountId) params = params.append('AccountId', param.AccountId.toString());
+    if (param.SubAccountId) params = params.append('SubAccountId', param.SubAccountId.toString());
+    if (param.DailyId) params = params.append('DailyId', param.DailyId.toString());
+    if (param.FormDetailsId) params = params.append('FormDetailsId', param.FormDetailsId.toString());
+    if (param.CollageId) params = params.append('CollageId', param.CollageId.toString());
+    if (param.FundId) params = params.append('FundId', param.FundId.toString());
+    if (param.num55) params = params.set('num55', param.num55);
+    if (param.num224) params = params.set('num224', param.num224);
+
+    return this.http.get(`${this.apiUrl}Reports/ReportSubsidiaryJournalPdf`, { responseType: 'blob' as 'json', params: params });
+  }
+
 }

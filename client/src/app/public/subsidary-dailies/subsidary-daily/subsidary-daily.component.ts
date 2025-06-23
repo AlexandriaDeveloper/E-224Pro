@@ -168,6 +168,13 @@ export class SubsidaryDailyComponent implements OnInit {
     this.loadForms(this.params);
   }
   onPrint() {
+    this.params.DailyId = this.dailyId;
+    this.params.AccountId = this.subsidaryId;
+    this.subsidaryService.downloadSubsidaryDailyPdf(this.params).subscribe((response: any) => {
+      const blob = new Blob([response], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url);
+    });
 
   }
 
