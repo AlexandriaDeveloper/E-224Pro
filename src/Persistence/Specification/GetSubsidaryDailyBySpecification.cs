@@ -42,11 +42,7 @@ public class GetSubsidaryDailyBySpecification : Specification<FormDetails>
             AddCriteries(x => x.Form!.DailyId == request.DailyId.Value);
         }
 
-        if (request.AccountId.HasValue)
-        {
-
-            AddCriteries(x => x.AccountId == request.AccountId.Value);
-        }
+        // Removed redundant AccountId criterion block
 
         if (request.StartDate.HasValue)
         {

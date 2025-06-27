@@ -123,7 +123,7 @@ namespace Application.Services
             for (int i = 0; i < creditAccounts.Count; i++)
             {
                 headerCodeRow.CreateCell(creditAccountsStartIndex + i).SetCellValue(creditAccounts[i].AccountNumber);
-                var cell = headerCodeRow.GetCell(debitAccountsStartIndex + i);
+                var cell = headerCodeRow.GetCell(creditAccountsStartIndex + i);
                 if (cell != null)
                 {
                     IFont font = workbook.CreateFont();
