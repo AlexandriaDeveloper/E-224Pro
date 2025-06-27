@@ -1,14 +1,38 @@
 <div class="table-container">
-    <div class="search-form-container">
+    <div class="search-form-container" style="display: flex; justify-content: space-between;gap: 20px;">
+
 
         <mat-form-field appearance="fill">
-            <mat-label>الصندوق</mat-label>
+            <mat-label>نوع المدفوعة</mat-label>
             <mat-select #fundId (selectionChange)="onDailyTypeChange($event.value)">
                 <mat-option>كل الصناديق</mat-option>
                 <mat-option [value]="'payroll'">بايرول</mat-option>
                 <mat-option [value]="'General'"> عادية</mat-option>
             </mat-select>
         </mat-form-field>
+
+
+        <mat-form-field appearance="fill">
+            <mat-label>الكليات</mat-label>
+            <mat-select (selectionChange)="onCollageChange($event.value)">
+                <mat-option> كل الكليات </mat-option>
+                @for ( collage of collages;track collage.id){
+                <mat-option [value]="collage.id"> {{ collage.collageName }} </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>الصناديق</mat-label>
+            <mat-select (selectionChange)="onFundsChange($event.value)">
+                <mat-option> كل الصناديق </mat-option>
+                @for ( fund of funds;track fund.id){
+                <mat-option [value]="fund.id"> {{ fund.fundName }} </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+
         <!-- mat date range-->
         <mat-form-field>
             <mat-label>Date range</mat-label>
@@ -21,7 +45,13 @@
         </mat-form-field>
 
 
-        <button (click)="submit()">Submit</button>
+
+    </div>
+    <div class="button-container" style="display: flex; justify-content: center;">
+        <button mat-flat-button (click)="onPrint()">
+            Print
+            <mat-icon>print</mat-icon>
+        </button>
     </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 fixed-table" color="primary">
 

@@ -67,15 +67,19 @@ export class DailiesReportDialogComponent implements OnInit {
 
         //dowload pdf file 
 
+        // const blob = new Blob([response], { type: 'application/pdf' });
+        // const url = window.URL.createObjectURL(blob);
+        // const a = document.createElement('a');
+        // a.href = url;
+        // a.download = 'Report.pdf';
+        // document.body.appendChild(a);
+        // a.click();
+        // window.URL.revokeObjectURL(url);
+        // a.remove();
+
         const blob = new Blob([response], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'Report.pdf';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
+        window.open(url);
       },
       error: (error) => {
         console.error('Error downloading template:', error);

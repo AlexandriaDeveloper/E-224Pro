@@ -108,6 +108,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     }
     public async Task<int?> CountAsync(ISpecification<T> spec, CancellationToken cancellationToken = default)
     {
+        if (spec is null)
+            return await _context.Set<T>().CountAsync(cancellationToken);
 
         return await ApplySpecification(spec).CountAsync();
 

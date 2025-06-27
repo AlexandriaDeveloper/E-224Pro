@@ -51,13 +51,13 @@ export class SubsidiaryService {
   GetSubsidaryDailyFormsByDailyId(accountId: number, dailyId: number, param: GetSubsidiaryFormsByDailyIdRequest) {
     let params = new HttpParams();
 
-    if (param.Id) params = params.append('Id', param.Id.toString());
-    if (param.AccountId) params = params.append('AccountId', param.AccountId.toString());
-    if (param.SubAccountId) params = params.append('SubAccountId', param.SubAccountId.toString());
+    if (param.id) params = params.append('Id', param.id.toString());
+    if (param.accountId) params = params.append('AccountId', param.accountId.toString());
+    if (param.subAccountId) params = params.append('SubAccountId', param.subAccountId.toString());
     // if (param.DailyId) params = params.append('DailyId', param.DailyId.toString());
-    if (param.FormDetailsId) params = params.append('FormDetailsId', param.FormDetailsId.toString());
-    if (param.CollageId) params = params.append('CollageId', param.CollageId.toString());
-    if (param.FundId) params = params.append('FundId', param.FundId.toString());
+    if (param.formDetailsId) params = params.append('FormDetailsId', param.formDetailsId.toString());
+    if (param.collageId) params = params.append('CollageId', param.collageId.toString());
+    if (param.fundId) params = params.append('FundId', param.fundId.toString());
     if (param.num55) params = params.set('num55', param.num55);
     if (param.num224) params = params.set('num224', param.num224);
 
@@ -85,15 +85,22 @@ export class SubsidiaryService {
   downloadSubsidaryDailyPdf(param: GetSubsidiaryFormsByDailyIdRequest) {
     let params = new HttpParams();
 
-    if (param.Id) params = params.append('Id', param.Id.toString());
-    if (param.AccountId) params = params.append('AccountId', param.AccountId.toString());
-    if (param.SubAccountId) params = params.append('SubAccountId', param.SubAccountId.toString());
-    if (param.DailyId) params = params.append('DailyId', param.DailyId.toString());
-    if (param.FormDetailsId) params = params.append('FormDetailsId', param.FormDetailsId.toString());
-    if (param.CollageId) params = params.append('CollageId', param.CollageId.toString());
-    if (param.FundId) params = params.append('FundId', param.FundId.toString());
+    if (param.id) params = params.append('Id', param.id.toString());
+    if (param.accountId) params = params.append('AccountId', param.accountId.toString());
+    if (param.subAccountId) params = params.append('SubAccountId', param.subAccountId.toString());
+    if (param.dailyId) params = params.append('DailyId', param.dailyId.toString());
+    if (param.formDetailsId) params = params.append('FormDetailsId', param.formDetailsId.toString());
+    if (param.collageId) params = params.append('CollageId', param.collageId.toString());
+    if (param.fundId) params = params.append('FundId', param.fundId.toString());
     if (param.num55) params = params.set('num55', param.num55);
     if (param.num224) params = params.set('num224', param.num224);
+    if (param.dailyType) params = params.set('dailyType', param.dailyType);
+    if (param.startDate != null) {
+      params = params.append('startDate', this.dateProvider.stringToDateOnlyProvider(param.startDate.toString()));
+    }
+    if (param.endDate != null) {
+      params = params.append('endDate', this.dateProvider.stringToDateOnlyProvider(param.endDate.toString()));
+    }
 
     return this.http.get(`${this.apiUrl}Reports/ReportSubsidiaryJournalPdf`, { responseType: 'blob' as 'json', params: params });
   }

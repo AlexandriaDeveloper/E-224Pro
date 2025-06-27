@@ -13,6 +13,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
   declarations: [],
   imports: [
@@ -32,6 +33,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatExpansionModule,
     MatListModule,
     MatGridListModule,
+    MatMenuModule
 
   ]
 })

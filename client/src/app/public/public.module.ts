@@ -25,6 +25,8 @@ import { AddFundDialogComponent } from './fund-home/add-fund-dialog/add-fund-dia
 import { SubsidaryDailiesComponent } from './subsidary-dailies/subsidary-dailies.component';
 import { SubsidaryDailyComponent } from './subsidary-dailies/subsidary-daily/subsidary-daily.component';
 import { AddSubsidaryFormDetailsDialogComponent } from './subsidary-dailies/subsidary-daily/add-subsidary-form-details-dialog/add-subsidary-form-details-dialog.component';
+import { DownloadExcelTemplateDialogComponent } from './form/download-excel-template-dialog/download-excel-template-dialog.component';
+import { UploadExcelFormDialogComponent } from './form/upload-excel-form-dialog/upload-excel-form-dialog.component';
 
 
 
@@ -40,12 +42,14 @@ import { AddSubsidaryFormDetailsDialogComponent } from './subsidary-dailies/subs
 
     FormComponent,
     AddFormComponent,
+    DownloadExcelTemplateDialogComponent,
     AccountInfoDialogComponent,
     FundHomeComponent,
     AddFundDialogComponent,
     SubsidaryDailiesComponent,
     SubsidaryDailyComponent,
-    AddSubsidaryFormDetailsDialogComponent
+    AddSubsidaryFormDetailsDialogComponent, UploadExcelFormDialogComponent
+
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,42 @@
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <h2 mat-dialog-title class="delete-dialog-title" cdkDragHandle>
+        <button mat-icon-button (click)="onNoClick()" class="dialog-btn-close">
+            <mat-icon>close</mat-icon>
+        </button>
+        <span class="title">رفع ملف Excel</span>
+    </h2>
+
+    <mat-dialog-content class="form-dialog-content">
+        <form (ngSubmit)="onUpload()" class="upload-form">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>اختر ملف Excel</mat-label>
+                <input matInput [value]="fileName" placeholder="اختر ملف..." readonly>
+                <button mat-icon-button matSuffix (click)="fileInput.click()" type="button">
+                    <mat-icon>attach_file</mat-icon>
+                </button>
+                <input #fileInput type="file" accept=".xlsx,.xls" (change)="onFileSelected($event)" hidden>
+            </mat-form-field>
+
+            <div *ngIf="fileName" class="file-info">
+                <mat-icon color="primary">check_circle</mat-icon>
+                {{ fileName }}
+            </div>
+
+            <mat-progress-bar *ngIf="uploading" mode="indeterminate"></mat-progress-bar>
+            <div *ngIf="uploadSuccess" class="success-msg">
+                <mat-icon color="primary">check_circle</mat-icon>
+                تم رفع الملف بنجاح!
+            </div>
+            <div *ngIf="uploadError" class="error-msg">
+                <mat-icon color="warn">error</mat-icon>
+                حدث خطأ أثناء رفع الملف.
+            </div>
+        </form>
+    </mat-dialog-content>
+
+    <mat-dialog-actions style="display: flex; justify-content: center;padding: 15px !important;">
+        <button mat-raised-button color="primary" (click)="onUpload()" [disabled]="!selectedFile || uploading"
+            cdkFocusInitial>رفع الملف</button>
+        <button mat-raised-button (click)="onNoClick()" color="warn">اغلاق</button>
+    </mat-dialog-actions>
+</div>

@@ -1,0 +1,75 @@
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <h2 mat-dialog-title class="delete-dialog-title" cdkDragHandle>
+        <button mat-icon-button (click)="onNoClick()" class="dialog-btn-close">
+            <mat-icon>close</mat-icon>
+        </button>
+        <span class="title">إضافة يومي22ة</span>
+    </h2>
+    <mat-dialog-content class="form-dialog-content">
+
+
+        <form [formGroup]="downloadForm" (ngSubmit)="onSubmit()">
+            <div>
+
+
+
+
+
+
+                <div formArrayName="accounts">
+
+                    <div *ngFor="let account of fAccounts.controls; let i=index" [formGroupName]="i"
+                        style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <!-- <button mat-icon-button type="button" (click)="getAccount(i)">
+                            <mat-icon>more_vert</mat-icon>
+                        </button> -->
+                        <mat-form-field style="flex: 1;">
+                            <mat-label>كود الحساب</mat-label>
+
+                            <input matInput (blur)="getAccountName('debit',i,account.get('debitAccountNumber')?.value)"
+                                formControlName="debitAccountNumber" />
+                            <!-- 
+                            <mat-error *ngIf="account.get('accountNumber')?.hasError('required')">معرف الحساب
+                                مطلوب</mat-error> -->
+
+                        </mat-form-field>
+                        <mat-form-field style="flex: 4;">
+                            <mat-label>اسم الحساب الحساب</mat-label>
+                            <input matInput formControlName="debitAccountName" readonly />
+                            <mat-error> </mat-error>
+                        </mat-form-field>
+                        <mat-form-field style="flex: 1;">
+                            <mat-label>كود الحساب</mat-label>
+
+                            <input matInput
+                                (blur)="getAccountName('credit',i,account.get('creditAccountNumber')?.value)"
+                                formControlName="creditAccountNumber" />
+                            <!-- 
+                            <mat-error *ngIf="account.get('accountNumber')?.hasError('required')">معرف الحساب
+                                مطلوب</mat-error> -->
+
+                        </mat-form-field>
+                        <mat-form-field style="flex: 4;">
+                            <mat-label>اسم الحساب الحساب</mat-label>
+                            <input matInput formControlName="creditAccountName" readonly />
+                            <mat-error> </mat-error>
+                        </mat-form-field>
+
+
+
+                    </div>
+                    <div style="margin:10px 0px;">
+                        <button mat-flat-button color="primary" type="button" (click)="addAccountRow()">إضافة تفاصيل
+                            حساب</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions style="display: flex; justify-content: center;padding: 15px !important;">
+        <button mat-raised-button color="accent" (click)="onSubmit()" cdkFocusInitial>حفظ</button>
+        <button mat-raised-button (click)="onNoClick()" color="warn">اغلاق</button>
+
+    </mat-dialog-actions>

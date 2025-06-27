@@ -75,4 +75,15 @@ export class FormService {
       params: params
     });
   }
+
+  downloadDailyExcelFormTemplate(result) {
+    return this.http.post(`${this.apiUrl}Forms/DownloadTemplateExcelSheet`, result
+      , {
+        responseType: 'blob' as 'json',
+      },
+
+    );
+  }
+
+
 }

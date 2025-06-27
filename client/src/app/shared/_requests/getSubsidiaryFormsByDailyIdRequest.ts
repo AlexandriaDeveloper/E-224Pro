@@ -2,13 +2,16 @@ import { Param } from "./Param";
 
 export class GetSubsidiaryFormsByDailyIdRequest extends Param {
 
-    public Id?: number;
-    public AccountId?: number;
-    public SubAccountId?: number;
-    public DailyId?: number;
-    public FormDetailsId?: number;
-    public CollageId?: number;
-    public FundId?: number;
+    public id?: number;
+    public accountId?: number;
+    public subAccountId?: number;
+    public dailyId?: number;
+    public formDetailsId?: number;
+    public dailyType?: string;
+    public collageId?: number;
+    public fundId?: number;
     public num55: string;
     public num224: string;
+    public startDate?: Date;
+    public endDate?: Date;
 }

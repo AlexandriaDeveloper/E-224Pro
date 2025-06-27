@@ -2,8 +2,6 @@ using API.EndPoints.Daily;
 using API.EndPoints.FormDetails;
 using API.EndPoints.Reports;
 using API.Forms;
-using FastEndpoints;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Persistence.Extensions;
 using Scalar.AspNetCore;
@@ -43,6 +41,7 @@ builder.Services.AddCors(opt =>
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAntiforgery();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -73,6 +72,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
+
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
@@ -80,6 +80,6 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/content"
 });
 
-
+app.UseAntiforgery(); // Enable CSRF protection
 
 app.Run();

@@ -86,6 +86,11 @@ export class DailiesService {
     });
 
   }
+  uploadExcelForm(formData: FormData, dailyId: number) {
+    return this.http.post(`${this.apiUrl}dailies/${dailyId}/UploadExcelForm`, formData, {
+      responseType: 'blob' as 'json',
+    });
+  }
 
 
 }

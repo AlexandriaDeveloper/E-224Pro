@@ -20,6 +20,7 @@ export class DailiesSearchDialogComponent implements OnInit {
   accountItems = accountItems;
   searchForm: FormGroup;
   dailyParam: GetDailiesRequest = new GetDailiesRequest();
+  //range: { start: Date | null, end: Date | null } = { start: null, end: null };
   /**
    *
    */
@@ -46,6 +47,14 @@ export class DailiesSearchDialogComponent implements OnInit {
 
   onSubmit() {
     this.dailyParam = this.searchForm.value;
+    // if (this.range.start && this.range.end) {
+    //   this.dailyParam.startDate = this.range.start;
+    //   this.dailyParam.endDate = this.range.end;
+    // }
+
+
+    console.log(this.dailyParam);
+
     this.dialogRef.close(this.dailyParam);
 
   }

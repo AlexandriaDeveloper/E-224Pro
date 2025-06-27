@@ -1,0 +1,71 @@
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* Consistent spacing between elements */
+    padding: 24px;
+    /* Increased padding for more breathing room */
+    // background-color: var(--mat-dialog-container-background-color, #ffffff);
+    /* Use Material dialog background color */
+    border-radius: var(--mat-dialog-container-border-radius, 4px);
+    /* Use Material dialog border radius */
+    /* Removed explicit border and box-shadow to rely more on dialog container styling */
+}
+
+.full-width {
+    width: 100%;
+}
+
+.file-info,
+.success-msg,
+.error-msg {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* Slightly increased gap for icon and text */
+    font-weight: 500;
+    padding: 12px 16px;
+    /* Added horizontal padding */
+    border-radius: 4px;
+    word-break: break-all;
+    /* Prevent long file names from breaking layout */
+}
+
+.file-info {
+    color: var(--mat-primary-text-color, #1976d2);
+    /* Use Material primary text color */
+    background-color: var(--mat-primary-container-color, #e3f2fd);
+    /* Use Material primary container color */
+    border: 1px solid var(--mat-primary-border-color, #90caf9);
+    /* Use Material primary border color */
+}
+
+.success-msg {
+    color: var(--mat-success-text-color, #388e3c);
+    /* Use a semantic success color */
+    background-color: var(--mat-success-container-color, #e8f5e9);
+    /* Use a semantic success background */
+    border: 1px solid var(--mat-success-border-color, #a5d6a7);
+    /* Use a semantic success border */
+}
+
+.error-msg {
+    color: var(--mat-error-text-color, #d32f2f);
+    /* Use Material error text color */
+    background-color: var(--mat-error-container-color, #ffebee);
+    /* Use Material error container color */
+    border: 1px solid var(--mat-error-border-color, #ef9a9a);
+    /* Use Material error border color */
+}
+
+/* Style for the file input button within the mat-form-field */
+mat-form-field .mat-mdc-button.mat-icon-button {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+}
+
+/* Optional: Add some margin below the button if needed */
+.upload-form button[type="submit"] {
+    margin-top: 8px;
+}

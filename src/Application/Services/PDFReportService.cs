@@ -319,14 +319,7 @@ public class PDFReportService
                         table.Cell().Element(cell => subtotalStyle(cell, subtotalColor)).Scale(1.2f).Text(f.SubsidaryDetails.Sum(t => t.Credit).ToString()).SemiBold();
 
                       });
-                      if (c.Funds.Count > 0)
-                      {
-                        table.Cell().Element(cell => subtotalStyle(cell, totalColor)).Scale(1.2f).Text(" اجمالى " + c.CollageName).Bold();
-                        table.Cell().Element(cell => subtotalStyle(cell, totalColor)).Scale(1.2f).Text(string.Empty);
-                        table.Cell().Element(cell => subtotalStyle(cell, totalColor)).Scale(1.2f).Text(c.Debit.ToString()).Bold();
-                        table.Cell().Element(cell => subtotalStyle(cell, totalColor)).Scale(1.2f).Text("  اجمالى  " + c.CollageName).Bold();
-                        table.Cell().Element(cell => subtotalStyle(cell, totalColor)).Scale(1.2f).Text(c.Credit.ToString()).Bold();
-                      }
+
 
                     });
                   table.Cell().Element(cell => totalStyle(cell, GrandTotalColor)).Scale(1.2f).Text(string.Empty);

@@ -30,17 +30,18 @@ public class GetSubsidaryDailyBySpecification : Specification<FormDetails>
         {
             AddCriteries(x => x.Form!.FundId! == request.FundId);
         }
+        if (!request.DailyType.IsNullOrEmpty())
+        {
+
+            AddCriteries(x => x.Form.Daily.DailyType == request.DailyType);
+        }
 
         if (request.DailyId.HasValue)
         {
 
             AddCriteries(x => x.Form!.DailyId == request.DailyId.Value);
         }
-        if (!request.DailyType.IsNullOrEmpty())
-        {
 
-            AddCriteries(x => x.Form.DailyId == request.DailyId.Value);
-        }
         if (request.AccountId.HasValue)
         {
 

@@ -6,7 +6,8 @@ export class GetDailiesRequest extends Param {
     endDate? = null;
     dailyType?: string = null;
     accountItem?: string = null;
-    FundId: any;
+    FundId?: number;
+    collageId?: number;
     accountId?: number;
     dailyId?: number
 }

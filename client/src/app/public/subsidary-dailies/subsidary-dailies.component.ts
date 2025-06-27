@@ -7,6 +7,9 @@ import { CollageService } from '../../shared/services/collage.service';
 import { DailiesService } from '../../shared/services/dailies.service';
 import { ActivatedRoute } from '@angular/router';
 import { SubsidiaryService } from '../../shared/services/subsidiary.service';
+import { Fund } from '../../shared/_models/fund.model';
+import { FundService } from '../../shared/services/fund.service';
+import { GetSubsidiaryFormsByDailyIdRequest } from '../../shared/_requests/getSubsidiaryFormsByDailyIdRequest';
 
 @Component({
   selector: 'app-subsidary-dailies',
@@ -17,9 +20,11 @@ import { SubsidiaryService } from '../../shared/services/subsidiary.service';
 export class SubsidaryDailiesComponent implements OnInit {
   displayedColumns: string[] = ['action', 'id', 'name', 'dailyDate', 'dailyType', 'totalCredit', 'totalDebit', 'accountItem'];
   dataSource;
-  params: GetDailiesRequest = new GetDailiesRequest();
+  params: GetSubsidiaryFormsByDailyIdRequest = new GetSubsidiaryFormsByDailyIdRequest();
   route = inject(ActivatedRoute);
   subsidaryService = inject(SubsidiaryService);
+  collageService = inject(CollageService);
+  fundService = inject(FundService);
   daily: Daily = null;
   range: { start: Date | null, end: Date | null } = { start: null, end: null };
   length = 50;
@@ -29,7 +34,8 @@ export class SubsidaryDailiesComponent implements OnInit {
   pageEvent: PageEvent;
 
   collages: Collage[] = [];
-  collageService = inject(CollageService);
+  funds: Fund[] = []
+
 
 
   constructor() {
@@ -54,7 +60,15 @@ export class SubsidaryDailiesComponent implements OnInit {
     this.collageService.getCollages().subscribe((collages: Collage[]) => {
       console.log(collages);
       this.collages = collages;
+
     });
+  }
+  loadFunds(collageId) {
+    this.fundService.getFundsByCollageId(collageId).subscribe((funds: Fund[]) => {
+      console.log(funds);
+      this.funds = funds;
+    });
+
   }
   handlePageEvent(e: PageEvent) {
 
@@ -66,15 +80,22 @@ export class SubsidaryDailiesComponent implements OnInit {
     this.loadDailies(this.params);
   }
 
-  onDailyTypeChange(fundId) {
-    this.params.dailyType = fundId;
-    //this.filterdFunds = this.funds.filter(x => x.collageId == this.params.CollageId);
+  onDailyTypeChange(dailyType) {
+    this.params.dailyType = dailyType;
+
     //this.loadDailies(this.params);
+  }
+  onCollageChange(collageId) {
+    this.params.collageId = collageId;
+    this.loadFunds(collageId);
+  }
+  onFundsChange(fundId) {
+
+    this.params.fundId = fundId;
+
   }
   submit() {
 
-    this.params.startDate = this.range.start;
-    this.params.endDate = this.range.end;
     // if (this.range.start && this.range.end) {
     //   console.log('Start Date:', this.range.start);
     //   console.log('End Date:', this.range.end);
@@ -92,7 +113,19 @@ export class SubsidaryDailiesComponent implements OnInit {
 
 
 
+  onPrint() {
 
+    if (this.range.start && this.range.end) {
+      this.params.startDate = this.range.start;
+      this.params.endDate = this.range.end;
+    }
+    this.subsidaryService.downloadSubsidaryDailyPdf(this.params).subscribe((response: any) => {
+      const blob = new Blob([response], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url);
+    });
+
+  }
 
 
 }

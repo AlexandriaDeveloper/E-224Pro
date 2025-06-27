@@ -1,4 +1,3 @@
-
 using Application.Services;
 using FastEndpoints;
 using Shared.Contracts;
@@ -19,7 +18,15 @@ public static class Dailies
         dailiesGroup.MapGet("/", GetBySpecAsync);
         dailiesGroup.MapGet("/{id}", GetByIdAsync);
         dailiesGroup.MapDelete("delete/{id}", DeleteAsync);
+        ///dailies/${dailyId}/UploadExcelForm`
+        dailiesGroup.MapPost("/{dailyId}/UploadExcelForm", UploadExcelFormAsync).DisableAntiforgery();
         return app;
+    }
+
+    private static async Task UploadExcelFormAsync(DailyService service, int dailyId, IFormFile file, HttpContext context)
+    {
+
+        await service.UploadExcelFormAsync(dailyId, file, context);
     }
 
     private static async Task<IResult> DeleteAsync(DailyService service, int id)

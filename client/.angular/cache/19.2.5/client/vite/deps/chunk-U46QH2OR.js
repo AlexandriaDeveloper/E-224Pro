@@ -3,7 +3,7 @@ import {
 } from "./chunk-X3P5GA7C.js";
 import {
   MatCommonModule
-} from "./chunk-KGP56UED.js";
+} from "./chunk-YY2C6AUH.js";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -117,4 +117,4 @@ export {
   MatDivider,
   MatDividerModule
 };
-//# sourceMappingURL=chunk-A7PJWOZ3.js.map
+//# sourceMappingURL=chunk-U46QH2OR.js.map

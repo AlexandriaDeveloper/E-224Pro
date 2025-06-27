@@ -25,3 +25,18 @@ public class GetFormDetailsRequest : Param
     public DateOnly? EndTo { get; set; }
 
 }
+
+public class GetAccountDownloadTemplateRequest
+{
+    public List<AccountsDebitCreditDto> Accounts { get; set; } = new List<AccountsDebitCreditDto>();
+
+
+
+}
+public class AccountsDebitCreditDto
+{
+    public string? CreditAccountName { get; set; }
+    public string? CreditAccountNumber { get; set; }
+    public string? DebitAccountName { get; set; }
+    public string? DebitAccountNumber { get; set; }
+}

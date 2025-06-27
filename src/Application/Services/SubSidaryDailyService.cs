@@ -223,8 +223,9 @@ public class SubSidaryDailyService
     {
         var spec = new GetSubsidaryDailyBySpecification(request);
         var subs = _formDetailsRepository.GetQueryable(spec)
-            .Include(fd => fd.Form)
-            .Include(fd => fd.Account) // Make sure Account is included if needed
+            // .Include(fd => fd.Form)
+            // .Include(d => d.Form.Daily)
+            // .Include(fd => fd.Account) // Make sure Account is included if needed
             .ToList();
 
         var subsResult = subs

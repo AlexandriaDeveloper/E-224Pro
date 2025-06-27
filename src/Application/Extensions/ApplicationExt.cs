@@ -24,6 +24,8 @@ public static class ApplicationExt
         services.AddScoped<PDFReportService>();
         services.AddScoped<CollageService>();
         services.AddScoped<SubAccountService>();
+        services.AddScoped<ExcelService>();
+        //services.AddScoped<NpoiService>();
 
 
         return services;

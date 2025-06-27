@@ -9,6 +9,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../shared/components/dialog/delete-dialog/delete-dialog.component';
 import { FormSearchDialogComponent } from './form-search-dialog/form-search-dialog.component';
 import { FormResponse } from './form-response.interface';
+import { DownloadExcelTemplateDialogComponent } from './download-excel-template-dialog/download-excel-template-dialog.component';
+import { UploadExcelFormDialogComponent } from './upload-excel-form-dialog/upload-excel-form-dialog.component';
 
 @Component({
   selector: 'app-form',
@@ -151,17 +153,67 @@ export class FormComponent implements OnInit {
 
         const blob = new Blob([response], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = this.data.daily.name + '.pdf';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
+        window.open(url);
       },
       error: (error) => {
         console.error('Error downloading template:', error);
       }
     });
   }
+
+  openExcelTemplateDialog() {
+    const dialogRef = this.dialog.open(DownloadExcelTemplateDialogComponent, {
+      data: {
+        message: 'هل تريد تحميل نموذج اكسل لادخال بيانات اليوميه؟'
+      },
+      disableClose: true,
+      minHeight: '40vh',
+      minWidth: '60vw',
+      hasBackdrop: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.downloadExcelTemplate(result);
+      }
+    });
+  }
+
+
+  downloadExcelTemplate(result) {
+    // this.formService.downloadDailyExcelFormTemplate(result).subscribe({
+    //   next: (response: any) => {
+
+    //     //dowload excel file 
+
+    //     const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    //     const url = window.URL.createObjectURL(blob);
+    //     window.open(url);
+    //   },
+    //   error: (error) => {
+    //     console.error('Error downloading template:', error);
+    //   }
+    // });
+  }
+  openUploadExcelDialog() {
+    const dialogRef = this.dialog.open(UploadExcelFormDialogComponent, {
+      data: {
+        dailyId: this.id // Pass the dailyId
+      },
+      disableClose: true,
+      minHeight: '40vh',
+      minWidth: '60vw',
+      hasBackdrop: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.downloadExcelTemplate(result);
+      }
+    });
+  }
+  onNoClick(): void {
+    this.dialog.closeAll();
+  }
+
 }

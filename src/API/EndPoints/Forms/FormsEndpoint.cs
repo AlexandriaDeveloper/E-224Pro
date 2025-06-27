@@ -1,6 +1,7 @@
 using System;
 using Application.Services;
 using FastEndpoints;
+using Microsoft.AspNetCore.Mvc;
 using Shared.Contracts.FormDetailsRequest;
 using Shared.Contracts.FormRequests;
 using Shared.DTOs.FormDtos;
@@ -22,6 +23,7 @@ public static class Forms
         formGroup.MapGet("/", GetBySpecAsync);
         formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync);
         formGroup.MapGet("/{id}", GetByIdAsync);
+        formGroup.MapPost("/DownloadTemplateExcelSheet", DownloadTemplateExcelSheet);
         return app;
     }
 
@@ -66,5 +68,15 @@ public static class Forms
     {
         var form = await service.GetFormByIdAsync(id);
         return form == null ? TypedResults.NotFound() : TypedResults.Ok(form);
+    }
+
+    private static async Task<IResult> DownloadTemplateExcelSheet(ExcelService service, GetAccountDownloadTemplateRequest request, CancellationToken cancellationToken)
+    {
+        var excelBytes = await service.GenerateTemplateExcelSheet(request, cancellationToken);
+        if (excelBytes == null || excelBytes.Length == 0)
+        {
+            return Results.NotFound("No data found for the specified report criteria.");
+        }
+        return Results.File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "template.xlsx");
     }
 }

@@ -58,7 +58,7 @@ export class SubsidaryDailyComponent implements OnInit {
     this.loadCollages();
     this.loadFunds();
 
-    this.params.DailyId = this.dailyId;
+    this.params.dailyId = this.dailyId;
     this.loadForms(this.params);
   }
 
@@ -128,7 +128,7 @@ export class SubsidaryDailyComponent implements OnInit {
   onCollageIdChange(collageId) {
     console.log(collageId);
     this.filterdFunds = [];
-    this.params.CollageId = collageId;
+    this.params.collageId = collageId;
 
     if (collageId !== 0) {
       this.filterdFunds = this.funds.filter(x => x.collageId == collageId);
@@ -140,7 +140,7 @@ export class SubsidaryDailyComponent implements OnInit {
 
   }
   onFundIdChange(fundId) {
-    this.params.FundId = fundId;
+    this.params.fundId = fundId;
     //this.filterdFunds = this.funds.filter(x => x.collageId == this.params.CollageId);
 
   }
@@ -168,8 +168,8 @@ export class SubsidaryDailyComponent implements OnInit {
     this.loadForms(this.params);
   }
   onPrint() {
-    this.params.DailyId = this.dailyId;
-    this.params.AccountId = this.subsidaryId;
+    this.params.dailyId = this.dailyId;
+    this.params.accountId = this.subsidaryId;
     this.subsidaryService.downloadSubsidaryDailyPdf(this.params).subscribe((response: any) => {
       const blob = new Blob([response], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
