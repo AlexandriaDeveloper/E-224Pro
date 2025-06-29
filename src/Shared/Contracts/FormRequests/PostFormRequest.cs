@@ -16,6 +16,7 @@ public class PostFormRequest
     public string? Details { get; set; } = string.Empty;
 
     public int DailyId { get; set; }
+    public int EntryType { get; set; } = 0; // Default to NormalEntry
 
     public List<PostFormDetails>? FormDetails { get; set; }
 }

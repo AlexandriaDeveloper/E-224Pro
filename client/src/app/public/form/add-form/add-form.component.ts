@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, ElementRef, inject, OnInit, signal } from '@angular/core';
 import { FormService } from '../../../shared/services/form.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -34,6 +34,7 @@ export class AddFormComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly dialogRef = inject(MatDialogRef<AddFormComponent>);
   private readonly data = inject<any>(MAT_DIALOG_DATA);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   // Form related
   addForm: FormGroup;
@@ -43,28 +44,49 @@ export class AddFormComponent implements OnInit {
   // Data
   accounts: Account[] = [];
   funds: Fund[] = [];
-  totalCredit;
-  totalDebit;
+  totalCredit = signal(0);
+  totalDebit = signal(0);
   update = false;
 
   // Request objects
   private getAccountRequest = new GetAccountRequest();
 
   ngOnInit(): void {
+
     this.loadAccounts();
+
+    if (this.data.element === null) {
+      this.update = false;
+      this.data.element = {
+        id: 0,
+        formName: '',
+        collageId: 0,
+        fundId: 0,
+        num224: '',
+        num55: '',
+        auditorName: '',
+        details: '',
+        dailyId: this.data.param.DailyId,
+        entryType: 0,
+        formDetailsDto: []
+      } as FormDto;
+    }
+    else {
+      this.update = true;
+      this.data.param.DailyId = this.data.element.dailyId;
+      this.loadFunds(this.data.element.collageId);
+      this.loadFormDetails();
+
+    }
     this.initializeForm();
-    this.updateTotals();
+
+    this.fDetails.valueChanges.subscribe(() => {
+      this.updateTotals();
+    });
   }
 
   private initializeForm(): void {
-    console.log(this.data.element);
 
-    if (this.data.element) {
-      this.update = true;
-      this.formDetails = [];
-      this.loadFunds(this.data.element.collageId);
-      this.loadFormDetails();
-    }
     this.addForm = this.createForm();
     this.updateTotals();
   }
@@ -80,6 +102,7 @@ export class AddFormComponent implements OnInit {
       auditorName: [this.data.element?.auditorName || ''],
       details: [this.data.element?.details || ''],
       dailyId: [this.data.param.DailyId, Validators.required],
+      entryType: [this.data.element?.entryType || 0],
       formDetails: this.fb.array(this.formDetails.map(detail => this.createFormDetail(detail)))
     });
 
@@ -140,11 +163,12 @@ export class AddFormComponent implements OnInit {
 
     this.formService.getFormDetails(this.data.element.id).subscribe(
       (details: FormDetailDto[]) => {
-        console.log(details);
-        this.formDetails = details;
+
         details.forEach(detail => {
           this.fDetails.push(this.createFormDetail(detail));
         });
+        this.updateTotals();
+        this.cdr.detectChanges(); // <-- Fix ExpressionChangedAfterItHasBeenCheckedError
       }
     );
   }

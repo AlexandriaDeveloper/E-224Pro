@@ -58,6 +58,7 @@ public class GetSubsidartDailyRequest
     public string? AccountType { get; set; }
     public string? Num224 { get; set; }
     public string? Num55 { get; set; }
+    public int? EntryType { get; set; } // 0: عادى, 1: تصحيح, 2: سداد, 3: تسوية
 
 }
 

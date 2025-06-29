@@ -9,14 +9,15 @@
 
                 ));
         @include mat.form-field-overrides((filled-container-color:rgba($cool-gray, 0.8),
-                        filled-input-text-color:$blue-gray ,
+                        filled-input-text-color:$dark-gray,
                         filled-focus-active-indicator-color: $soft-orange,
                         filled-input-text-placeholder-color:rgba($blue-gray, 0.4),
 
                 ));
         @include mat.select-overrides((panel-background-color: rgba($light-gray, 1),
 
-                        enabled-trigger-text-color: $blue-gray,
+                        enabled-trigger-text-color: $dark-gray,
+
                 ));
         @include mat.button-overrides((filled-container-color: $soft-orange,
                         filled-label-text-color: $light-gray,
@@ -25,9 +26,10 @@
                         header-text-font:cairo,
                         header-text-size:18px,
                         header-text-weight:bold,
+
                         container-shape:0px));
 
-        @include mat.toolbar-overrides((container-background-color: $blue-gray,
+        @include mat.toolbar-overrides((container-background-color: $dark-gray,
                         container-text-color: $light-gray,
 
                         title-text-font:cairo));
@@ -41,12 +43,15 @@
                         header-headline-font:cairo,
                         row-item-outline-color:#000,
                         row-item-label-text-color:#000));
-
+        @include mat.paginator-overrides((container-text-color:rgba($dark-gray, 1.2),
+                        container-background-color: $light-gray,
+                ));
 
         .dark-mode {
                 @include mat.dialog-overrides((container-color: $night-blue,
 
                         ));
+
                 @include mat.theme((color:(primary: mat.$azure-palette,
 
                                         theme-type:dark)),
@@ -58,7 +63,7 @@
 
                         ));
 
-                @include mat.toolbar-overrides((container-background-color: $dark-slate,
+                @include mat.toolbar-overrides((container-background-color: $dark-orange,
                                 container-text-color: $cool-gray,
 
                                 title-text-font:cairo));
@@ -67,6 +72,9 @@
                                 row-item-outline-color:rgba($black, 0.2),
                                 header-headline-color:$cool-gray,
                                 row-item-label-text-color:$cool-gray ));
+                @include mat.paginator-overrides((container-text-color:$cool-gray,
+                                container-background-color: $night-blue,
+                        ));
                 @include mat.button-overrides((filled-container-color: $night-blue,
                                 filled-label-text-color: $cool-gray,
                         ));

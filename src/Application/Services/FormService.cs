@@ -49,6 +49,7 @@ public class FormService
             DailyId = request.DailyId,
             AuditorName = request.AuditorName,
             Details = request.Details,
+            EntryType = (Core.Constants.EntryTypeEnum)request.EntryType
 
         };
         await _formRepository.AddAsync(form);
@@ -75,37 +76,7 @@ public class FormService
 
         return form.Id;
     }
-    public async Task<int> TestCreate200FormAsync(CancellationToken cancellationToken = default)
-    {
 
-        List<Form> forms = new List<Form>();
-        for (int x = 1; x < 1000; x++)
-        {
-            for (int i = 0; i < 200; i++)
-            {
-                // var Random = new Random().Next(1, 1000);
-                var Random2 = new Random().Next(1, 6);
-
-                var form = new Core.Models.Form()
-                {
-                    FormName = $"Form {i + 1}",
-                    CollageId = 1,
-                    FundId = Random2,
-                    Num224 = (x * i).ToString(),
-                    Num55 = (x * i).ToString(),
-                    DailyId = x + 1,
-                    AuditorName = "Mohamed Ali",
-                    Details = "Hello world"
-                };
-                forms.Add(form);
-
-            }
-
-        }
-        await _formRepository.AddRange2Async(forms);
-        await _uow.CommitAsync(cancellationToken);
-        return 1;
-    }
 
     public async Task DeletFormAsync(int id, CancellationToken cancellationToken)
     {
@@ -164,6 +135,7 @@ public class FormService
                 Num55 = form.Num55,
                 DailyId = form.DailyId,
                 AuditorName = form.AuditorName,
+                EntryType = (int)form.EntryType,
                 Details = form.Details,
                 TotalCredit = form.TotalCredit.HasValue ? form.TotalCredit : null,
                 TotalDebit = form.TotalDebit.HasValue ? form.TotalDebit : null,
@@ -197,6 +169,9 @@ public class FormService
             DailyId = form.DailyId,
             AuditorName = form.AuditorName,
             Details = form.Details,
+            EntryType = (int)form.EntryType,
+            CollageName = form.Collage?.CollageName,
+            FundName = form.Fund?.FundName,
             TotalCredit = form.TotalCredit.HasValue ? form.TotalCredit : null,
             TotalDebit = form.TotalDebit.HasValue ? form.TotalDebit : null,
 
@@ -254,6 +229,14 @@ public class FormService
         if (!form.AuditorName.IsNullOrEmpty())
         {
             formFromDb.AuditorName = form.AuditorName;
+        }
+        if (form.EntryType.HasValue)
+        {
+            formFromDb.EntryType = (Core.Constants.EntryTypeEnum)form.EntryType.Value;
+        }
+        if (form.EntryType.HasValue)
+        {
+            formFromDb.EntryType = (Core.Constants.EntryTypeEnum)form.EntryType.Value;
         }
         if (!form.Details.IsNullOrEmpty())
         {

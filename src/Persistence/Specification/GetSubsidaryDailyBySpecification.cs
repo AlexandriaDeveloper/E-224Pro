@@ -1,3 +1,4 @@
+using Core.Constants;
 using Core.Models;
 using Microsoft.IdentityModel.Tokens;
 using Shared.DTOs.FormDtos;
@@ -42,8 +43,10 @@ public class GetSubsidaryDailyBySpecification : Specification<FormDetails>
             AddCriteries(x => x.Form!.DailyId == request.DailyId.Value);
         }
 
-        // Removed redundant AccountId criterion block
-
+        if (request.EntryType.HasValue)
+        {
+            AddCriteries(x => x.Form!.EntryType == (EntryTypeEnum)request.EntryType.Value);
+        }
         if (request.StartDate.HasValue)
         {
             AddCriteries(x => x.Form!.Daily!.DailyDate >= request.StartDate);

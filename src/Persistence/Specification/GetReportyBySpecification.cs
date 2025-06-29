@@ -1,6 +1,8 @@
 using Azure.Core;
+using Core.Constants;
 using Core.Models;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Constants.Enums;
 using Shared.Contracts.FormRequests;
 using Shared.Contracts.ReportRequest;
 
@@ -40,6 +42,10 @@ public class GetReportyBySpecification : Specification<FormDetails>
         if (request.EndDate.HasValue)
         {
             AddCriteries(x => x.Form!.Daily!.DailyDate <= request.EndDate);
+        }
+        if (request.EntryType.HasValue)
+        {
+            AddCriteries(x => x.Form!.EntryType == (EntryTypeEnum)request.EntryType.Value);
         }
 
         if (request.CollageId.HasValue)

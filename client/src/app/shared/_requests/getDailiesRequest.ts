@@ -9,5 +9,6 @@ export class GetDailiesRequest extends Param {
     FundId?: number;
     collageId?: number;
     accountId?: number;
+    entityType?: number = null;
     dailyId?: number
 }

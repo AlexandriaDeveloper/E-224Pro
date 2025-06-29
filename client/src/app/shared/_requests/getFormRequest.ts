@@ -22,4 +22,5 @@ export class GetFormRequest extends Param {
     public DailyId?: number;
     public AuditorName?: string;
     public Details?: string;
+    public EntryType?: number; // Assuming EntryType is an enum, you can use a number to represent it
 }

@@ -94,6 +94,12 @@ export class SubsidaryDailiesComponent implements OnInit {
     this.params.fundId = fundId;
 
   }
+  onEntryTypeChange(entryType) {
+    console.log('Selected Entry Type:', entryType);
+
+    this.params.entryType = entryType;
+    //this.loadDailies(this.params);
+  }
   submit() {
 
     // if (this.range.start && this.range.end) {
@@ -119,6 +125,8 @@ export class SubsidaryDailiesComponent implements OnInit {
       this.params.startDate = this.range.start;
       this.params.endDate = this.range.end;
     }
+    console.log(this.params);
+
     this.subsidaryService.downloadSubsidaryDailyPdf(this.params).subscribe((response: any) => {
       const blob = new Blob([response], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);

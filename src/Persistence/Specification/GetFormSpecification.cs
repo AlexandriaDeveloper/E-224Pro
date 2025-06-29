@@ -47,6 +47,10 @@ public class GetFormSpecification : Specification<Form>
         {
             AddCriteries(x => x.AuditorName!.Contains(request.AuditorName!));
         }
+        if (request.EntryType.HasValue)
+        {
+            AddCriteries(x => x.EntryType == (Core.Constants.EntryTypeEnum)request.EntryType.Value);
+        }
         if (!request.Details.IsNullOrEmpty())
         {
             AddCriteries(x => x.Details!.Contains(request.Details!));

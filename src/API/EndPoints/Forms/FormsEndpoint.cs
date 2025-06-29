@@ -17,7 +17,6 @@ public static class Forms
 
         formGroup.MapPost("/Creat", PostForm);
         formGroup.MapPost("/AddForm", AddForm);
-        formGroup.MapPost("/TestCreat", Post200Form);
         formGroup.MapPut("/Update/{id}", PutForm);
         formGroup.MapDelete("/{id}", DeleteForm);
         formGroup.MapGet("/", GetBySpecAsync);
@@ -43,11 +42,7 @@ public static class Forms
         var id = await service.CreateFormAsync(form, cancellationToken);
         return TypedResults.Created();
     }
-    private static async Task<IResult> Post200Form(FormService service, CancellationToken cancellationToken)
-    {
-        var id = await service.TestCreate200FormAsync(cancellationToken);
-        return TypedResults.Created();
-    }
+
     private static async Task<IResult> PutForm(FormService service, int id, PutFormRequest form, CancellationToken cancellationToken)
     {
         await service.UpdateFormAsync(id, form, cancellationToken);

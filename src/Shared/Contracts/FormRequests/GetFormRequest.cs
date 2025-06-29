@@ -12,6 +12,7 @@ public class GetFormRequest : Param
     public string? Num55 { get; set; }
     public int? DailyId { get; set; }
     public string? AuditorName { get; set; }
+    public int? EntryType { get; set; } // 0 for normal entry, 1 for reversed entry
     public string? Details { get; set; }
 
 

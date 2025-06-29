@@ -83,6 +83,8 @@ export class SubsidiaryService {
   }
 
   downloadSubsidaryDailyPdf(param: GetSubsidiaryFormsByDailyIdRequest) {
+    console.log(param);
+
     let params = new HttpParams();
 
     if (param.id) params = params.append('Id', param.id.toString());
@@ -95,6 +97,7 @@ export class SubsidiaryService {
     if (param.num55) params = params.set('num55', param.num55);
     if (param.num224) params = params.set('num224', param.num224);
     if (param.dailyType) params = params.set('dailyType', param.dailyType);
+    if (param.entryType != null) params = params.set('entryType', param.entryType.toString());
     if (param.startDate != null) {
       params = params.append('startDate', this.dateProvider.stringToDateOnlyProvider(param.startDate.toString()));
     }

@@ -11,6 +11,7 @@ public class PutFormRequest
     public int? CollageId { get; set; }
     public int? FundId { get; set; }
     public string? Num224 { get; set; }
+    public int? EntryType { get; set; } // 0 for normal entry, 1 for reversed entry
 
     public string? Num55 { get; set; }
     public int? DailyId { get; set; }

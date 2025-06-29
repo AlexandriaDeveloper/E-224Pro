@@ -13,4 +13,5 @@ export class ReportRequest {
   dailyType?: string;
   collageId?: number;
   fundId?: number;
+  entryType?: number
 }

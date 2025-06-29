@@ -14,4 +14,5 @@ export class GetSubsidiaryFormsByDailyIdRequest extends Param {
     public num224: string;
     public startDate?: Date;
     public endDate?: Date;
+    public entryType?: number;
 }

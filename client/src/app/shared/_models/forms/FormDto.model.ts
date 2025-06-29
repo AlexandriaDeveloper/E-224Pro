@@ -3,11 +3,12 @@ export class FormDto {
     formName: string;
     collageId: number;
     fundId: number;
-    num224: number;
-    num55: number;
+    num224: string;
+    num55: string;
     dailyId: number;
     auditorName: string;
     details: string;
+    entryType: number; // Added entryType field
     formDetailsDto: Array<FormDetailDto> = new Array<FormDetailDto>();
 }
 export class FormDetailDto {

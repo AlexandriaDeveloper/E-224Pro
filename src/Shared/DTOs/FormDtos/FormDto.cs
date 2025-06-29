@@ -26,6 +26,7 @@ public class FormDto
     public string Num224 { get; set; } = string.Empty;
     public string? AuditorName { get; set; }
     public string? Details { get; set; }
+    public int EntryType { get; set; }
 
     public string Num55 { get; set; } = string.Empty;
     public int DailyId { get; set; }

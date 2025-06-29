@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { accountItems, dailyTypes } from '../../../shared/_models/constants';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GetDailiesRequest } from '../../../shared/_requests/getDailiesRequest';
 import { Collage } from '../../../shared/_models/collage.model';
 import { FundService } from '../../../shared/services/fund.service';
@@ -37,8 +37,9 @@ export class DailiesReportDialogComponent implements OnInit {
   initilizeForm() {
     return this.fb.group({
 
-      startDate: [this.data.param.startDate],
-      endDate: [this.data.param.endDate],
+      startDate: [this.data.param.startDate, Validators.required],
+      endDate: [this.data.param.endDate, Validators.required],
+      entryType: [this.data.param.entryType],
 
       dailyType: [this.data.param.dailyType],
       collageId: [this.data.param.collageId],

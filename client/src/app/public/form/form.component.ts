@@ -25,7 +25,7 @@ export class FormComponent implements OnInit {
   params = new GetFormRequest();
   readonly panelOpenState = signal(false);
 
-  displayedColumns: string[] = ['action', 'id', 'num224', 'num55', 'formName', 'collageName', 'fundName', 'totalDebit', 'totalCredit', 'isBalanced', 'auditorName'];
+  displayedColumns: string[] = ['action', 'id', 'num224', 'num55', 'formName', 'collageName', 'fundName', 'entryType', 'totalDebit', 'totalCredit', 'isBalanced'];
   dataSource: any[] = [];
   originalDataSource: any[] = [];
   lastSearchedDataSource: any[] = []; // Track last searched data
@@ -128,6 +128,8 @@ export class FormComponent implements OnInit {
     this.loadForms(this.params);
   }
   openAddFormDialog(element: any = null) {
+
+
     const dialogRef = this.dialog.open(AddFormComponent, {
       data: {
         param: this.params,
@@ -208,7 +210,7 @@ export class FormComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.downloadExcelTemplate(result);
+        this.loadForms(this.params);
       }
     });
   }

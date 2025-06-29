@@ -37,7 +37,11 @@
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
+                    <mat-error *ngIf="searchForm.get('startDate')?.hasError('required')">Start date is
+                        required</mat-error>
+                    <mat-error *ngIf="searchForm.get('endDate')?.hasError('required')">End date is required</mat-error>
                 </mat-form-field>
+
             </div>
             <div style="display: flex; justify-content: space-between;">
 
@@ -74,6 +78,17 @@
                         @for (fund of funds; track fund.id) {
                         <mat-option [value]="fund.id">{{fund.fundName}}</mat-option>
                         }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field style="width: 100%;">
+                    <mat-label> نوع القيد </mat-label>
+                    <mat-select formControlName="entryType">
+                        <mat-option>الكل</mat-option>
+                        <mat-option [value]="0">قيد عادى</mat-option>
+                        <mat-option [value]="1">قيد تصحيح</mat-option>
+                        <mat-option [value]="2">قيد سداد</mat-option>
+                        <mat-option [value]="3">قيد تسوية</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>

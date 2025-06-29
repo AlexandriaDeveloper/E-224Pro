@@ -273,6 +273,12 @@ public class SubSidaryDailyService
                 };
             }).ToList();
 
+
+        // If no results, return empty SubsidaryDailyReportDto
+        if (subsResult is null || !subsResult.Any())
+        {
+            return new SubsidaryDailyReportDto();
+        }
         return new SubsidaryDailyReportDto()
         {
             CollageName = request.CollageId.HasValue ? _collageRepository.GetById(request.CollageId.Value).Result.CollageName : "الكل",
@@ -283,18 +289,18 @@ public class SubSidaryDailyService
             Collages = subsResult,
 
             TotalSubsidaries = subsResult
-                .SelectMany(x => x.Funds)
-                .SelectMany(x => x.SubsidaryDetails)
-                .GroupBy(x => x.SubsidaryId)
-                .Select(x => new SubsidaryDailyDetailsReportDto()
-                {
-                    SubsidaryId = x.Key,
-                    SubsidaryName = x.FirstOrDefault()?.SubsidaryName ?? string.Empty,
+                    .SelectMany(x => x.Funds)
+                    .SelectMany(x => x.SubsidaryDetails)
+                    .GroupBy(x => x.SubsidaryId)
+                    .Select(x => new SubsidaryDailyDetailsReportDto()
+                    {
+                        SubsidaryId = x.Key,
+                        SubsidaryName = x.FirstOrDefault()?.SubsidaryName ?? string.Empty,
 
-                    SubsidaryNumber = x.FirstOrDefault()?.SubsidaryNumber ?? string.Empty,
-                    Credit = x.Sum(j => j.Credit ?? 0),
-                    Debit = x.Sum(j => j.Debit ?? 0)
-                }).OrderBy(x => x.SubsidaryNumber).ToList()
+                        SubsidaryNumber = x.FirstOrDefault()?.SubsidaryNumber ?? string.Empty,
+                        Credit = x.Sum(j => j.Credit ?? 0),
+                        Debit = x.Sum(j => j.Debit ?? 0)
+                    }).OrderBy(x => x.SubsidaryNumber).ToList()
         };
     }
 }

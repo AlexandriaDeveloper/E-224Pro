@@ -276,7 +276,9 @@ public class DailyService
                     Id = maxFormDetailsId++,
                     //try parse to decimal if not then skip it
                     Debit = decimal.TryParse(row[i].ToString().Trim(), out var debitValue) ? debitValue : 0,
-                    AccountId = int.Parse(sheetHeader1[i])
+                    AccountId = int.Parse(sheetHeader1[i]),
+                    CreatedDate = DateTime.UtcNow,
+
 
                 });
 
@@ -293,7 +295,9 @@ public class DailyService
                     Id = maxFormDetailsId++,
                     //try parse to decimal if not then skip it
                     Credit = decimal.TryParse(row[i].ToString().Trim(), out var creditValue) ? creditValue : 0,
-                    AccountId = int.Parse(sheetHeader1[i])
+                    AccountId = int.Parse(sheetHeader1[i]),
+                    CreatedDate = DateTime.UtcNow,
+
                 });
             }
             form.TotalDebit = form.FormDetails.Where(x => x.Debit > 0).Sum(x => x.Debit);

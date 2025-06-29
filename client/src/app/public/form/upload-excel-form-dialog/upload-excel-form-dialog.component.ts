@@ -60,8 +60,9 @@ export class UploadExcelFormDialogComponent implements OnInit {
         this.uploadSuccess = true;
         this.selectedFile = null;
         this.fileName = '';
+
         // Optionally close the dialog on success
-        // this.dialogRef.close(true);
+        this.dialogRef.close(true);
       },
       error: () => {
         this.uploading = false;

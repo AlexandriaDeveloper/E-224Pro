@@ -32,6 +32,19 @@
             </mat-select>
         </mat-form-field>
 
+        <mat-form-field appearance="fill">
+            <mat-label>نوع القيد</mat-label>
+            <mat-select (selectionChange)="onEntryTypeChange($event.value)">
+                <mat-option> كل الأنواع </mat-option>
+                <mat-option [value]="0">قيد عادى</mat-option>
+                <mat-option [value]="1">قيد تصحيح</mat-option>
+                <mat-option [value]="2">قيد سداد</mat-option>
+                <mat-option [value]="3">قيد تسويه</mat-option>
+            </mat-select>
+
+        </mat-form-field>
+
+
 
         <!-- mat date range-->
         <mat-form-field>

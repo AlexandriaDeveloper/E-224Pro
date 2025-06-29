@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Core.Constants;
 
 namespace Core.Models;
 
@@ -24,9 +25,8 @@ public class Form : BaseEntity
     public string? AuditorName { get; set; }
     [MaxLength(500)]
     public string? Details { get; set; }
-
-
-
+    [MaxLength(50)]
+    public EntryTypeEnum EntryType { get; set; } = EntryTypeEnum.NormalEntry;
     public virtual Fund? Fund { get; set; }
     public virtual Daily? Daily { get; set; }
     public virtual List<FormDetails> FormDetails { get; set; } = new List<FormDetails>();

@@ -76,7 +76,8 @@ public class ReportService
             CollageId = getAccountsBalanceByAccount.CollageId,
             FundId = getAccountsBalanceByAccount.FundId,
             DailyType = getAccountsBalanceByAccount.DailyType,
-            AccountItem = getAccountsBalanceByAccount.AccountItem
+            AccountItem = getAccountsBalanceByAccount.AccountItem,
+            EntryType = getAccountsBalanceByAccount.EntryType,
         };
         var spec2 = new GetReportyBySpecification(FullAccountsParam);
         var accountsBalance = await _formDetailsRepository.GetQueryable(spec2)

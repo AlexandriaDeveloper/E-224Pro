@@ -73,6 +73,9 @@ export class DailiesService {
     if (getDailiesReportRequest.dailyType != null) {
       params = params.append('dailyType', getDailiesReportRequest.dailyType);
     }
+    if (getDailiesReportRequest.entryType != null) {
+      params = params.append('entryType', getDailiesReportRequest.entryType);
+    }
     if (getDailiesReportRequest.collageId != null) {
       params = params.append('collageId', getDailiesReportRequest.collageId);
     }

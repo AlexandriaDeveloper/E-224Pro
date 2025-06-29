@@ -49,6 +49,9 @@ export class FormService {
     if (getFormParam.Details != null) {
       params = params.append('Details', getFormParam.Details);
     }
+    if (getFormParam.EntryType != null) {
+      params = params.append('EntryType', getFormParam.EntryType.toString());
+    }
     if (getFormParam.pageIndex != null) {
       params = params.append('pageIndex', getFormParam.pageIndex.toString());
     }

@@ -7,7 +7,7 @@ public class GetSubSidiaryBalanceBy
     public int? FundId { get; set; }
     public int? CollageId { get; set; }
 
-
+    public int? EntryType { get; set; }
     public DateOnly? StartDate { get; set; }
     public DateOnly? EndDate { get; set; }
     public int? FormDetailsId { get; set; }

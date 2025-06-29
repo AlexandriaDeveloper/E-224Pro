@@ -52,6 +52,10 @@ public class GetSubsidiaryReportyBySpecification : Specification<SubsidiaryJourn
 
             AddCriteries(x => x.FormDetails.FormId == request.FormId.Value);
         }
+        // if (request.EntryType.HasValue)
+        // {
+        //     AddCriteries(x => x.FormDetails.Form!.EntryType == request.EntryType.Value);
+        // }
         if (request.FormDetailsId.HasValue)
         {
             AddCriteries(x => x.FormDetailsId == request.FormDetailsId);

@@ -1,4 +1,4 @@
-<div *ngIf="data">
+<!-- <div *ngIf="data">
     <mat-accordion>
         <mat-expansion-panel>
             <mat-expansion-panel-header>
@@ -35,7 +35,7 @@
         </mat-expansion-panel>
 
     </mat-accordion>
-</div>
+</div> -->
 
 <div *ngIf="data" class="table-container">
 
@@ -157,9 +157,18 @@
         </ng-container>
 
         <!-- Symbol Column -->
-        <ng-container matColumnDef="auditorName">
-            <th mat-header-cell *matHeaderCellDef> المراجع </th>
-            <td mat-cell *matCellDef="let element"> {{element.auditorName}} </td>
+        <ng-container matColumnDef="entryType">
+            <th mat-header-cell *matHeaderCellDef> نوع القيد </th>
+            <td mat-cell *matCellDef="let element">
+                @if(element.entryType==0)
+                {<span>قيد عادى</span>}
+                @else if(element.entryType==1)
+                {<span>قيد تصحيح</span>}
+                @else if(element.entryType==2)
+                { <span>قيد سداد</span>}
+                @else if(element.entryType==3)
+                {<span>قيد تسويه</span>}
+            </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
