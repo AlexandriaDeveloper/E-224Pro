@@ -141,21 +141,8 @@ public class FormDetailsService
 
     public async Task<List<FormDetailDto>> GetByFormIdAsync(int formId, CancellationToken cancellationToken)
     {
-        // var form = await _formRepository.GetById(formId);
         var formDetails = await _formDetailsRepository.GetByFormId(formId);
         var result = new List<FormDetailDto>();
-        // result.Id = formId;
-        // result.Num224 = form!.Num224!;
-        // result.FormName = form.FormName;
-        // result.Num55 = form.Num55!;
-        // result.DailyId = form.DailyId;
-        // result.AuditorName = form.AuditorName;
-        // result.TotalDebit = form.TotalDebit;
-        // result.TotalCredit = form.TotalCredit;
-
-
-
-
 
         result = formDetails!.Select(x => new FormDetailDto()
         {

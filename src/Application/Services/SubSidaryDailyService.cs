@@ -221,39 +221,54 @@ public class SubSidaryDailyService
     }
     public async Task<SubsidaryDailyReportDto> GetSubsidaryDaily(GetSubsidartDailyRequest request)
     {
+        var (collages, funds, accounts) = await LoadRequiredDataAsync();
         var spec = new GetSubsidaryDailyBySpecification(request);
-        var subs = _formDetailsRepository.GetQueryable(spec)
-            // .Include(fd => fd.Form)
-            // .Include(d => d.Form.Daily)
-            // .Include(fd => fd.Account) // Make sure Account is included if needed
-            .ToList();
+        var subs = _formDetailsRepository.GetQueryable(spec).ToList();
 
-        var subsResult = subs
+        if (!subs.Any())
+        {
+            return BuildEmptyReportDto(request, collages, funds, accounts);
+        }
+
+        var subsResult = BuildSubsidiaryCollageReport(subs, collages, funds);
+        var totalSubsidaries = CalculateTotalSubsidaries(subsResult);
+
+        return BuildFinalReportDto(request, collages, funds, accounts, subs, subsResult, totalSubsidaries);
+    }
+
+    private async Task<(IEnumerable<Collage> collages, IEnumerable<Fund> funds, IEnumerable<Account> accounts)> LoadRequiredDataAsync()
+    {
+        var collages = await _collageRepository.GetAll(null);
+        var funds = await _fundRepository.GetAll(null);
+        var accounts = await _accountRepository.GetAll(null);
+        return (collages, funds, accounts);
+    }
+
+    private List<SubsidaryDailyCollageReportDto> BuildSubsidiaryCollageReport(List<FormDetails> subs, IEnumerable<Collage> collages, IEnumerable<Fund> funds)
+    {
+        return subs
             .GroupBy(x => x.Form?.CollageId)
-            .Select(x =>
+            .Select(collageGroup =>
             {
-                var collageId = x.Key;
-
-                var collage = collageId.HasValue ? _collageRepository.GetById(collageId.Value).Result : null;
+                var collageId = collageGroup.Key;
+                var collage = collageId.HasValue ? collages.SingleOrDefault(c => c.Id == collageId.Value) : null;
                 return new SubsidaryDailyCollageReportDto
                 {
                     CollageId = collageId ?? 0,
                     CollageName = collage?.CollageName ?? string.Empty,
-
-                    Funds = x.GroupBy(y => y.Form?.FundId)
-                        .Where(y => y.Key.HasValue)
-                        .Select(y =>
+                    Funds = collageGroup.GroupBy(y => y.Form?.FundId)
+                        .Where(fundGroup => fundGroup.Key.HasValue)
+                        .Select(fundGroup =>
                         {
-                            var fundId = y.Key.Value;
-                            var fund = _fundRepository.GetById(fundId).Result;
+                            var fundId = fundGroup.Key.Value;
+                            var fund = funds.SingleOrDefault(f => f.Id == fundId);
                             return new SubsidaryDailyFundsReportDto()
                             {
-                                AccountId = y.FirstOrDefault().AccountId,
-                                AccountName = y.FirstOrDefault().Account.AccountName ?? string.Empty,
+                                AccountId = fundGroup.FirstOrDefault().AccountId,
+                                AccountName = fundGroup.FirstOrDefault().Account.AccountName ?? string.Empty,
                                 FundId = fundId,
                                 FundName = fund?.FundName ?? string.Empty,
-                                SubsidaryDetails = subs
-                                    .Where(fd => fd.Form?.FundId == fundId)
+                                SubsidaryDetails = fundGroup
                                     .SelectMany(fd => fd.SubsidiaryJournals ?? new List<SubsidiaryJournal>())
                                     .GroupBy(j => j.SubAccountId)
                                     .Select(g =>
@@ -272,35 +287,49 @@ public class SubSidaryDailyService
                         }).ToList()
                 };
             }).ToList();
+    }
 
+    private List<SubsidaryDailyDetailsReportDto> CalculateTotalSubsidaries(List<SubsidaryDailyCollageReportDto> subsResult)
+    {
+        return subsResult
+            .SelectMany(x => x.Funds)
+            .SelectMany(x => x.SubsidaryDetails)
+            .GroupBy(x => x.SubsidaryId)
+            .Select(x => new SubsidaryDailyDetailsReportDto()
+            {
+                SubsidaryId = x.Key,
+                SubsidaryName = x.FirstOrDefault()?.SubsidaryName ?? string.Empty,
+                SubsidaryNumber = x.FirstOrDefault()?.SubsidaryNumber ?? string.Empty,
+                Credit = x.Sum(j => j.Credit ?? 0),
+                Debit = x.Sum(j => j.Debit ?? 0)
+            }).OrderBy(x => x.SubsidaryNumber).ToList();
+    }
 
-        // If no results, return empty SubsidaryDailyReportDto
-        if (subsResult is null || !subsResult.Any())
-        {
-            return new SubsidaryDailyReportDto();
-        }
+    private SubsidaryDailyReportDto BuildEmptyReportDto(GetSubsidartDailyRequest request, IEnumerable<Collage> collages, IEnumerable<Fund> funds, IEnumerable<Account> accounts)
+    {
         return new SubsidaryDailyReportDto()
         {
-            CollageName = request.CollageId.HasValue ? _collageRepository.GetById(request.CollageId.Value).Result.CollageName : "الكل",
-            FundName = request.FundId.HasValue ? _fundRepository.GetById(request.FundId.Value).Result.FundName : "الكل",
+            CollageName = request.CollageId.HasValue ? collages.SingleOrDefault(x => x.Id == request.CollageId.Value)?.CollageName : "الكل",
+            FundName = request.FundId.HasValue ? (funds.SingleOrDefault(x => x.Id == request.FundId.Value)?.FundName ?? string.Empty) : "الكل",
+            Daily = string.Empty,
+            AccountType = !request.AccountType.IsNullOrEmpty() ? request.AccountType : "الكل",
+            AccountName = request.AccountId.HasValue ? accounts.SingleOrDefault(x => x.Id == request.AccountId.Value)?.AccountName : "الكل",
+            Collages = new List<SubsidaryDailyCollageReportDto>(),
+            TotalSubsidaries = new List<SubsidaryDailyDetailsReportDto>()
+        };
+    }
+
+    private SubsidaryDailyReportDto BuildFinalReportDto(GetSubsidartDailyRequest request, IEnumerable<Collage> collages, IEnumerable<Fund> funds, IEnumerable<Account> accounts, List<FormDetails> subs, List<SubsidaryDailyCollageReportDto> subsResult, List<SubsidaryDailyDetailsReportDto> totalSubsidaries)
+    {
+        return new SubsidaryDailyReportDto()
+        {
+            CollageName = request.CollageId.HasValue ? collages.Single(x => x.Id == request.CollageId.Value)?.CollageName : "الكل",
+            FundName = request.FundId.HasValue ? (funds.SingleOrDefault(x => x.Id == request.FundId.Value)?.FundName ?? string.Empty) : "الكل",
             Daily = subs.FirstOrDefault().Form.Daily.Name,
             AccountType = !request.AccountType.IsNullOrEmpty() ? request.AccountType : "الكل",
-            AccountName = request.AccountId.HasValue ? _accountRepository.GetById(request.AccountId.Value).Result.AccountName : "الكل",
+            AccountName = request.AccountId.HasValue ? accounts.Single(x => x.Id == request.AccountId.Value)?.AccountName : "الكل",
             Collages = subsResult,
-
-            TotalSubsidaries = subsResult
-                    .SelectMany(x => x.Funds)
-                    .SelectMany(x => x.SubsidaryDetails)
-                    .GroupBy(x => x.SubsidaryId)
-                    .Select(x => new SubsidaryDailyDetailsReportDto()
-                    {
-                        SubsidaryId = x.Key,
-                        SubsidaryName = x.FirstOrDefault()?.SubsidaryName ?? string.Empty,
-
-                        SubsidaryNumber = x.FirstOrDefault()?.SubsidaryNumber ?? string.Empty,
-                        Credit = x.Sum(j => j.Credit ?? 0),
-                        Debit = x.Sum(j => j.Debit ?? 0)
-                    }).OrderBy(x => x.SubsidaryNumber).ToList()
+            TotalSubsidaries = totalSubsidaries
         };
     }
 }
