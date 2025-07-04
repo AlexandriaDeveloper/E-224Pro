@@ -10,16 +10,16 @@ public static class ReportsEndpoint
 {
     public static WebApplication MapReportEndPoint(this WebApplication app)
     {
-        var formGroup = app.MapGroup("Reports");
+        var formGroup = app.MapGroup("Reports").RequireAuthorization();
 
 
         // formGroup.MapPost("/Creat", PostForm);
         // formGroup.MapPost("/TestCreat", Post200Form);
         // formGroup.MapPut("/Update/{id}", PutForm);
         // formGroup.MapDelete("/Delete/{id}", DeleteForm);
-        formGroup.MapGet("/ReportFormDetails", GetFormDetailsBySpecAsync);
-        formGroup.MapGet("/ReportSubsidiaryJournalPdf", DownloadSubsidiaryReport);
-        formGroup.MapGet("/ReportPdf", DownloadReports);
+        formGroup.MapGet("/ReportFormDetails", GetFormDetailsBySpecAsync).RequireAuthorization(); ;
+        formGroup.MapGet("/ReportSubsidiaryJournalPdf", DownloadSubsidiaryReport).RequireAuthorization(); ;
+        formGroup.MapGet("/ReportPdf", DownloadReports).RequireAuthorization(); ;
 
         // formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync);
         // formGroup.MapGet("/{id}", GetByIdAsync);

@@ -27,6 +27,8 @@ import { SubsidaryDailyComponent } from './subsidary-dailies/subsidary-daily/sub
 import { AddSubsidaryFormDetailsDialogComponent } from './subsidary-dailies/subsidary-daily/add-subsidary-form-details-dialog/add-subsidary-form-details-dialog.component';
 import { DownloadExcelTemplateDialogComponent } from './form/download-excel-template-dialog/download-excel-template-dialog.component';
 import { UploadExcelFormDialogComponent } from './form/upload-excel-form-dialog/upload-excel-form-dialog.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 
 
@@ -48,7 +50,8 @@ import { UploadExcelFormDialogComponent } from './form/upload-excel-form-dialog/
     AddFundDialogComponent,
     SubsidaryDailiesComponent,
     SubsidaryDailyComponent,
-    AddSubsidaryFormDetailsDialogComponent, UploadExcelFormDialogComponent
+    AddSubsidaryFormDetailsDialogComponent, UploadExcelFormDialogComponent,
+    LoginComponent, RegisterComponent
 
   ],
   imports: [

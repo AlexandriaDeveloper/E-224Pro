@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="FastEndpoints" Version="5.34.0.17-beta" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.2" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.0.20" />

@@ -6,6 +6,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { AuthService } from '../../services/auth.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-header',
   imports: [
@@ -16,7 +20,9 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
     MatIconModule,
     MatToolbarModule,
     MatMenuModule,
-    MatSlideToggle
+    MatSlideToggle,
+    CommonModule,
+    RouterModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
@@ -24,7 +30,8 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.isDarkMode = localStorage.getItem('isDarkMode') === 'true';
-    console.log(this.isDarkMode);
+    //auth service
+
 
     if (this.isDarkMode === false) {
       localStorage.setItem('isDarkMode', 'false');
@@ -35,6 +42,23 @@ export class HeaderComponent implements OnInit {
       document.body.classList.add('dark-mode');
 
     }
+    //get username if user is logged in
+    // if (this.authService.isLoggedIn()) {
+    //   this.authService.currentUser$.subscribe(user => {
+    //     if (user) {
+    //       console.log('user from auth service:', user);
+    //       console.log(this.authService.getUserRoles());
+    //       this.username = user.username;
+    //     }
+    //   });
+    // } else {
+    //   this.username = '';
+    // }
+  }
+  constructor(public authService: AuthService) {
+
+
+
   }
 
   @Input() username: string = ''; // اسم المستخدم من المكون الأب
@@ -50,6 +74,8 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     console.log('تسجيل الخروج');
+    this.authService.logout();
+    this.username = ''; // إعادة تعيين اسم المستخدم عند تسجيل الخروج
     // أضف منطق تسجيل الخروج هنا
   }
   toggleSidenavEmitter() {

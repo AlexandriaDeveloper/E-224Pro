@@ -1,0 +1,16 @@
+<div class="login-container">
+    <form (ngSubmit)="login()" class="login-form mat-elevation-z4">
+        <h2 class="login-title">تسجيل الدخول</h2>
+        <div *ngIf="error" class="error mat-elevation-z2">{{ error }}</div>
+        <mat-form-field appearance="outline" class="login-field">
+            <mat-label>اسم المستخدم</mat-label>
+            <input matInput [(ngModel)]="username" name="username" required autocomplete="username" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="login-field">
+            <mat-label>كلمة المرور</mat-label>
+            <input matInput [(ngModel)]="password" name="password" type="password" required
+                autocomplete="current-password" />
+        </mat-form-field>
+        <button mat-flat-button color="primary" type="submit" class="login-btn">دخول</button>
+    </form>
+</div>

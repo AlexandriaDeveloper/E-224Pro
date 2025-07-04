@@ -12,14 +12,16 @@ public class GetAccountSpecification : Specification<Account>
         {
             AddCriteries(x => x.Id == request.Id!.Value);
         }
-        if (!request.AccountName.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.AccountName))
         {
-            AddCriteries(x => x.AccountName!.Contains(request.AccountName!));
+            AddCriteries(x => x.AccountName == request.AccountName!);
         }
-        if (!request.AccountNumber.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.AccountNumber))
         {
-            AddCriteries(x => x.AccountNumber!.Contains(request.AccountNumber!));
+            AddCriteries(x => x.AccountNumber == request.AccountNumber!);
         }
+
+
 
     }
 }

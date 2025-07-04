@@ -1,7 +1,6 @@
 using Azure.Core;
 using Core.Constants;
 using Core.Models;
-using Microsoft.IdentityModel.Tokens;
 using Shared.Constants.Enums;
 using Shared.Contracts.FormRequests;
 using Shared.Contracts.ReportRequest;
@@ -30,7 +29,7 @@ public class GetReportyBySpecification : Specification<FormDetails>
             AddCriteries(x => x.Form!.Daily!.DailyDate.Month == request.ByMonth && x.Form.Daily.DailyDate.Year == request.ByYear);
         }
 
-        if (!request.AccountItem.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.AccountItem))
         {
             AddCriteries(x => x.Form!.Daily!.AccountItem == request.AccountItem);
         }

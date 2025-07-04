@@ -41,12 +41,12 @@ public class GetSubsidaryFormsSpecification : Specification<Form>
         {
             AddCriteries(x => x.FundId! == request.FundId.Value);
         }
-        if (!request.Num55.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.Num55))
         {
             AddCriteries(x => x.Num55! == request.Num55);
 
         }
-        if (!request.Num224.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.Num224))
         {
             AddCriteries(x => x.Num224! == request.Num224);
 

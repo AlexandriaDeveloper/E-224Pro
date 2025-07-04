@@ -312,7 +312,7 @@ public class SubSidaryDailyService
             CollageName = request.CollageId.HasValue ? collages.SingleOrDefault(x => x.Id == request.CollageId.Value)?.CollageName : "الكل",
             FundName = request.FundId.HasValue ? (funds.SingleOrDefault(x => x.Id == request.FundId.Value)?.FundName ?? string.Empty) : "الكل",
             Daily = string.Empty,
-            AccountType = !request.AccountType.IsNullOrEmpty() ? request.AccountType : "الكل",
+            AccountType = !string.IsNullOrEmpty(request.AccountType) ? request.AccountType : "الكل",
             AccountName = request.AccountId.HasValue ? accounts.SingleOrDefault(x => x.Id == request.AccountId.Value)?.AccountName : "الكل",
             Collages = new List<SubsidaryDailyCollageReportDto>(),
             TotalSubsidaries = new List<SubsidaryDailyDetailsReportDto>()
@@ -326,7 +326,7 @@ public class SubSidaryDailyService
             CollageName = request.CollageId.HasValue ? collages.Single(x => x.Id == request.CollageId.Value)?.CollageName : "الكل",
             FundName = request.FundId.HasValue ? (funds.SingleOrDefault(x => x.Id == request.FundId.Value)?.FundName ?? string.Empty) : "الكل",
             Daily = subs.FirstOrDefault().Form.Daily.Name,
-            AccountType = !request.AccountType.IsNullOrEmpty() ? request.AccountType : "الكل",
+            AccountType = !string.IsNullOrEmpty(request.AccountType) ? request.AccountType : "الكل",
             AccountName = request.AccountId.HasValue ? accounts.Single(x => x.Id == request.AccountId.Value)?.AccountName : "الكل",
             Collages = subsResult,
             TotalSubsidaries = totalSubsidaries

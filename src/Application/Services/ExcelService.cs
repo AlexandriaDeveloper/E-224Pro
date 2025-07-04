@@ -66,7 +66,7 @@ namespace Application.Services
             // Load accounts to determine debit/credit columns
             // var allAccounts = await LoadAccounts();
             List<Account> debitAccounts = request.Accounts
-                .Where(a => !a.DebitAccountNumber.IsNullOrEmpty() && !string.IsNullOrEmpty(a.DebitAccountName))
+                .Where(a => !string.IsNullOrEmpty(a.DebitAccountNumber) && !string.IsNullOrEmpty(a.DebitAccountName))
                 .Select(a => new Account
                 {
                     AccountName = a.DebitAccountName!,
@@ -74,7 +74,7 @@ namespace Application.Services
                 })
                 .ToList();
             List<Account> creditAccounts = request.Accounts
-                .Where(a => !a.CreditAccountNumber.IsNullOrEmpty() && !string.IsNullOrEmpty(a.CreditAccountName))
+                .Where(a => !string.IsNullOrEmpty(a.CreditAccountNumber) && !string.IsNullOrEmpty(a.CreditAccountName))
                 .Select(a => new Account
                 {
                     AccountName = a.CreditAccountName!,

@@ -2,10 +2,15 @@
     <button mat-icon-button (click)="toggleSidenavEmitter()" class="menu-btn">
         <mat-icon>menu</mat-icon>
     </button>
-    <button mat-button [matMenuTriggerFor]="userMenu">
+    <button mat-button [matMenuTriggerFor]="userMenu" *ngIf="authService.isLoggedIn()">
         <mat-icon>person</mat-icon>
-        {{ username }}
+        {{ (authService.currentUser$ | async )?.username || '' }}
     </button>
+
+    <a mat-button *ngIf="!authService.isLoggedIn()" [routerLink]="['auth/login']" style="color: #fff;">
+        تسجيل الدخول
+        <mat-icon>login</mat-icon>
+    </a>
 
     <mat-slide-toggle [checked]="isDarkMode" (change)="toggleTheme()">Dark Mode</mat-slide-toggle>
 

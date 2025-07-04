@@ -31,8 +31,9 @@ export class DownloadExcelTemplateDialogComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.downloadForm = this.initilizeForm(); // Initialize downloadForm immediately
     this.loadAccounts();
+    this.downloadForm = this.initilizeForm(); // Initialize downloadForm immediately
+
   }
 
   private loadAccounts(): void {
@@ -84,6 +85,8 @@ export class DownloadExcelTemplateDialogComponent implements OnInit {
 
   getAccountName(accountType: string, index: number, accountId: string): void {
     console.log(accountType, accountId);
+    console.log(this.accounts);
+
 
     const account = this.accounts.find(acc => acc.accountNumber === accountId);
     const control = this.fAccounts.at(index);

@@ -12,17 +12,17 @@ public static class Forms
 {
     public static WebApplication MapFormsEndPoint(this WebApplication app)
     {
-        var formGroup = app.MapGroup("Forms");
+        var formGroup = app.MapGroup("Forms").RequireAuthorization();
 
 
-        formGroup.MapPost("/Creat", PostForm);
-        formGroup.MapPost("/AddForm", AddForm);
-        formGroup.MapPut("/Update/{id}", PutForm);
-        formGroup.MapDelete("/{id}", DeleteForm);
-        formGroup.MapGet("/", GetBySpecAsync);
-        formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync);
-        formGroup.MapGet("/{id}", GetByIdAsync);
-        formGroup.MapPost("/DownloadTemplateExcelSheet", DownloadTemplateExcelSheet);
+        formGroup.MapPost("/Creat", PostForm).RequireAuthorization();
+        formGroup.MapPost("/AddForm", AddForm).RequireAuthorization(); ;
+        formGroup.MapPut("/Update/{id}", PutForm).RequireAuthorization(); ;
+        formGroup.MapDelete("/{id}", DeleteForm).RequireAuthorization(); ;
+        formGroup.MapGet("/", GetBySpecAsync).RequireAuthorization();
+        formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync).RequireAuthorization(); ;
+        formGroup.MapGet("/{id}", GetByIdAsync).RequireAuthorization(); ;
+        formGroup.MapPost("/DownloadTemplateExcelSheet", DownloadTemplateExcelSheet).RequireAuthorization(); ;
         return app;
     }
 

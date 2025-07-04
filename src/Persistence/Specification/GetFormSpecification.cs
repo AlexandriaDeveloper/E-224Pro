@@ -1,5 +1,4 @@
 using Core.Models;
-using Microsoft.IdentityModel.Tokens;
 using Shared.Contracts.FormRequests;
 
 namespace Persistence.Specification;
@@ -15,15 +14,13 @@ public class GetFormSpecification : Specification<Form>
         if (request.Id.HasValue)
         {
             AddCriteries(x => x.Id == request.Id!.Value);
-
         }
-
 
         if (request.CollageId.HasValue)
         {
             AddCriteries(x => x.CollageId == request.CollageId.Value);
         }
-        if (!request.FormName.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.FormName))
         {
             AddCriteries(x => x.FormName.Contains(request.FormName!));
         }
@@ -31,11 +28,11 @@ public class GetFormSpecification : Specification<Form>
         {
             AddCriteries(x => x.FundId == request.FundId.Value);
         }
-        if (!request.Num224.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.Num224))
         {
             AddCriteries(x => x.Num224 == request.Num224);
         }
-        if (!request.Num55.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.Num55))
         {
             AddCriteries(x => x.Num55 == request.Num55);
         }
@@ -43,7 +40,7 @@ public class GetFormSpecification : Specification<Form>
         {
             AddCriteries(x => x.DailyId == request.DailyId.Value);
         }
-        if (!request.AuditorName.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.AuditorName))
         {
             AddCriteries(x => x.AuditorName!.Contains(request.AuditorName!));
         }
@@ -51,24 +48,18 @@ public class GetFormSpecification : Specification<Form>
         {
             AddCriteries(x => x.EntryType == (Core.Constants.EntryTypeEnum)request.EntryType.Value);
         }
-        if (!request.Details.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.Details))
         {
             AddCriteries(x => x.Details!.Contains(request.Details!));
         }
-
-
         AddOrderByDescending(x => x.Id);
-
         if (request.PageIndex.HasValue)
         {
             ApplyPaging(request.PageIndex.Value, request.PageSize!.Value);
         }
-
     }
-
-
-
 }
+
 public class GetFormCountAsyncSpecification : Specification<Form>
 {
     public GetFormCountAsyncSpecification(GetFormRequest request)
@@ -76,15 +67,12 @@ public class GetFormCountAsyncSpecification : Specification<Form>
         if (request.Id.HasValue)
         {
             AddCriteries(x => x.Id == request.Id!.Value);
-
         }
-
-
         if (request.CollageId.HasValue)
         {
             AddCriteries(x => x.CollageId == request.CollageId.Value);
         }
-        if (!request.FormName.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.FormName))
         {
             AddCriteries(x => x.FormName.Contains(request.FormName!));
         }
@@ -92,11 +80,11 @@ public class GetFormCountAsyncSpecification : Specification<Form>
         {
             AddCriteries(x => x.FundId == request.FundId.Value);
         }
-        if (!request.Num224.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.Num224))
         {
             AddCriteries(x => x.Num224 == request.Num224);
         }
-        if (!request.Num55.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.Num55))
         {
             AddCriteries(x => x.Num55 == request.Num55);
         }
@@ -104,17 +92,13 @@ public class GetFormCountAsyncSpecification : Specification<Form>
         {
             AddCriteries(x => x.DailyId == request.DailyId.Value);
         }
-        if (!request.AuditorName.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.AuditorName))
         {
             AddCriteries(x => x.AuditorName!.Contains(request.AuditorName!));
         }
-        if (!request.Details.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.Details))
         {
             AddCriteries(x => x.Details!.Contains(request.Details!));
         }
-
-
     }
-
-
 }

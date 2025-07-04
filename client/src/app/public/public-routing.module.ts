@@ -9,6 +9,8 @@ import { FormComponent } from './form/form.component';
 import { FundHomeComponent } from './fund-home/fund-home.component';
 import { SubsidaryDailiesComponent } from './subsidary-dailies/subsidary-dailies.component';
 import { SubsidaryDailyComponent } from './subsidary-dailies/subsidary-daily/subsidary-daily.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 
 const routes: Routes = [
@@ -24,6 +26,8 @@ const routes: Routes = [
       { path: 'funds', component: FundHomeComponent },
       { path: 'subsidary-dailies/subId/:subaccountId', component: SubsidaryDailiesComponent },
       { path: 'subsidary-dailies/subId/:subAccountId/dailyId/:dailyId', component: SubsidaryDailyComponent },
+      { path: 'auth/login', component: LoginComponent },
+      { path: 'auth/register', component: RegisterComponent }, // Redirect register to login for now
       { path: '', redirectTo: 'public/home', pathMatch: 'full' }
 
 

@@ -143,30 +143,7 @@ public class DailyService
         _dailyRepository.Delete(daily);
         await _uow.CommitAsync(cancellationToken);
     }
-    public async Task TestCreate30000DailyAsync(CancellationToken cancellationToken = default)
-    {
-        List<Daily> dailies = new List<Daily>();
-        for (int i = 0; i < 30000; i++)
-        {
-            int random2 = new Random().Next(0, 2);
 
-            var accItem = Enum.GetNames(typeof(AccountItemEnum)).GetValue(random2)!.ToString();
-            var dailyType = Enum.GetNames(typeof(DailyTypes)).GetValue(random2)!.ToString();
-
-
-
-            dailies.Add(new Daily()
-            {
-                AccountItem = accItem,
-                Name = $"Test Daily {i}",
-                DailyDate = DateOnly.FromDateTime(DateTime.Now.AddDays(i)),
-                DailyType = dailyType!
-            });
-        }
-        await _dailyRepository.AddRange2Async(dailies);
-        await _uow.CommitAsync(cancellationToken);
-
-    }
 
     public async Task UploadExcelFormAsync(int dailyId, IFormFile file, HttpContext context, CancellationToken cancellationToken = default)
     {

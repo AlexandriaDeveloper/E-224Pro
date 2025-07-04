@@ -6,7 +6,7 @@ public static class Collages
 {
     public static WebApplication MapCollgaesEndPoint(this WebApplication app)
     {
-        var collagesGroup = app.MapGroup("collages");
+        var collagesGroup = app.MapGroup("collages").RequireAuthorization();
 
 
         // dailiesGroup.MapPost("/Create", CreateAsync);

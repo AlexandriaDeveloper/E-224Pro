@@ -21,11 +21,11 @@ public class AccountService
         var accounts = await _accountRepository.GetAll(accountSpec);
         if (!accounts.Any())
         {
-            return null;
+            return new List<AccountDto>();
         }
         return accounts.Select(x => new AccountDto()
         {
-            Id = x.Id,
+            Id = x.Id != null ? x.Id : 0,
             AccountName = x.AccountName,
             AccountNumber = x.AccountNumber,
             AccountStatus = x.AccountStatus

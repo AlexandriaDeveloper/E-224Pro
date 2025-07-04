@@ -8,19 +8,20 @@ public static class SubsidiaryJournal
 {
     public static WebApplication MapSubsidiaryJournalEndPoint(this WebApplication app)
     {
-        var subsidiaryJournalGroup = app.MapGroup("SubsidiaryJournal/");
+        var subsidiaryJournalGroup = app.MapGroup("SubsidiaryJournal/").RequireAuthorization(
+            x => x.RequireRole("Admin", "SubsidaryAcountant"));
 
 
         //  subsidiaryJournalGroup.MapGet("/", GetSubsidiaryJournal);
 
-        subsidiaryJournalGroup.MapGet("SubId/{subAccountId}/dailyId/{dailyId}", GetSubsidiaryFormsByDailyId);
-        subsidiaryJournalGroup.MapGet("SubId/{subAccountId}", GetDailiesBySpecAsync); subsidiaryJournalGroup.MapGet("SubId/{subAccountId}/formDetailsId/{formDetailsId}", GetSubsidaryFormDetailsAsync);
-        subsidiaryJournalGroup.MapPost("/Creat", PostSubsidiaryJournal);
-        subsidiaryJournalGroup.MapPost("/AddOrUpdate", AddOrUpdateSubsidaryFormDetail);
+        subsidiaryJournalGroup.MapGet("SubId/{subAccountId}/dailyId/{dailyId}", GetSubsidiaryFormsByDailyId).RequireAuthorization();
+        subsidiaryJournalGroup.MapGet("SubId/{subAccountId}", GetDailiesBySpecAsync); subsidiaryJournalGroup.MapGet("SubId/{subAccountId}/formDetailsId/{formDetailsId}", GetSubsidaryFormDetailsAsync).RequireAuthorization();
+        subsidiaryJournalGroup.MapPost("/Creat", PostSubsidiaryJournal).RequireAuthorization();
+        subsidiaryJournalGroup.MapPost("/AddOrUpdate", AddOrUpdateSubsidaryFormDetail).RequireAuthorization();
         // subsidiaryJournalGroup.MapPost("/TestCreat", PostTestSubsidiaryJournal);
         // subsidiaryJournalGroup.MapPut("/Update/{id}", UpdateSubsidiaryJournal);
-        subsidiaryJournalGroup.MapDelete("/Delete/{id}", DeleteSubsidiaryJournal);
-        subsidiaryJournalGroup.MapGet("/DailyRepot", GetSubsidaryDaily);
+        subsidiaryJournalGroup.MapDelete("/Delete/{id}", DeleteSubsidiaryJournal).RequireAuthorization();
+        subsidiaryJournalGroup.MapGet("/DailyRepot", GetSubsidaryDaily).RequireAuthorization();
         return app;
     }
 

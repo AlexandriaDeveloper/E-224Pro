@@ -8,18 +8,16 @@ public static class Dailies
 {
     public static WebApplication MapDailiesEndPoint(this WebApplication app)
     {
-        var dailiesGroup = app.MapGroup("dailies");
+        var dailiesGroup = app.MapGroup("dailies").RequireAuthorization(
+            x => x.RequireRole("Admin", "GeneralAccountant"));
 
 
-        dailiesGroup.MapPost("/Create", CreateAsync);
-        dailiesGroup.MapPost("/TestCreate", TestCreateAsync);
-
-        dailiesGroup.MapPut("/Update/{id}", UpdateAsync);
-        dailiesGroup.MapGet("/", GetBySpecAsync);
-        dailiesGroup.MapGet("/{id}", GetByIdAsync);
-        dailiesGroup.MapDelete("delete/{id}", DeleteAsync);
-        ///dailies/${dailyId}/UploadExcelForm`
-        dailiesGroup.MapPost("/{dailyId}/UploadExcelForm", UploadExcelFormAsync).DisableAntiforgery();
+        dailiesGroup.MapPost("/Create", CreateAsync).RequireAuthorization();
+        dailiesGroup.MapPut("/Update/{id}", UpdateAsync).RequireAuthorization();
+        dailiesGroup.MapGet("/", GetBySpecAsync).RequireAuthorization();
+        dailiesGroup.MapGet("/{id}", GetByIdAsync).RequireAuthorization();
+        dailiesGroup.MapDelete("delete/{id}", DeleteAsync).RequireAuthorization();
+        dailiesGroup.MapPost("/{dailyId}/UploadExcelForm", UploadExcelFormAsync).DisableAntiforgery().RequireAuthorization();
         return app;
     }
 
@@ -41,11 +39,7 @@ public static class Dailies
         await service.CreateDailyAsync(request);
         return TypedResults.Created();
     }
-    private async static Task<IResult> TestCreateAsync(DailyService service)
-    {
-        await service.TestCreate30000DailyAsync();
-        return TypedResults.Created();
-    }
+
     private static async Task<IResult> GetByIdAsync(DailyService service, int id)
     {
         var daily = await service.GetDailyById(id);

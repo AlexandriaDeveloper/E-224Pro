@@ -1,6 +1,5 @@
 using Core.Constants;
 using Core.Models;
-using Microsoft.IdentityModel.Tokens;
 using Shared.DTOs.FormDtos;
 
 namespace Persistence.Specification;
@@ -31,7 +30,7 @@ public class GetSubsidaryDailyBySpecification : Specification<FormDetails>
         {
             AddCriteries(x => x.Form!.FundId! == request.FundId);
         }
-        if (!request.DailyType.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.DailyType))
         {
 
             AddCriteries(x => x.Form.Daily.DailyType == request.DailyType);
@@ -57,11 +56,11 @@ public class GetSubsidaryDailyBySpecification : Specification<FormDetails>
             AddCriteries(x => x.Form!.Daily!.DailyDate <= request.EndDate);
         }
 
-        if (!request.Num55.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.Num55))
         {
             AddCriteries(x => x.Form!.Num55.Contains(request.Num55));
         }
-        if (!request.Num224.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.Num224))
         {
             AddCriteries(x => x.Form!.Num224.Contains(request.Num224));
         }

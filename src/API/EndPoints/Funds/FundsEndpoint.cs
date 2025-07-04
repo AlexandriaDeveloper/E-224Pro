@@ -6,15 +6,15 @@ public static class FundsEndpoint
 {
     public static WebApplication MapFundsEndpoint(this WebApplication app)
     {
-        var fundGroup = app.MapGroup("Funds");
+        var fundGroup = app.MapGroup("Funds").RequireAuthorization();
 
 
         // formGroup.MapPost("/Creat", PostForm);
         // formGroup.MapPost("/AddForm", AddForm);
-        fundGroup.MapPost("/", PostFund);
-        fundGroup.MapPut("/{id}", PutFund);
-        fundGroup.MapDelete("/{id}", DeleteFund);
-        fundGroup.MapGet("/", GetBySpecAsync);
+        fundGroup.MapPost("/", PostFund).RequireAuthorization();
+        fundGroup.MapPut("/{id}", PutFund).RequireAuthorization(); ;
+        fundGroup.MapDelete("/{id}", DeleteFund).RequireAuthorization(); ;
+        fundGroup.MapGet("/", GetBySpecAsync).RequireAuthorization(); ;
 
         // formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync);
         // formGroup.MapGet("/{id}", GetByIdAsync);

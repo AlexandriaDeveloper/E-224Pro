@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
   styleUrl: './public-home.component.scss'
 })
 export class PublicHomeComponent {
-  username: string = "Mohamed Ali ";
+
   isSidenavOpened: boolean; // حالة القائمة الجانبية
 
   toggleSidenav() {

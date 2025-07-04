@@ -1,7 +1,6 @@
 using System;
 using Azure.Core;
 using Core.Models;
-using Microsoft.IdentityModel.Tokens;
 using Shared.Contracts;
 
 namespace Persistence.Specification;
@@ -12,7 +11,7 @@ public class DailySpecification : Specification<Daily>
     {
 
 
-        if (!request.Name.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.Name))
         {
             AddCriteries(x => x.Name.Contains(request.Name));
         }
@@ -28,12 +27,12 @@ public class DailySpecification : Specification<Daily>
         }
 
 
-        if (!request.DailyType.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.DailyType))
         {
             AddCriteries(x => x.DailyType == request.DailyType);
 
         }
-        if (!request.AccountItem.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.AccountItem))
         {
             AddCriteries(x => x.AccountItem == request.AccountItem);
 
@@ -54,7 +53,7 @@ public class DailyCountAsyncSpecification : Specification<Daily>
     {
 
 
-        if (!request.Name.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.Name))
         {
             AddCriteries(x => x.Name.Contains(request.Name));
         }
@@ -71,12 +70,12 @@ public class DailyCountAsyncSpecification : Specification<Daily>
 
 
 
-        if (!request.DailyType.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.DailyType))
         {
             AddCriteries(x => x.DailyType == request.DailyType);
 
         }
-        if (!request.AccountItem.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.AccountItem))
         {
             AddCriteries(x => x.AccountItem == request.AccountItem);
 

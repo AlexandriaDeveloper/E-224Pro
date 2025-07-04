@@ -3,14 +3,15 @@ public static class SubAccount
 
     public static WebApplication MapSubAccountsEndPoint(this WebApplication app)
     {
-        var subAccountsGroup = app.MapGroup("SubAccount/{accountId}");
+        var subAccountsGroup = app.MapGroup("SubAccount/{accountId}").RequireAuthorization(
+            x => x.RequireRole("Admin", "SubsidaryAcountant")); ;
 
 
         // dailiesGroup.MapPost("/Create", CreateAsync);
         // dailiesGroup.MapPost("/TestCreate", TestCreateAsync);
 
         // dailiesGroup.MapPut("/Update/{id}", UpdateAsync);
-        subAccountsGroup.MapGet("/", GetBySpecAsync);
+        subAccountsGroup.MapGet("/", GetBySpecAsync).RequireAuthorization();
         //accountsGroup.MapGet("/AccountsWithSubsidaries", GetAccountsWithSubsidaries);
         // dailiesGroup.MapGet("/{id}", GetByIdAsync);
         // dailiesGroup.MapDelete("delete/{id}", DeleteAsync);

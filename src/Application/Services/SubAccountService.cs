@@ -8,14 +8,13 @@ using Shared.DTOs.AccountDtos;
 
 public class SubAccountService
 {
-    private readonly IAccountRepository _accountRepository;
+
     private readonly ISubAccountRepository _subAccountRepository;
-    private readonly IDailyRepository _dailyRepository;
 
     private readonly IUow _uow;
-    public SubAccountService(IAccountRepository accountRepository, ISubAccountRepository subAccountRepository, IDailyRepository dailyRepository, IUow uow)
+    public SubAccountService(ISubAccountRepository subAccountRepository, IUow uow)
     {
-        _accountRepository = accountRepository;
+
         _subAccountRepository = subAccountRepository;
 
         _uow = uow;

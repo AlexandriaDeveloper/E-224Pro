@@ -202,7 +202,7 @@ public class FormService
             throw new ArgumentNullException(nameof(form));
         }
 
-        if (!form.FormName.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(form.FormName))
         {
             formFromDb.FormName = form.FormName!;
         }
@@ -214,11 +214,11 @@ public class FormService
         {
             formFromDb.FundId = form.FundId.Value;
         }
-        if (!form.Num224.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(form.Num224))
         {
             formFromDb.Num224 = form.Num224!;
         }
-        if (!form.Num55.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(form.Num55))
         {
             formFromDb.Num55 = form.Num55!;
         }
@@ -226,7 +226,7 @@ public class FormService
         {
             formFromDb.DailyId = form.DailyId.Value;
         }
-        if (!form.AuditorName.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(form.AuditorName))
         {
             formFromDb.AuditorName = form.AuditorName;
         }
@@ -238,7 +238,7 @@ public class FormService
         {
             formFromDb.EntryType = (Core.Constants.EntryTypeEnum)form.EntryType.Value;
         }
-        if (!form.Details.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(form.Details))
         {
             formFromDb.Details = form.Details;
         }

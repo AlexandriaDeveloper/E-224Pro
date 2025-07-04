@@ -6,7 +6,7 @@ public static class Accounts
 {
     public static WebApplication MapAccountsEndPoint(this WebApplication app)
     {
-        var accountsGroup = app.MapGroup("accounts");
+        var accountsGroup = app.MapGroup("accounts").RequireAuthorization();
 
 
         // dailiesGroup.MapPost("/Create", CreateAsync);

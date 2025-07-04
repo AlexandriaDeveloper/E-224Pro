@@ -10,17 +10,17 @@ public static class FormDetailsEndPoint
 {
     public static WebApplication MapFormsDetailsEndPoint(this WebApplication app)
     {
-        var formGroup = app.MapGroup("FormDetails");
+        var formGroup = app.MapGroup("FormDetails").RequireAuthorization();
 
 
-        formGroup.MapPost("/Creat", PostFormDetails);
+        formGroup.MapPost("/Creat", PostFormDetails).RequireAuthorization();
 
-        formGroup.MapPost("/TestCreat", TestPostFormDetails);
-        formGroup.MapGet("/{formId}", GetByFormIdAsync);
-        formGroup.MapPut("/Update/{id}", PutFormDetails);
-        formGroup.MapDelete("/Delete/{id}", DeleteFormDetails);
-        formGroup.MapGet("/Transfer/{dailyId}", TransferToSubsidaryJournalAsync);
-        formGroup.MapGet("/", GetBySpecAsync);
+        formGroup.MapPost("/TestCreat", TestPostFormDetails).RequireAuthorization();
+        formGroup.MapGet("/{formId}", GetByFormIdAsync).RequireAuthorization();
+        formGroup.MapPut("/Update/{id}", PutFormDetails).RequireAuthorization();
+        formGroup.MapDelete("/Delete/{id}", DeleteFormDetails).RequireAuthorization();
+        formGroup.MapGet("/Transfer/{dailyId}", TransferToSubsidaryJournalAsync).RequireAuthorization();
+        formGroup.MapGet("/", GetBySpecAsync).RequireAuthorization();
         // formGroup.MapGet("/{id}", GetByIdAsync);
         return app;
     }

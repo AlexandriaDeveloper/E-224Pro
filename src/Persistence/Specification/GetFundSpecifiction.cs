@@ -12,7 +12,7 @@ public class GetFundsSpecifiction : Specification<Fund>
         {
             AddCriteries(x => x.FundName.Contains(request.FundName));
         }
-        if (!request.FundCode.IsNullOrEmpty())
+        if (!string.IsNullOrWhiteSpace(request.FundCode))
         {
             AddCriteries(x => x.FundCode.Contains(request.FundCode));
         }
