@@ -15,7 +15,8 @@ public static class SubsidiaryJournal
         //  subsidiaryJournalGroup.MapGet("/", GetSubsidiaryJournal);
 
         subsidiaryJournalGroup.MapGet("SubId/{subAccountId}/dailyId/{dailyId}", GetSubsidiaryFormsByDailyId).RequireAuthorization();
-        subsidiaryJournalGroup.MapGet("SubId/{subAccountId}", GetDailiesBySpecAsync); subsidiaryJournalGroup.MapGet("SubId/{subAccountId}/formDetailsId/{formDetailsId}", GetSubsidaryFormDetailsAsync).RequireAuthorization();
+        subsidiaryJournalGroup.MapGet("SubId/{subAccountId}", GetDailiesBySpecAsync);
+        subsidiaryJournalGroup.MapGet("SubId/{subAccountId}/formDetailsId/{formDetailsId}", GetSubsidaryFormDetailsAsync).RequireAuthorization();
         subsidiaryJournalGroup.MapPost("/Creat", PostSubsidiaryJournal).RequireAuthorization();
         subsidiaryJournalGroup.MapPost("/AddOrUpdate", AddOrUpdateSubsidaryFormDetail).RequireAuthorization();
         // subsidiaryJournalGroup.MapPost("/TestCreat", PostTestSubsidiaryJournal);

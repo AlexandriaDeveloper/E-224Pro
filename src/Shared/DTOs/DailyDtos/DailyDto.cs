@@ -15,6 +15,9 @@ public class DailyDto
     public string AccountItem { get; set; }
     public decimal? TotalCredit { get; set; }
     public decimal? TotalDebit { get; set; }
+    public decimal? TotalSubsidiaryCredit { get; set; }
+    public decimal? TotalSubsidiaryDebit { get; set; }
+    public bool IsBalanced => TotalCredit == TotalDebit && TotalSubsidiaryCredit == TotalSubsidiaryDebit ? true : false;
 
     public DailyDto(Core.Models.Daily daily)
     {
@@ -25,6 +28,8 @@ public class DailyDto
         AccountItem = daily.AccountItem ?? string.Empty;
         TotalCredit = daily.Forms != null ? daily.Forms.Sum(x => x.FormDetails.Sum(x => x.Credit)) : 0;
         TotalDebit = daily.Forms != null ? daily.Forms.Sum(x => x.FormDetails.Sum(x => x.Debit)) : 0;
+        TotalSubsidiaryCredit = daily.Forms.Sum(x => x.FormDetails.Sum(x => x.SubsidiaryJournals.Sum(t => t.Credit)));
+        TotalSubsidiaryDebit = daily.Forms.Sum(x => x.FormDetails.Sum(x => x.SubsidiaryJournals.Sum(t => t.Debit)));
 
 
     }

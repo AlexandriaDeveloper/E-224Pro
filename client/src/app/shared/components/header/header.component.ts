@@ -42,6 +42,25 @@ export class HeaderComponent implements OnInit {
       document.body.classList.add('dark-mode');
 
     }
+    //check local storage if token extract user name 
+
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded = this.authService.decodeToken(token);
+      this.authService.setCurrentUser({
+        id: decoded?.nameid,
+        username: decoded?.unique_name || '',
+        email: decoded?.email || ''
+      });
+      console.log('Decoded token:', decoded);
+
+      this.username = decoded?.unique_name || this.authService.getCurrentUser()?.username || '';
+
+    }
+    else {
+      this.username = this.authService.getCurrentUser()?.username || '';
+    }
     //get username if user is logged in
     // if (this.authService.isLoggedIn()) {
     //   this.authService.currentUser$.subscribe(user => {

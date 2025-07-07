@@ -137,6 +137,21 @@
             <td mat-cell *matCellDef="let element"> {{element.totalCredit}} </td>
         </ng-container>
         <!-- Symbol Column -->
+        <ng-container matColumnDef="SubsidaryTotalDebit">
+            <th mat-header-cell *matHeaderCellDef> اجمالى مدين تفصيلى </th>
+            <td mat-cell *matCellDef="let element"> {{element.totalSubsidiaryDebit}} </td>
+        </ng-container>
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="SubsidaryTotalCredit">
+            <th mat-header-cell *matHeaderCellDef> اجمالى دائن تفصيلى </th>
+            <td mat-cell *matCellDef="let element"> {{element.totalSubsidiaryCredit}} </td>
+        </ng-container>
+        <ng-container matColumnDef="isBalanced">
+            <th mat-header-cell *matHeaderCellDef> التوازن </th>
+            <td mat-cell *matCellDef="let element">
+                {{element.isBalanced ? 'متوازن' : 'غير متوازن'}}
+            </td>
+        </ng-container>
         <ng-container matColumnDef="accountItem">
             <th mat-header-cell *matHeaderCellDef> بند الصرف </th>
             <td mat-cell *matCellDef="let element"> {{element.accountItem==='StateBudget'?'موازنه':'صناديق'}} </td>

@@ -66,9 +66,12 @@ export class SubsidaryDailyComponent implements OnInit {
     this.subsidaryService.GetSubsidaryDailyFormsByDailyId(this.subsidaryId, this.dailyId, this.params).subscribe({
       next: (response: any) => {
 
+
         this.dataSource = response.items;
 
         this.originalDataSource = [...response.items];
+
+
         this.data = response.items;
         this.paginator.length = response.totalCount;
       },

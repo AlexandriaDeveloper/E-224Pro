@@ -57,7 +57,7 @@ public class SubSidaryDailyService
     {
         var spec = new DailySpecification(request);
 
-        var dailies = _dailyRepository.GetQueryable(spec).Include(x => x.Forms!).ThenInclude(x => x.FormDetails.Where(x => x.AccountId == accountId));
+        var dailies = _dailyRepository.GetQueryable(spec).Include(x => x.Forms!).ThenInclude(x => x.FormDetails.Where(x => x.AccountId == accountId)).ThenInclude(x => x.SubsidiaryJournals);
         var dailyCountSpec = new DailyCountAsyncSpecification(request);
         var dailyCountResult = await _dailyRepository.CountAsync(dailyCountSpec);
 
@@ -83,8 +83,9 @@ public class SubSidaryDailyService
         .Include(x => x.FormDetails)
         .ThenInclude(x => x.SubsidiaryJournals)
          .Where(x => x.DailyId == dailyId && x.FormDetails.Any(x => x.AccountId == subaccountId))
-        .ToListAsync(cancellationToken);
-
+        .ToListAsync(cancellationToken); // Use ToListAsync to execute the query and get the results
+        var specCount = new GetSubsidaryFormsCountSpecification(request);
+        var subsidaryDailyFormsCount = await _formRepository.CountAsync(specCount, cancellationToken);
 
         var subsidiaryForms = subsidaryDailyForms.Select(x =>
            {
@@ -112,7 +113,7 @@ public class SubSidaryDailyService
            }).ToList();
 
 
-        return PaginatedResult<SubsidaryFormDto>.Create(subsidiaryForms, request.PageIndex, request.PageSize, subsidiaryForms.Count);
+        return PaginatedResult<SubsidaryFormDto>.Create(subsidiaryForms, request.PageIndex, request.PageSize, subsidaryDailyFormsCount);
     }
 
     public async Task<List<SubsidaryFormDetailsDto>> GetSubsidaryFormDetailsByFormDetailsId(int formDetailsId, int subaccountId, CancellationToken cancellationToken = default)

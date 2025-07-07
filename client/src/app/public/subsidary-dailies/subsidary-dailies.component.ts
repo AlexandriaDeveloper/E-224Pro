@@ -18,7 +18,7 @@ import { GetSubsidiaryFormsByDailyIdRequest } from '../../shared/_requests/getSu
   styleUrl: './subsidary-dailies.component.scss'
 })
 export class SubsidaryDailiesComponent implements OnInit {
-  displayedColumns: string[] = ['action', 'id', 'name', 'dailyDate', 'dailyType', 'totalCredit', 'totalDebit', 'accountItem'];
+  displayedColumns: string[] = ['action', 'id', 'name', 'dailyDate', 'dailyType', 'totalCredit', 'totalDebit', 'SubsidaryTotalCredit', 'SubsidaryTotalDebit', 'isBalanced', 'accountItem'];
   dataSource;
   params: GetSubsidiaryFormsByDailyIdRequest = new GetSubsidiaryFormsByDailyIdRequest();
   route = inject(ActivatedRoute);
@@ -51,6 +51,7 @@ export class SubsidaryDailiesComponent implements OnInit {
 
   loadDailies(param: GetDailiesRequest) {
     this.subsidaryService.getSubsidaryDailies(this.params.accountId, param).subscribe((dailies: any) => {
+      console.log(dailies);
 
       this.dataSource = dailies.items;
       this.length = dailies.totalCount;

@@ -24,6 +24,11 @@ export class AuthService {
     getCurrentUser(): User | null {
         return this.currentUserSubject.value;
     }
+    decodeToken(token: string): any {
+        if (!token) return null;
+        const payload = token.split('.')[1];
+        return JSON.parse(atob(payload));
+    }
 
 
 

@@ -4,7 +4,7 @@
     </button>
     <button mat-button [matMenuTriggerFor]="userMenu" *ngIf="authService.isLoggedIn()">
         <mat-icon>person</mat-icon>
-        {{ (authService.currentUser$ | async )?.username || '' }}
+        {{ authService.getCurrentUser()?.username || 'المستخدم' }}
     </button>
 
     <a mat-button *ngIf="!authService.isLoggedIn()" [routerLink]="['auth/login']" style="color: #fff;">
