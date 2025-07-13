@@ -8,8 +8,8 @@ public class BaseEntity
 {
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public virtual int Id { get; set; }
-    [MaxLength(50)]
-    public virtual Guid? TempId { get; set; } = Guid.NewGuid();
+    // [MaxLength(50)]
+    // public virtual Guid? TempId { get; set; } = Guid.NewGuid();
     [MaxLength(100)]
     public virtual string? Name { get; set; }
 

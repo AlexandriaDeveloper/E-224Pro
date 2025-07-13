@@ -66,19 +66,19 @@ namespace Application.Services
             // Load accounts to determine debit/credit columns
             // var allAccounts = await LoadAccounts();
             List<Account> debitAccounts = request.Accounts
-                .Where(a => !string.IsNullOrEmpty(a.DebitAccountNumber) && !string.IsNullOrEmpty(a.DebitAccountName))
+                .Where(a => a.DebitAccountNumber.HasValue && !string.IsNullOrEmpty(a.DebitAccountName))
                 .Select(a => new Account
                 {
                     AccountName = a.DebitAccountName!,
-                    AccountNumber = a.DebitAccountNumber!
+                    Id = a.DebitAccountNumber.Value!
                 })
                 .ToList();
             List<Account> creditAccounts = request.Accounts
-                .Where(a => !string.IsNullOrEmpty(a.CreditAccountNumber) && !string.IsNullOrEmpty(a.CreditAccountName))
+                .Where(a => a.CreditAccountNumber.HasValue && !string.IsNullOrEmpty(a.CreditAccountName))
                 .Select(a => new Account
                 {
                     AccountName = a.CreditAccountName!,
-                    AccountNumber = a.CreditAccountNumber!
+                    Id = a.CreditAccountNumber.Value
                 })
                 .ToList();
 
@@ -105,7 +105,7 @@ namespace Application.Services
             // Add Debit Account Numbers to code header row
             for (int i = 0; i < debitAccounts.Count; i++)
             {
-                headerCodeRow.CreateCell(debitAccountsStartIndex + i).SetCellValue(debitAccounts[i].AccountNumber);
+                headerCodeRow.CreateCell(debitAccountsStartIndex + i).SetCellValue(debitAccounts[i].Id);
                 //set header font 
                 var cell = headerCodeRow.GetCell(debitAccountsStartIndex + i);
                 if (cell != null)
@@ -122,7 +122,7 @@ namespace Application.Services
             // Add Credit Account Numbers to code header row
             for (int i = 0; i < creditAccounts.Count; i++)
             {
-                headerCodeRow.CreateCell(creditAccountsStartIndex + i).SetCellValue(creditAccounts[i].AccountNumber);
+                headerCodeRow.CreateCell(creditAccountsStartIndex + i).SetCellValue(creditAccounts[i].Id);
                 var cell = headerCodeRow.GetCell(creditAccountsStartIndex + i);
                 if (cell != null)
                 {

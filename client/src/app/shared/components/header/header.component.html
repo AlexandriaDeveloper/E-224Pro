@@ -1,5 +1,5 @@
 <mat-toolbar class="top-navbar" color="accent">
-    <button mat-icon-button (click)="toggleSidenavEmitter()" class="menu-btn">
+    <button mat-icon-button (click)="toggleSidenavEmitter()" class="menu-btn" *ngIf="authService.isLoggedIn()">
         <mat-icon>menu</mat-icon>
     </button>
     <button mat-button [matMenuTriggerFor]="userMenu" *ngIf="authService.isLoggedIn()">

@@ -79,10 +79,7 @@ public class DailyService
         {
             throw new ArgumentNullException(nameof(daily));
         }
-
-
-
-        if (!request.Name.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.Name))
             daily.Name = request.Name;
 
         if (request.DailyDate.HasValue)
@@ -90,13 +87,11 @@ public class DailyService
             daily.DailyDate = request.DailyDate.Value;
         }
 
-        if (!request.DailyType.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.DailyType))
             daily.DailyType = request.DailyType;
 
-        if (!request.AccountItem.IsNullOrEmpty())
+        if (!string.IsNullOrEmpty(request.AccountItem))
             daily.AccountItem = request.AccountItem;
-
-
 
 
         await _dailyRepository.UpdateAsync(daily);
@@ -120,7 +115,9 @@ public class DailyService
     {
         var spec = new DailySpecification(request);
 
-        var dailies = _dailyRepository.GetQueryable(spec).Include(x => x.Forms).ThenInclude(x => x.FormDetails);
+        var dailies = _dailyRepository.GetQueryable(spec).Include(x => x.Forms)
+        .ThenInclude(x => x.FormDetails)
+        .ThenInclude(x => x.SubsidiaryJournals);
         var dailyCountSpec = new DailyCountAsyncSpecification(request);
         var dailyCountResult = await _dailyRepository.CountAsync(dailyCountSpec);
 

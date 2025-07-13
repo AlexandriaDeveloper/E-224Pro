@@ -15,5 +15,11 @@ export const routes: Routes = [
         path: '',
         redirectTo: '/public',
         pathMatch: 'full'
+    },
+    {
+        path: '**',
+        redirectTo: '/public',
+        pathMatch: 'full'
     }
+
 ];

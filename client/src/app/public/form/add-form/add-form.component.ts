@@ -122,7 +122,7 @@ export class AddFormComponent implements OnInit {
       credit: [detail.credit || 0],
       debit: [detail.debit || 0],
       accountName: [account.accountName, Validators.required],
-      accountNumber: [account.accountNumber, Validators.required],
+      accountNumber: [account.id, Validators.required],
     });
 
   }
@@ -146,7 +146,13 @@ export class AddFormComponent implements OnInit {
   // Data loading
   private loadAccounts(): void {
     this.accountService.getAccounts(this.getAccountRequest).subscribe(
-      (accounts: Account[]) => this.accounts = accounts
+      (accounts: Account[]) => {
+        this.accounts = accounts;
+        console.log(this.accounts);
+      },
+      (error) => {
+        console.error('Error loading accounts:', error);
+      }
     );
   }
 
@@ -175,7 +181,7 @@ export class AddFormComponent implements OnInit {
 
   // Account handling
   getAccountName(index: number, accountId: string): void {
-    const account = this.accounts.find(acc => acc.accountNumber === accountId);
+    const account = this.accounts.find(acc => acc.id === +accountId);
     const control = this.fDetails.at(index);
 
     if (!account) {

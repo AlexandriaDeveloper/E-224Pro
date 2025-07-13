@@ -23,7 +23,7 @@ public class SubSidaryDailyService
     private readonly IAccountRepository _accountRepository;
     private readonly ISubsidiaryJournalRepository _subsidiaryJournalRepository;
     private readonly IUow _uow;
-    public SubSidaryDailyService(IDailyRepository dailyRepository, IAccountRepository accountRepository, IFormRepository formRepository, IFundRepository fundRepository, IFormDetailsRepository formDetailsRepository, ISubAccountRepository subAccountRepository, ISubsidiaryJournalRepository subsidiaryJournalRepository, IUow uow, ICollageRepository? collageRepository)
+    public SubSidaryDailyService(IDailyRepository dailyRepository, IAccountRepository accountRepository, IFormRepository formRepository, IFundRepository fundRepository, IFormDetailsRepository formDetailsRepository, ISubAccountRepository subAccountRepository, ISubsidiaryJournalRepository subsidiaryJournalRepository, IUow uow, ICollageRepository collageRepository)
     {
         _dailyRepository = dailyRepository;
         this._formRepository = formRepository;
@@ -100,9 +100,9 @@ public class SubSidaryDailyService
                    SubsidaryTotalDebit = x.FormDetails.Where(x => x.AccountId == subaccountId).Sum(x => x.SubsidiaryJournals?.Sum(x => x.Debit) ?? 0),
                    FormDetailsId = x.FormDetails.Where(x => x.AccountId == subaccountId).FirstOrDefault()!.Id,
                    CollageId = x.CollageId ?? 0,
-                   CollageName = x.Collage.CollageName,
+                   CollageName = x.Collage?.CollageName ?? string.Empty,
                    FundId = x.FundId ?? 0,
-                   FundName = x.Fund.FundName,
+                   FundName = x.Fund?.FundName ?? string.Empty,
                    Num224 = x.Num224 ?? string.Empty,
                    Num55 = x.Num55 ?? string.Empty,
 
@@ -239,9 +239,9 @@ public class SubSidaryDailyService
 
     private async Task<(IEnumerable<Collage> collages, IEnumerable<Fund> funds, IEnumerable<Account> accounts)> LoadRequiredDataAsync()
     {
-        var collages = await _collageRepository.GetAll(null);
-        var funds = await _fundRepository.GetAll(null);
-        var accounts = await _accountRepository.GetAll(null);
+        var collages = (await _collageRepository.GetAll(null)).Where(c => c != null).Cast<Collage>().ToList();
+        var funds = (await _fundRepository.GetAll(null)).Where(f => f != null).Cast<Fund>().ToList();
+        var accounts = (await _accountRepository.GetAll(null)).Where(a => a != null).Cast<Account>().ToList();
         return (collages, funds, accounts);
     }
 
@@ -265,8 +265,8 @@ public class SubSidaryDailyService
                             var fund = funds.SingleOrDefault(f => f.Id == fundId);
                             return new SubsidaryDailyFundsReportDto()
                             {
-                                AccountId = fundGroup.FirstOrDefault().AccountId,
-                                AccountName = fundGroup.FirstOrDefault().Account.AccountName ?? string.Empty,
+                                AccountId = fundGroup.FirstOrDefault()?.AccountId ?? 0,
+                                AccountName = fundGroup.FirstOrDefault()?.Account?.AccountName ?? string.Empty,
                                 FundId = fundId,
                                 FundName = fund?.FundName ?? string.Empty,
                                 SubsidaryDetails = fundGroup
@@ -285,7 +285,9 @@ public class SubSidaryDailyService
                                         };
                                     }).OrderBy(x => x.SubsidaryNumber).ToList()
                             };
-                        }).ToList()
+                        })
+                        .Where(x => x != null)
+                        .ToList()
                 };
             }).ToList();
     }
@@ -314,7 +316,7 @@ public class SubSidaryDailyService
             FundName = request.FundId.HasValue ? (funds.SingleOrDefault(x => x.Id == request.FundId.Value)?.FundName ?? string.Empty) : "الكل",
             Daily = string.Empty,
             AccountType = !string.IsNullOrEmpty(request.AccountType) ? request.AccountType : "الكل",
-            AccountName = request.AccountId.HasValue ? accounts.SingleOrDefault(x => x.Id == request.AccountId.Value)?.AccountName : "الكل",
+            AccountName = request.AccountId.HasValue ? (accounts.SingleOrDefault(x => x.Id == request.AccountId.Value)?.AccountName ?? "الكل") : "الكل",
             Collages = new List<SubsidaryDailyCollageReportDto>(),
             TotalSubsidaries = new List<SubsidaryDailyDetailsReportDto>()
         };
@@ -326,9 +328,9 @@ public class SubSidaryDailyService
         {
             CollageName = request.CollageId.HasValue ? collages.Single(x => x.Id == request.CollageId.Value)?.CollageName : "الكل",
             FundName = request.FundId.HasValue ? (funds.SingleOrDefault(x => x.Id == request.FundId.Value)?.FundName ?? string.Empty) : "الكل",
-            Daily = subs.FirstOrDefault().Form.Daily.Name,
+            Daily = subs.FirstOrDefault()?.Form?.Daily?.Name,
             AccountType = !string.IsNullOrEmpty(request.AccountType) ? request.AccountType : "الكل",
-            AccountName = request.AccountId.HasValue ? accounts.Single(x => x.Id == request.AccountId.Value)?.AccountName : "الكل",
+            AccountName = request.AccountId.HasValue ? accounts.SingleOrDefault(x => x.Id == request.AccountId.Value)?.AccountName ?? "الكل" : "الكل",
             Collages = subsResult,
             TotalSubsidaries = totalSubsidaries
         };

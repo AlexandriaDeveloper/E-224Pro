@@ -15,7 +15,7 @@ public class GetFormDetailsRequest : Param
     public string? FundName { get; set; }
     public int? AccountId { get; set; }
     public string? AccountName { get; set; }
-    public string? AccountNumber { get; set; }
+    //   public string? AccountNumber { get; set; }
     public decimal? Debit { get; set; }
     public decimal? Credit { get; set; }
     public string AccountType { get; set; } = string.Empty;
@@ -36,7 +36,7 @@ public class GetAccountDownloadTemplateRequest
 public class AccountsDebitCreditDto
 {
     public string? CreditAccountName { get; set; }
-    public string? CreditAccountNumber { get; set; }
+    public int? CreditAccountNumber { get; set; }
     public string? DebitAccountName { get; set; }
-    public string? DebitAccountNumber { get; set; }
+    public int? DebitAccountNumber { get; set; }
 }

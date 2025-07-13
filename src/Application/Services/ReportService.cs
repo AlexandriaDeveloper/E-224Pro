@@ -95,7 +95,7 @@ public class ReportService
             {
                 AccountId = g.Key,
                 AccountName = g.FirstOrDefault()!.Account!.AccountName,
-                AccountNumber = g.FirstOrDefault()!.Account!.AccountNumber,
+                //       AccountNumber = g.FirstOrDefault()!.Account!.Id,
                 OpeningBalance = await GetOpeningBalanceByAccount(g.Key, getAccountsBalanceByAccount, cancellationToken),
                 MonthlyTransAction = await GetMonthlyAccountBalance(g.Key, getAccountsBalanceByAccount),
             };

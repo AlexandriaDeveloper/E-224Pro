@@ -16,9 +16,9 @@ public class GetAccountSpecification : Specification<Account>
         {
             AddCriteries(x => x.AccountName == request.AccountName!);
         }
-        if (!string.IsNullOrEmpty(request.AccountNumber))
+        if (request.Id.HasValue)
         {
-            AddCriteries(x => x.AccountNumber == request.AccountNumber!);
+            AddCriteries(x => x.Id == request.Id!);
         }
 
 

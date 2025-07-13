@@ -140,11 +140,11 @@ public class PDFReportService
 
                       table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(x.AccountNumber);
                       table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(x.AccountName);
-                      table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Debit.ToString());
-                      table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Credit.ToString());
-                      table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance.Balance.ToString());
-                      table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction.Debit.ToString());
-                      table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction.Credit.ToString());
+                      table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance?.Debit.ToString() ?? "0");
+                      table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance?.Credit.ToString() ?? "0");
+                      table.Cell().Element(cell => OpeningCellStyle(cell, openingColor)).Text(x.OpeningBalance?.Balance.ToString() ?? "0");
+                      table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction?.Debit.ToString() ?? "0");
+                      table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction?.Credit.ToString() ?? "0");
                       table.Cell().Element(cell => MonthlyCellStyle(cell, monthlyColor)).Text(x.MonthlyTransAction?.Balance.ToString() ?? "0");
                       table.Cell().Element(cell => ClosingCellStyle(cell, closingColor)).Text(x.ClosingBalance?.Debit.ToString() ?? "0");
                       table.Cell().Element(cell => ClosingCellStyle(cell, closingColor)).Text(x.ClosingBalance?.Credit.ToString() ?? "0");
@@ -157,11 +157,11 @@ public class PDFReportService
                   table.Footer(footer =>
                     {
                       footer.Cell().ColumnSpan(2).Element(cell => FooterCellStyle(cell, accountColor)).Text("المجموع").Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Debit).ToString()).Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Credit).ToString()).Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance.Balance).ToString()).Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction.Debit).ToString()).Bold().FontSize(10);
-                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction.Credit).ToString()).Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance?.Debit ?? 0).ToString()).Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance?.Credit ?? 0).ToString()).Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, openingColor)).Text(report.ReportDetailsDtos.Sum(x => x.OpeningBalance?.Balance ?? 0).ToString()).Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction?.Debit ?? 0).ToString()).Bold().FontSize(10);
+                      footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction?.Credit ?? 0).ToString()).Bold().FontSize(10);
                       footer.Cell().Element(cell => FooterCellStyle(cell, monthlyColor)).Text(report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction?.Balance ?? 0).ToString()).Bold().FontSize(10);
                       footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Debit ?? 0).ToString()).Bold().FontSize(10);
                       footer.Cell().Element(cell => FooterCellStyle(cell, closingColor)).Text(report.ReportDetailsDtos.Sum(x => x.ClosingBalance?.Credit ?? 0).ToString()).Bold().FontSize(10);
@@ -169,8 +169,8 @@ public class PDFReportService
 
                     });
 
-                  static IContainer CellStyle(IContainer container, Color color)
-                    => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(2).AlignCenter().AlignMiddle();
+                  // static IContainer CellStyle(IContainer container, Color color)
+                  //   => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(2).AlignCenter().AlignMiddle();
 
 
                   static IContainer HeaderStyle(IContainer container, Color color)
@@ -307,9 +307,9 @@ public class PDFReportService
                         f.SubsidaryDetails.ForEach(s =>
                         {
                           table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(c.CollageName.ToString());
-                          table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(f.FundName.ToString());
+                          table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(f.FundName?.ToString() ?? string.Empty);
                           table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(s.Debit.ToString());
-                          table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(s.SubsidaryName.ToString());
+                          table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(s.SubsidaryName?.ToString() ?? string.Empty);
                           table.Cell().Element(cell => AccountCellStyle(cell, accountColor)).Scale(1.2f).Text(s.Credit.ToString());
                         });
                         table.Cell().Element(cell => subtotalStyle(cell, subtotalColor)).Scale(1.2f).Text(c.CollageName.ToString()).SemiBold();
@@ -337,7 +337,7 @@ public class PDFReportService
                       report.TotalSubsidaries.ForEach(total =>
                       {
                         footer.Cell().Element(cell => AccountCellStyle(cell, closingColor)).Scale(1.2f).Text(string.Empty);
-                        footer.Cell().Element(cell => AccountCellStyle(cell, closingColor)).Scale(1.2f).Text(total.SubsidaryNumber.ToString());
+                        footer.Cell().Element(cell => AccountCellStyle(cell, closingColor)).Scale(1.2f).Text(total.SubsidaryNumber?.ToString() ?? string.Empty);
                         footer.Cell().Element(cell => AccountCellStyle(cell, closingColor)).Scale(1.2f).Text(total.Debit.ToString());
                         footer.Cell().Element(cell => AccountCellStyle(cell, closingColor)).Scale(1.2f).Text("أجماليات " + total.SubsidaryName);
                         footer.Cell().Element(cell => AccountCellStyle(cell, closingColor)).Scale(1.2f).Text(total.Credit.ToString());
@@ -345,27 +345,27 @@ public class PDFReportService
                       });
                       footer.Cell().Element(cell => AccountCellStyle(cell, monthlyColor)).Scale(1.2f).Text(string.Empty);
                       footer.Cell().Element(cell => AccountCellStyle(cell, monthlyColor)).Scale(1.2f).Text(string.Empty);
-                      footer.Cell().Element(cell => AccountCellStyle(cell, monthlyColor)).Scale(1.2f).Text(report.TotalSubsidaries.Sum(x => x.Debit));
+                      footer.Cell().Element(cell => AccountCellStyle(cell, monthlyColor)).Scale(1.2f).Text(report.TotalSubsidaries.Sum(x => x.Debit).ToString());
                       footer.Cell().Element(cell => AccountCellStyle(cell, monthlyColor)).Scale(1.2f).Text("أجمالى كلى  ");
-                      footer.Cell().Element(cell => AccountCellStyle(cell, monthlyColor)).Scale(1.2f).Text(report.TotalSubsidaries.Sum(x => x.Credit));
+                      footer.Cell().Element(cell => AccountCellStyle(cell, monthlyColor)).Scale(1.2f).Text(report.TotalSubsidaries.Sum(x => x.Credit).ToString());
                     });
 
-                  static IContainer CellStyle(IContainer container, Color color)
-                    => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(2).AlignCenter().AlignMiddle();
+                  // static IContainer CellStyle(IContainer container, Color color)
+                  //   => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(2).AlignCenter().AlignMiddle();
 
 
-                  static IContainer HeaderStyle(IContainer container, Color color)
-                      => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(3).AlignCenter().AlignMiddle();
+                  // static IContainer HeaderStyle(IContainer container, Color color)
+                  //     => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(3).AlignCenter().AlignMiddle();
 
 
                   static IContainer MainHeaderStyle(IContainer container, Color color)
                       => container.Border(0).Background(color).Width(100).PaddingHorizontal(1).PaddingVertical(1).AlignCenter().AlignMiddle();
 
-                  static IContainer FooterCellStyle(IContainer container, Color color)
-                      => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(2).AlignCenter().AlignMiddle();
+                  // static IContainer FooterCellStyle(IContainer container, Color color)
+                  //     => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(2).AlignCenter().AlignMiddle();
 
-                  static IContainer OpeningCellStyle(IContainer container, Color color)
-                      => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(1).AlignCenter().AlignMiddle();
+                  // static IContainer OpeningCellStyle(IContainer container, Color color)
+                  //     => container.Border(1).Background(color).PaddingHorizontal(1).PaddingVertical(1).AlignCenter().AlignMiddle();
 
 
                   static IContainer subtotalStyle(IContainer container, Color color)

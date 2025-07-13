@@ -35,7 +35,7 @@ public class SubAccountService
             SubAccountNumber = x.SubAccountNumber,
             AccountId = x.AccountId,
             ParentAccountName = x.Account!.AccountName,
-            ParentAccountNumber = x.Account.AccountNumber
+
 
 
         }).ToList();

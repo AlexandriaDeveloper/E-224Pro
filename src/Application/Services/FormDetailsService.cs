@@ -151,7 +151,7 @@ public class FormDetailsService
             Credit = x.Credit,
             AccountId = x.AccountId,
             AccountName = x.Account!.AccountName,
-            AccountNumber = x.Account.AccountNumber
+            // AccountNumber = x.Account.Id
 
         }).ToList();
         return await Task.FromResult(result);
@@ -193,7 +193,7 @@ public class FormDetailsService
                     Credit = x.Credit,
                     Debit = x.Debit,
                     AccountName = accounts.SingleOrDefault(acc => acc!.Id == x.AccountId)!.AccountName,
-                    AccountNumber = accounts.SingleOrDefault(acc => acc!.Id == x.AccountId)!.AccountNumber
+                    // AccountNumber = accounts.SingleOrDefault(acc => acc!.Id == x.AccountId)!.Id
                 }).ToList()
             };
             formDetailsDto.Add(formDetailDto);

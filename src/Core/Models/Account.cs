@@ -10,8 +10,8 @@ public class Account : BaseEntity
 
     [StringLength(150)]
     public string AccountName { get; set; } = string.Empty;
-    [StringLength(50)]
-    public string AccountNumber { get; set; } = string.Empty;
+    //[StringLength(50)]
+    //public string AccountNumber { get; set; } = string.Empty;
     //دائن او مدين
     [StringLength(50)]
     public string AccountStatus { get; set; } = string.Empty;

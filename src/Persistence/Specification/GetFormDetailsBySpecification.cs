@@ -33,10 +33,10 @@ public class GetFormDetailsBySpecification : Specification<FormDetails>
         {
             AddCriteries(x => x.Form!.FormName == request.FormName);
         }
-        if (!string.IsNullOrEmpty(request.AccountNumber))
+        if (request.AccountId.HasValue)
         {
             //   AddInclude(x => x.Account);
-            AddCriteries(x => x.Account!.AccountNumber == request.AccountNumber);
+            AddCriteries(x => x.Account!.Id == request.AccountId);
         }
         if (!string.IsNullOrEmpty(request.CollageName))
         {

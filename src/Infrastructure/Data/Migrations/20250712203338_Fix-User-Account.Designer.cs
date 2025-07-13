@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250712203338_Fix-User-Account")]
+    partial class FixUserAccount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,6 +35,11 @@ namespace Infrastructure.Data.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("AccountStatus")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -44,6 +52,10 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("TempId")
+                        .HasMaxLength(50)
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -157,6 +169,10 @@ namespace Infrastructure.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<Guid?>("TempId")
+                        .HasMaxLength(50)
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
@@ -187,6 +203,10 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("TempId")
+                        .HasMaxLength(50)
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -221,6 +241,10 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid?>("TempId")
+                        .HasMaxLength(50)
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -274,6 +298,10 @@ namespace Infrastructure.Data.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<Guid?>("TempId")
+                        .HasMaxLength(50)
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal?>("TotalCredit")
                         .HasColumnType("decimal(18,2)");
 
@@ -316,6 +344,10 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("FormId")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("TempId")
+                        .HasMaxLength(50)
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
@@ -350,6 +382,10 @@ namespace Infrastructure.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<Guid?>("TempId")
+                        .HasMaxLength(50)
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.ToTable("Funds");
@@ -380,6 +416,10 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid?>("TempId")
+                        .HasMaxLength(50)
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -413,6 +453,10 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("SubAccountId")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("TempId")
+                        .HasMaxLength(50)
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FormDetailsId");
@@ -440,6 +484,10 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("TempId")
+                        .HasMaxLength(50)
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "AccountId");
 

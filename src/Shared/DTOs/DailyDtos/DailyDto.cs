@@ -28,8 +28,8 @@ public class DailyDto
         AccountItem = daily.AccountItem ?? string.Empty;
         TotalCredit = daily.Forms != null ? daily.Forms.Sum(x => x.FormDetails.Sum(x => x.Credit)) : 0;
         TotalDebit = daily.Forms != null ? daily.Forms.Sum(x => x.FormDetails.Sum(x => x.Debit)) : 0;
-        TotalSubsidiaryCredit = daily.Forms.Sum(x => x.FormDetails.Sum(x => x.SubsidiaryJournals.Sum(t => t.Credit)));
-        TotalSubsidiaryDebit = daily.Forms.Sum(x => x.FormDetails.Sum(x => x.SubsidiaryJournals.Sum(t => t.Debit)));
+        TotalSubsidiaryCredit = daily.Forms.Sum(x => x.FormDetails.Sum(x => x.SubsidiaryJournals.Sum(t => t.Credit))) ?? 0;
+        TotalSubsidiaryDebit = daily.Forms.Sum(x => x.FormDetails.Sum(x => x.SubsidiaryJournals.Sum(t => t.Debit))) ?? 0;
 
 
     }

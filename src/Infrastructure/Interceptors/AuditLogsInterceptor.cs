@@ -38,10 +38,10 @@ public class AuditLogsInterceptor : SaveChangesInterceptor
                 continue;
             }
             var primaryKey = entry.Properties.FirstOrDefault(p => p.Metadata.IsPrimaryKey())?.CurrentValue?.ToString();
-            if (string.IsNullOrEmpty(primaryKey) && entry.Entity is BaseEntity baseEntity)
-            {
-                primaryKey = baseEntity.TempId.ToString();
-            }
+            // if (string.IsNullOrEmpty(primaryKey) && entry.Entity is BaseEntity baseEntity)
+            // {
+            //     primaryKey = baseEntity.TempId.ToString();
+            // }
             var auditEntry = new AudityEntry(entry);
             auditEntry.EntityName = entry.Entity.GetType().Name;
             auditEntry.UserId = "test";

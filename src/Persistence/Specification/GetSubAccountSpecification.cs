@@ -13,9 +13,9 @@ public class GetSubAccountSpecification : Specification<SubAccount>
 
         // if (request.AccountId.HasValue) AddCriteries(x => x.Id == request.Id.Value);
         // if (request.AccountId.HasValue) AddCriteries(x => x.AccountId == request.AccountId.Value);
-        if (!request.ParentAccountNumber.IsNullOrEmpty())
+        if (request.ParentAccountId.HasValue)
         {
-            AddCriteries(x => x.Account.AccountNumber == request.ParentAccountNumber);
+            AddCriteries(x => x.Account.Id == request.ParentAccountId);
         }
         if (!request.ParentAccountName.IsNullOrEmpty())
         {
@@ -42,9 +42,9 @@ public class GetSubAccountCountAsyncSpecification : Specification<SubAccount>
     public GetSubAccountCountAsyncSpecification(GetSubAccountRequest request)
     {
         AddInclude(x => x.Account!);
-        if (!request.ParentAccountNumber.IsNullOrEmpty())
+        if (request.ParentAccountId.HasValue)
         {
-            AddCriteries(x => x.Account.AccountNumber == request.ParentAccountNumber);
+            AddCriteries(x => x.Account.Id == request.AccountId);
         }
         if (!request.ParentAccountName.IsNullOrEmpty())
         {

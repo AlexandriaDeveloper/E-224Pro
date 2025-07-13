@@ -107,11 +107,13 @@ public class FormService
 
         if (request.DailyId.HasValue)
         {
-            var daily = await _dailyRepository.GetById(request.DailyId.Value);
+            var daily = await _dailyRepository.GetQueryable(null).Where(x => x.Id == request.DailyId.Value).Include(x => x.Forms).ThenInclude(x => x.FormDetails).ThenInclude(x => x.SubsidiaryJournals).FirstOrDefaultAsync();
             response.Daily = new DailyDto(daily);
         }
         var spec = new GetFormSpecification(request);
-        var forms = _formRepository.GetQueryable(spec).Include(x => x.FormDetails).ToList();
+        var forms = _formRepository.GetQueryable(spec)
+        .Include(x => x.FormDetails)
+        .ThenInclude(x => x.SubsidiaryJournals).ToList();
 
 
 
@@ -184,7 +186,7 @@ public class FormService
                 Credit = x.Credit,
                 Debit = x.Debit,
                 AccountId = x.AccountId,
-                AccountNumber = x.Account!.AccountNumber,
+                //   AccountNumber = x.Account!.AccountNumber,
                 AccountName = x.Account.AccountName
 
             }).ToList()

@@ -22,6 +22,7 @@ public static class PersistenceExt
         services.AddScoped<IDailyRepository, DailyRepository>();
         services.AddScoped<IFormRepository, FormRepository>();
         services.AddScoped<ISubAccountRepository, SubAccountRepository>();
+        services.AddScoped<IUserAccountRepository, UserAccountRepository>();
         services.AddScoped<IUow, UOW>();
         return services;
     }

@@ -1,30 +1,31 @@
-<mat-toolbar style="margin-top: 40px;">
-  <mat-icon style="margin-left: 20px;">account_balance</mat-icon>
-  <h2 style="font-size: 22px;font-weight: bold;"> نظام الحسابات
-  </h2>
-</mat-toolbar>
+<ng-container *ngIf="auth.isLoggedIn()">
 
+  <mat-toolbar style="margin-top: 40px;">
+    <mat-icon style="margin-left: 20px;">account_balance</mat-icon>
+    <h2 style="font-size: 22px;font-weight: bold;"> نظام الحسابات
+    </h2>
+  </mat-toolbar>
 
-<mat-accordion class="example-headers-align">
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
 
-      <mat-panel-title>
+        <mat-panel-title>
 
-        اليوميات
-      </mat-panel-title>
+          اليوميات
+        </mat-panel-title>
 
-    </mat-expansion-panel-header>
-    <ng-template matExpansionPanelContent>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
 
-      <mat-nav-list>
-        <a mat-list-item routerLink="dailies">
+        <mat-nav-list>
+          <a mat-list-item routerLink="dailies">
 
-          <mat-icon style="margin-left: 10px;padding-top: 5px;">add</mat-icon>
-          فتح يومية جديدة
-        </a>
+            <mat-icon style="margin-left: 10px;padding-top: 5px;">add</mat-icon>
+            فتح يومية جديدة
+          </a>
 
-        <!-- <a mat-list-item routerLink="/daily-entries"> الاستعلام عن يوميات </a>
+          <!-- <a mat-list-item routerLink="/daily-entries"> الاستعلام عن يوميات </a>
         <a mat-list-item routerLink="/expense-forms">تسجيل استمارات الصرف</a>
         <a mat-list-item routerLink="/adjustments">تسجيل التسويات</a>
         <a mat-list-item routerLink="/general-ledger">دفتر الأستاذ العام</a>
@@ -32,48 +33,49 @@
         <a mat-list-item routerLink="/trial-balance">ميزان المراجعة</a>
         <a mat-list-item routerLink="/financial-reports">التقارير المالية</a>
         <a mat-list-item (click)="logout()">تسجيل الخروج</a> -->
-      </mat-nav-list>
-    </ng-template>
-  </mat-expansion-panel>
+        </mat-nav-list>
+      </ng-template>
+    </mat-expansion-panel>
 
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        الصناديق
-      </mat-panel-title>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          الصناديق
+        </mat-panel-title>
 
-    </mat-expansion-panel-header>
-    <ng-template matExpansionPanelContent>
-      <mat-nav-list>
-        <a mat-list-item routerLink="funds">
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <mat-nav-list>
+          <a mat-list-item routerLink="funds">
 
-          <mat-icon style="margin-left: 10px;padding-top: 5px;">add</mat-icon>
-          فتح يومية جديدة
-        </a>
-      </mat-nav-list>
+            <mat-icon style="margin-left: 10px;padding-top: 5px;">add</mat-icon>
+            فتح يومية جديدة
+          </a>
+        </mat-nav-list>
 
-    </ng-template>
-  </mat-expansion-panel>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
+      </ng-template>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
 
-        الحسابات
+          الحسابات
 
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <ng-template matExpansionPanelContent>
-      <mat-nav-list>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <mat-nav-list>
 
-        <!--use for loop-->
-        @for(subAccount of subAccounts; track subAccount.id) {
-        <a mat-list-item routerLink="subsidary-dailies/subId/{{subAccount.id}}">
-          <mat-icon style="margin-left: 10px;padding-top: 5px;">add</mat-icon>
-          {{subAccount.accountName}}
-        </a>
+          <!--use for loop-->
+          @for(subAccount of subAccounts; track subAccount.id) {
+          <a mat-list-item routerLink="subsidary-dailies/subId/{{subAccount.id}}">
+            <mat-icon style="margin-left: 10px;padding-top: 5px;">add</mat-icon>
+            {{subAccount.accountName}}
+          </a>
 
-        }
-      </mat-nav-list>
-    </ng-template>
-  </mat-expansion-panel>
-</mat-accordion>
+          }
+        </mat-nav-list>
+      </ng-template>
+    </mat-expansion-panel>
+  </mat-accordion>
+</ng-container>

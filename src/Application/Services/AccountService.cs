@@ -27,7 +27,7 @@ public class AccountService
         {
             Id = x.Id != null ? x.Id : 0,
             AccountName = x.AccountName,
-            AccountNumber = x.AccountNumber,
+            //  AccountNumber = x.AccountNumber,
             AccountStatus = x.AccountStatus
         }).ToList();
 
@@ -51,7 +51,7 @@ public class AccountService
                 {
                     Id = accounts.Id,
                     AccountName = accounts.AccountName,
-                    AccountNumber = accounts.AccountNumber,
+                    //  AccountNumber = accounts.Id,
                     AccountStatus = accounts.AccountStatus
                 });
             }
