@@ -78,9 +78,10 @@
         </ng-container>
 
         <!-- Symbol Column -->
-        <ng-container matColumnDef="accountItem">
+        <ng-container matColumnDef="isBalanced">
             <th mat-header-cell *matHeaderCellDef> نوع القيد </th>
-            <td mat-cell *matCellDef="let element"> {{element.accountItem==='StateBudget'?'موازنه':'صناديق'}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.totalCredit=== element.totalDebit?'متزن':'غير متزن'}}
+            </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

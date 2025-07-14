@@ -21,7 +21,7 @@ public class ReportDto
 public class ReportDetailsDto
 {
     public int AccountId { get; set; }
-    public string? AccountNumber { get; set; }
+    // public string? AccountNumber { get; set; }
     public string? AccountName { get; set; }
     public AccountBalance? OpeningBalance { get; set; }
     public AccountBalance? MonthlyTransAction { get; set; }

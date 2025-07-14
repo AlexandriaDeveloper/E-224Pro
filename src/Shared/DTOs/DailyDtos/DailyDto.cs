@@ -25,7 +25,7 @@ public class DailyDto
         Name = daily.Name ?? string.Empty;
         DailyDate = daily.DailyDate;
         DailyType = daily.DailyType;
-        AccountItem = daily.AccountItem ?? string.Empty;
+        // AccountItem = daily.AccountItem ?? string.Empty;
         TotalCredit = daily.Forms != null ? daily.Forms.Sum(x => x.FormDetails.Sum(x => x.Credit)) : 0;
         TotalDebit = daily.Forms != null ? daily.Forms.Sum(x => x.FormDetails.Sum(x => x.Debit)) : 0;
         TotalSubsidiaryCredit = daily.Forms.Sum(x => x.FormDetails.Sum(x => x.SubsidiaryJournals.Sum(t => t.Credit))) ?? 0;

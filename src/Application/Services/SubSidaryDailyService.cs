@@ -138,7 +138,8 @@ public class SubSidaryDailyService
                     Id = subsidaryFormDetails.Id,
                     SubAccountId = subsidaryFormDetails.SubAccountId,
                     SubAccountName = subsidaryFormDetails.SubAccount?.SubAccountName ?? string.Empty,
-                    SubAccountNumber = subsidaryFormDetails.SubAccount?.SubAccountNumber ?? string.Empty,
+                    SubAccountNumber = subsidaryFormDetails.SubAccount?.Id ?? 0,
+
                     Credit = subsidaryFormDetails.Credit,
                     Debit = subsidaryFormDetails.Debit
                 });
@@ -149,7 +150,7 @@ public class SubSidaryDailyService
                 {
                     SubAccountId = sub.Id,
                     SubAccountName = sub.SubAccountName ?? string.Empty,
-                    SubAccountNumber = sub.SubAccountNumber ?? string.Empty,
+                    SubAccountNumber = sub.Id,
                     Credit = 0,
                     Debit = 0
 
@@ -279,7 +280,7 @@ public class SubSidaryDailyService
                                         {
                                             SubsidaryId = g.Key,
                                             SubsidaryName = subAccount?.SubAccountName ?? string.Empty,
-                                            SubsidaryNumber = subAccount?.SubAccountNumber ?? string.Empty,
+                                            ///  SubsidaryNumber = subAccount?.SubAccountNumber ?? string.Empty,
                                             Credit = g.Sum(j => j.Credit ?? 0),
                                             Debit = g.Sum(j => j.Debit ?? 0)
                                         };

@@ -16,8 +16,8 @@ public class Daily : BaseEntity
     //موزازنه ام صناديق
     //Budgetary Expenses
     // Special Fund Expensess
-    [MaxLength(20)]
-    public string? AccountItem { get; set; }
+    // [MaxLength(20)]
+    // public string? AccountItem { get; set; }
     public List<Form>? Forms { get; set; }
 
 }

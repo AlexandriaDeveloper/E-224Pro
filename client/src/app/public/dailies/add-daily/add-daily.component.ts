@@ -46,7 +46,7 @@ export class AddDailyComponent implements OnInit {
     return this.fb.group({
       name: [this.daily.name, Validators.required],
       dailyType: [this.daily.dailyType, Validators.required],
-      accountItem: [this.daily.accountItem, Validators.required],
+      //  accountItem: [this.daily.accountItem, Validators.required],
       dailyDate: [this.daily.dailyDate, Validators.required]
 
     });

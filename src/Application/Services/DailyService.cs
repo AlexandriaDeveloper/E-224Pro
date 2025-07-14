@@ -64,7 +64,7 @@ public class DailyService
         {
             Name = daily.Name,
             DailyDate = daily.DailyDate,
-            AccountItem = daily.AccountItem.ToString()!,
+            //AccountItem = daily.AccountItem.ToString()!,
 
             DailyType = daily.DailyType.ToString()!
 
@@ -90,8 +90,8 @@ public class DailyService
         if (!string.IsNullOrEmpty(request.DailyType))
             daily.DailyType = request.DailyType;
 
-        if (!string.IsNullOrEmpty(request.AccountItem))
-            daily.AccountItem = request.AccountItem;
+        // if (!string.IsNullOrEmpty(request.AccountItem))
+        //     daily.AccountItem = request.AccountItem;
 
 
         await _dailyRepository.UpdateAsync(daily);

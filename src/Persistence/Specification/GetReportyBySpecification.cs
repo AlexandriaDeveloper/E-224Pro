@@ -29,10 +29,10 @@ public class GetReportyBySpecification : Specification<FormDetails>
             AddCriteries(x => x.Form!.Daily!.DailyDate.Month == request.ByMonth && x.Form.Daily.DailyDate.Year == request.ByYear);
         }
 
-        if (!string.IsNullOrEmpty(request.AccountItem))
-        {
-            AddCriteries(x => x.Form!.Daily!.AccountItem == request.AccountItem);
-        }
+        // if (!string.IsNullOrEmpty(request.AccountItem))
+        // {
+        //     AddCriteries(x => x.Form!.Daily!.AccountItem == request.AccountItem);
+        // }
 
         if (request.StartDate.HasValue)
         {

@@ -119,7 +119,7 @@ public class ReportService
             FundName = getAccountsBalanceByAccount.FundId.HasValue ? (await _fundRepository.GetById(getAccountsBalanceByAccount.FundId.Value))?.FundName : "الكل",
             CollageName = getAccountsBalanceByAccount.CollageId.HasValue ? (await _collageRepository.GetById(getAccountsBalanceByAccount.CollageId.Value))?.CollageName : "الكل",
 
-            ReportDetailsDtos = reportDetailsList.OrderBy(x => x.AccountNumber).ToList()
+            ReportDetailsDtos = reportDetailsList.OrderBy(x => x.AccountId).ToList()
         };
 
         return result;
@@ -242,7 +242,7 @@ public class ReportService
             {
                 AccountId = g.Key,
                 AccountName = g.FirstOrDefault()!.SubAccount!.SubAccountName,
-                AccountNumber = g.FirstOrDefault()!.SubAccount!.SubAccountNumber,
+                //    AccountNumber = g.FirstOrDefault()!.SubAccount!.SubAccountNumber,
                 // Credit = g.Where(x => x.TransactionSide == "Credit").Sum(x => x.Amount),
                 // Debit = g.Where(x => x.TransactionSide == "Debit").Sum(x => x.Amount),
 

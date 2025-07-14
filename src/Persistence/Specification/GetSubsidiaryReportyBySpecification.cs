@@ -19,10 +19,10 @@ public class GetSubsidiaryReportyBySpecification : Specification<SubsidiaryJourn
             AddCriteries(x => x.FormDetails.Form!.Daily!.DailyDate.Month == request.ByMonth);
         }
 
-        if (!request.AccountItem.IsNullOrEmpty())
-        {
-            AddCriteries(x => x.FormDetails.Form!.Daily!.AccountItem == request.AccountItem);
-        }
+        // if (!request.AccountItem.IsNullOrEmpty())
+        // {
+        //     AddCriteries(x => x.FormDetails.Form!.Daily!.AccountItem == request.AccountItem);
+        // }
         if (request.SpecificDate.HasValue)
         {
             AddCriteries(x => x.FormDetails.Form!.Daily!.DailyDate == request.SpecificDate);
@@ -74,7 +74,7 @@ public class GetSubsidiaryReportyBySpecification : Specification<SubsidiaryJourn
         if (!string.IsNullOrEmpty(request.AccountType))
         {
 
-            AddCriteries(x => x.FormDetails.Form!.Daily!.DailyType == request.AccountType);
+            AddCriteries(x => x.FormDetails!.Form!.Daily!.DailyType == request.AccountType);
         }
 
 

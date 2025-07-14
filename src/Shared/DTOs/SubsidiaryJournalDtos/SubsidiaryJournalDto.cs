@@ -10,7 +10,7 @@ public class SubsidiaryJournalDto
         FormDetailsId = existingSubsidiaryJournal.FormDetailsId;
         SubAccountId = existingSubsidiaryJournal.SubAccountId;
         SubAccountName = existingSubsidiaryJournal.SubAccount != null ? existingSubsidiaryJournal.SubAccount.SubAccountName : null;
-        SubAccountCode = existingSubsidiaryJournal.SubAccount != null ? existingSubsidiaryJournal.SubAccount.SubAccountNumber : null;
+        //  SubAccountCode = existingSubsidiaryJournal.SubAccount != null ? existingSubsidiaryJournal.SubAccount.SubAccountNumber : null;
         Debit = existingSubsidiaryJournal.Debit;
         Credit = existingSubsidiaryJournal.Credit;
         // CollageId = existingSubsidiaryJournal.CollageId;

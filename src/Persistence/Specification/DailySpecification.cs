@@ -32,11 +32,11 @@ public class DailySpecification : Specification<Daily>
             AddCriteries(x => x.DailyType == request.DailyType);
 
         }
-        if (!string.IsNullOrEmpty(request.AccountItem))
-        {
-            AddCriteries(x => x.AccountItem == request.AccountItem);
+        // if (!string.IsNullOrEmpty(request.AccountItem))
+        // {
+        //     AddCriteries(x => x.AccountItem == request.AccountItem);
 
-        }
+        // }
         AddOrderByDescending(x => x.Id);
         if (request.PageIndex.HasValue && request.PageSize.HasValue)
             ApplyPaging(request.PageIndex.Value, request.PageSize.Value);
@@ -75,11 +75,11 @@ public class DailyCountAsyncSpecification : Specification<Daily>
             AddCriteries(x => x.DailyType == request.DailyType);
 
         }
-        if (!string.IsNullOrEmpty(request.AccountItem))
-        {
-            AddCriteries(x => x.AccountItem == request.AccountItem);
+        // if (!string.IsNullOrEmpty(request.AccountItem))
+        // {
+        //     AddCriteries(x => x.AccountItem == request.AccountItem);
 
-        }
+        // }
 
     }
 

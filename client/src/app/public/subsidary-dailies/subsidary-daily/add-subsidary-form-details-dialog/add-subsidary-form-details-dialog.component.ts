@@ -37,7 +37,7 @@ export class AddSubsidaryFormDetailsDialogComponent implements OnInit, AfterView
   subsidaryDetails: any = [];
   accountId: number;
   funds = [];
-  accounts;
+  //accounts;
   totalCredit;
   totalDebit;
   subsidaryFormDetails: SubsidaryFormDetailDto[] = [];
@@ -52,6 +52,7 @@ export class AddSubsidaryFormDetailsDialogComponent implements OnInit, AfterView
 
 
     if (this.data) {
+      console.log(this.data);
 
       this.form = this.data.element
 
@@ -69,9 +70,12 @@ export class AddSubsidaryFormDetailsDialogComponent implements OnInit, AfterView
 
   loadSubsidaryFormDetails() {
 
+
+
     this.subSidatyService.getSubsidartFormDetails(this.data.accountId, this.data.element.formDetailsId).subscribe(
       (res: SubsidaryFormDetailDto[]) => {
         this.subsidaryDetails = res;
+        console.log(res);
       },
       (error) => {
         console.error('Error loading subsidary form details:', error);

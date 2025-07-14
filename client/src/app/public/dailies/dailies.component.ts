@@ -29,7 +29,7 @@ export interface PeriodicElement {
   styleUrl: './dailies.component.scss'
 })
 export class DailiesComponent implements OnInit {
-  displayedColumns: string[] = ['action', 'id', 'name', 'dailyDate', 'dailyType', 'totalCredit', 'totalDebit', 'accountItem'];
+  displayedColumns: string[] = ['action', 'id', 'name', 'dailyDate', 'dailyType', 'totalCredit', 'totalDebit', 'isBalanced'];
   dataSource;
   params: GetDailiesRequest = new GetDailiesRequest();
   daily: Daily = null;

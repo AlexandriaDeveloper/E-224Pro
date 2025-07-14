@@ -1,0 +1,10 @@
+{
+    "gemini": {
+        "host": "localhost",
+        "port": 3000
+    },
+    "api": {
+        "host": "localhost",
+        "port": 5128
+    }
+}

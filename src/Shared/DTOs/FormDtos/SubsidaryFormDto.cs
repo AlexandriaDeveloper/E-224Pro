@@ -33,7 +33,7 @@ public class SubsidaryFormDetailsDto
     public int Id { get; set; }
 
     public int SubAccountId { get; set; }
-    public string? SubAccountNumber { get; set; }
+    public int? SubAccountNumber { get; set; }
     public string? SubAccountName { get; set; }
     public decimal? Debit { get; set; }
     public decimal? Credit { get; set; }

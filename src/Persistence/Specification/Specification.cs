@@ -34,6 +34,9 @@ public class Specification<TEntity> : ISpecification<TEntity>
         {
             Criteria = criteria;
         }
+        IncludeStrings = new List<string>();
+        OrderBy = null!;
+        OrderByDescending = null!;
     }
 
     protected void AddCriteries(Expression<Func<TEntity, bool>> criteria)
@@ -74,3 +77,4 @@ public class Specification<TEntity> : ISpecification<TEntity>
 
     }
 }
+

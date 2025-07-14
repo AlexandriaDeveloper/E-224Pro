@@ -32,7 +32,7 @@ public class SubAccountService
         {
             Id = x.Id,
             SubAccountName = x.SubAccountName,
-            SubAccountNumber = x.SubAccountNumber,
+            //   SubAccountNumber = x.SubAccountNumber,
             AccountId = x.AccountId,
             ParentAccountName = x.Account!.AccountName,
 
