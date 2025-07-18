@@ -28,8 +28,8 @@ public class ReportDetailsDto
     // i need proprety auto calculate the closing balance
     public AccountBalance? ClosingBalance => new AccountBalance
     {
-        Credit = MonthlyTransAction?.Credit + OpeningBalance?.Credit > MonthlyTransAction?.Debit + OpeningBalance?.Debit ? MonthlyTransAction?.Credit + OpeningBalance?.Credit - (MonthlyTransAction?.Debit + OpeningBalance?.Debit) : 0,
-        Debit = MonthlyTransAction?.Debit + OpeningBalance?.Debit > MonthlyTransAction?.Credit + OpeningBalance?.Credit ? MonthlyTransAction?.Debit + OpeningBalance?.Debit - (MonthlyTransAction?.Credit + OpeningBalance?.Credit) : 0,
+        Credit = MonthlyTransAction?.Credit + OpeningBalance?.Credit,
+        Debit = MonthlyTransAction?.Debit + OpeningBalance?.Debit,
 
     };
 

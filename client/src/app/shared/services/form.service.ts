@@ -88,5 +88,14 @@ export class FormService {
     );
   }
 
+  downloadDailyExcelForms(dailyId: number) {
+    return this.http.post(`${this.apiUrl}Forms/DownloadExcelSheet/${dailyId}`, {}
+      , {
+        responseType: 'blob' as 'json',
+      },
+
+    );
+  }
+
 
 }

@@ -180,6 +180,18 @@ export class SubsidaryDailyComponent implements OnInit {
     });
 
   }
+  deleteSubsidary(element) {
+    console.log(element);
+
+    // this.subsidaryService.deleteSubsidaryDailyForm(element.id).subscribe({
+    //   next: () => {
+    //     this.loadForms(this.params);
+    //   },
+    //   error: (error) => {
+    //     console.error('Error deleting form', error);
+    //   }
+    // });
+  }
 
 
 }

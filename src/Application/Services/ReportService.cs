@@ -8,6 +8,7 @@ using Persistence.Specification;
 using Shared.Contracts.ReportRequest;
 using Shared.DTOs.FormDtos;
 using Shared.DTOs.ReportDtos;
+using ReportDetailsDto = Shared.DTOs.ReportDtos.ReportDetailsDto;
 
 namespace Application.Services;
 
@@ -95,7 +96,7 @@ public class ReportService
             {
                 AccountId = g.Key,
                 AccountName = g.FirstOrDefault()!.Account!.AccountName,
-                //       AccountNumber = g.FirstOrDefault()!.Account!.Id,
+                // = g.FirstOrDefault()!.Account!.Id,
                 OpeningBalance = await GetOpeningBalanceByAccount(g.Key, getAccountsBalanceByAccount, cancellationToken),
                 MonthlyTransAction = await GetMonthlyAccountBalance(g.Key, getAccountsBalanceByAccount),
             };

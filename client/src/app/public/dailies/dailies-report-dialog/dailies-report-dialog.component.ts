@@ -60,6 +60,18 @@ export class DailiesReportDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('Form submitted:', this.searchForm.errors);
+
+    if (this.searchForm.invalid) {
+      // Mark all fields as touched to show validation errors
+      Object.keys(this.searchForm.controls).forEach(key => {
+        this.searchForm.get(key)?.markAsTouched();
+        return;
+      }
+        //show date range error if startDate is after endDate
+      );
+    }
+
     let formValue = this.searchForm.value as GetDailiesRequest;
     console.log(formValue);
 

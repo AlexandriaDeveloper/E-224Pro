@@ -107,3 +107,31 @@ public class SubsidaryDailyDetailsReportDto
     public decimal? Debit { get; set; }
 }
 
+public class AccountBalanceReportDataDto
+{
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public string CollageName { get; set; }
+    public string FundName { get; set; }
+    public string AccountType { get; set; }
+    public List<ReportDetailsDto> ReportDetailsDtos { get; set; }
+}
+public class ReportDetailsDto
+{
+    public int AccountId { get; set; }
+    public string AccountName { get; set; }
+    public MonthlyTransactionDto MonthlyTransAction { get; set; }
+}
+
+public class MonthlyTransactionDto
+{
+    public decimal? Debit { get; set; }
+    public decimal? Credit { get; set; }
+}
+public class FormDetailsReportDto
+{
+    public string CollageName { get; set; }
+    public string FundName { get; set; }
+    public string AccountType { get; set; }
+    public List<ReportDetailsDto> ReportDetailsDtos { get; set; }
+}

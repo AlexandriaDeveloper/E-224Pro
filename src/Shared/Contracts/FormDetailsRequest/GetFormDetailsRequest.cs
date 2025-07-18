@@ -40,3 +40,17 @@ public class AccountsDebitCreditDto
     public string? DebitAccountName { get; set; }
     public int? DebitAccountNumber { get; set; }
 }
+
+public class FormRowDto
+{
+    public string? FormName { get; set; }
+    public string? FormNum224 { get; set; }
+    public string? FormNum55 { get; set; }
+    public string? CollageName { get; set; }
+    public string? FundName { get; set; }
+    public string? AuditorName { get; set; }
+    public string? Details { get; set; }
+    public string? DailyType { get; set; }
+    public List<AccountsDebitCreditDto> AccountsDebitCreditDtos { get; set; }
+
+}

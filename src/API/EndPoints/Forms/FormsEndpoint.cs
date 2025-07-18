@@ -23,6 +23,7 @@ public static class Forms
         formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync).RequireAuthorization(); ;
         formGroup.MapGet("/{id}", GetByIdAsync).RequireAuthorization(); ;
         formGroup.MapPost("/DownloadTemplateExcelSheet", DownloadTemplateExcelSheet).RequireAuthorization(); ;
+        formGroup.MapPost("/DownloadExcelSheet/{dailyId}", DownloadExcelSheet).RequireAuthorization(); ;
         return app;
     }
 
@@ -68,6 +69,16 @@ public static class Forms
     private static async Task<IResult> DownloadTemplateExcelSheet(ExcelService service, GetAccountDownloadTemplateRequest request, CancellationToken cancellationToken)
     {
         var excelBytes = await service.GenerateTemplateExcelSheet(request, cancellationToken);
+        if (excelBytes == null || excelBytes.Length == 0)
+        {
+            return Results.NotFound("No data found for the specified report criteria.");
+        }
+        return Results.File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "template.xlsx");
+    }
+
+    private static async Task<IResult> DownloadExcelSheet(ExcelService service, int dailyId, CancellationToken cancellationToken)
+    {
+        var excelBytes = await service.GenerateFilledExcelSheetByDailyId(dailyId, cancellationToken);
         if (excelBytes == null || excelBytes.Length == 0)
         {
             return Results.NotFound("No data found for the specified report criteria.");

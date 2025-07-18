@@ -74,23 +74,24 @@ export class DownloadExcelTemplateDialogComponent implements OnInit {
 
     return this.fb.group({
 
-      creditAccountNumber: [account.accountNumber || 0],
+      creditAccountNumber: [account.id || 0],
       creditAccountName: [account.accountName || ''],
-      debitAccountNumber: [account.accountNumber || 0],
+      debitAccountNumber: [account.id || 0],
       debitAccountName: [account.accountName || ''],
 
     });
 
   }
 
-  getAccountName(accountType: string, index: number, accountId: string): void {
+  getAccountName(accountType: string, index: number, accountId: number): void {
     console.log(accountType, accountId);
     console.log(this.accounts);
 
 
-    const account = this.accounts.find(acc => acc.accountNumber === accountId);
-    const control = this.fAccounts.at(index);
+    const account = this.accounts.find(acc => acc.id === +accountId);
     console.log(account);
+    const control = this.fAccounts.at(index);
+
 
     if (!account) {
       control.patchValue({
@@ -103,14 +104,14 @@ export class DownloadExcelTemplateDialogComponent implements OnInit {
 
       control.patchValue({
         creditAccountName: account.accountName,
-        creditAccountNumber: account.accountNumber,
+        creditAccountNumber: account.id,
       });
 
     } else {
 
       control.patchValue({
         debitAccountName: account.accountName,
-        debitAccountNumber: account.accountNumber,
+        debitAccountNumber: account.id,
       });
 
     }

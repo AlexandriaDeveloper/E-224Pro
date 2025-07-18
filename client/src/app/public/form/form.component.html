@@ -69,6 +69,10 @@
                         تنزيل ملف فارغ
                         <mat-icon>download</mat-icon>
                     </button>
+                    <button mat-menu-item (click)="downloadDailyExcelForms(data.daily.id)">
+                        تنزيل ملف اليوميه
+                        <mat-icon>download</mat-icon>
+                    </button>
                     <button mat-menu-item>
 
                         تنزيل اليوميه
@@ -87,9 +91,9 @@
                 </button>
             </th>
             <td mat-cell *matCellDef="let element">
-                <button mat-icon-button [routerLink]="['./',element.id]">
+                <!-- <button mat-icon-button [routerLink]="['./',element.id]">
                     <mat-icon>visibility</mat-icon>
-                </button>
+                </button> -->
 
                 <button mat-icon-button (click)="openAddFormDialog(element)">
                     <mat-icon>edit</mat-icon>

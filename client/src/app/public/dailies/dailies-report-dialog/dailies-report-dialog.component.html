@@ -99,7 +99,8 @@
 
     <div style="display:flex !important;justify-content: center;">
 
-        <button mat-mini-fab (click)="onSubmit()" style="width: 160px;" class="btn-secondary">
+        <button mat-mini-fab (click)="onSubmit()" style="width: 160px;" class="btn-secondary"
+            [disabled]="searchForm.invalid">
             استخرج تقرير
             <mat-icon>print</mat-icon>
         </button>

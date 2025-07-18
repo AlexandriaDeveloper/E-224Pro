@@ -83,7 +83,7 @@ export class DailiesService {
       params = params.append('fundId', getDailiesReportRequest.fundId);
     }
 
-    return this.http.get(`${this.apiUrl}reports/reportPdf`, {
+    return this.http.get(`${this.apiUrl}reports/ReportDailiesPdf`, {
       responseType: 'blob' as 'json',
       params: params
     });

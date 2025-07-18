@@ -10,6 +10,8 @@ using NPOI.SS.Util;
 using Shared.Contracts.FormDetailsRequest;
 using Microsoft.IdentityModel.Tokens;
 using QuestPDF.Helpers;
+using Microsoft.EntityFrameworkCore;
+using Shared.DTOs.AccountDtos;
 
 namespace Application.Services
 {
@@ -18,12 +20,14 @@ namespace Application.Services
         private readonly ICollageRepository _collageRepository;
         private readonly IFundRepository _fundRepository;
         private readonly IAccountRepository _accountRepository;
+        private readonly IDailyRepository _dailyRepository;
 
-        public ExcelService(ICollageRepository collageRepository, IFundRepository fundRepository, IAccountRepository accountRepository)
+        public ExcelService(IDailyRepository dailyRepository, ICollageRepository collageRepository, IFundRepository fundRepository, IAccountRepository accountRepository)
         {
             _collageRepository = collageRepository;
             _fundRepository = fundRepository;
             _accountRepository = accountRepository;
+            _dailyRepository = dailyRepository;
 
         }
 
@@ -176,6 +180,8 @@ namespace Application.Services
             {
                 var row = sheet.CreateRow(i + 2); // Start from row index 2 (Excel row 3)
                 row.CreateCell(0).SetCellValue(i + 1);
+                //if request has value set data to row
+
 
 
                 // Add empty cells (or 0) for Debit account columns in sample data rows
@@ -497,5 +503,98 @@ namespace Application.Services
                 return memoryStream.ToArray();
             }
         }
+
+        // New method: Generate and fill Excel template with data by dailyId
+        public async Task<byte[]> GenerateFilledExcelSheetByDailyId(int dailyId, CancellationToken cancellationToken)
+        {
+            // Load the daily and related data (adjust repository and includes as needed)
+            // Example assumes you have a DailyRepository and FormRepository available
+            // You may need to inject them into this service if not already
+            var daily = _dailyRepository.GetQueryable(null)
+            .Where(d => d.Id == dailyId)
+            .Include(x => x.Forms)
+            .Include(d => d.Forms).ThenInclude(f => f.FormDetails)
+            .ThenInclude(f => f.Account).FirstOrDefault(); // Replace with your actual repository method
+            if (daily == null)
+                throw new Exception($"No daily found with id {dailyId}");
+            // Get Distanicat accounts for Debit and Credit
+
+
+            var headers = BuildHeader(daily.Forms);
+            //  Console.WriteLine($"Debit Accounts Count: {debitAccounts.Count}, Credit Accounts Count: {creditAccounts.Count}");
+
+            throw new NotImplementedException(); // Placeholder for the actual implementation
+        }
+        private ExcelHeaders BuildHeader(List<Form> forms)
+        {
+            var debitAccounts = forms
+                    .SelectMany(f => f.FormDetails)
+                    .Where(fd => fd.Account != null && fd.AccountId.ToString().StartsWith("1")).GroupBy(x => x.AccountId) // Assuming Debit accounts start with "1"
+                    .Select(fd => new AccountDto
+                    {
+                        AccountName = fd.First().Account.AccountName!,
+                        Id = fd.Key
+                    })
+
+                    .ToList();
+            var creditAccounts = forms
+                .SelectMany(f => f.FormDetails)
+                .Where(fd => fd.Account != null && fd.AccountId.ToString().StartsWith("2")).GroupBy(x => x.AccountId) // Assuming Credit accounts start with "2"
+                .Select(fd => new AccountDto
+                {
+                    AccountName = fd.First().Account.AccountName!,
+                    Id = fd.Key
+                })
+                .ToList();
+            // Build the headers using the ExcelHeaders class
+            var headers = new ExcelHeaders().Build(debitAccounts, creditAccounts);
+            return headers;
+        }
+
+
+
+        public class ExcelHeaders
+        {
+
+            public List<ExcelHeadrsTitles> Headers { get; set; } = new List<ExcelHeadrsTitles>();
+
+            public ExcelHeaders()
+            {
+
+            }
+            public ExcelHeaders Build(List<AccountDto> debitAccounts, List<AccountDto> creditAccounts)
+            {
+                Headers.Clear();
+                Headers.Add(new ExcelHeadrsTitles { row1 = string.Empty, row2 = "م" });
+
+                Headers.Add(new ExcelHeadrsTitles { row1 = "A-1", row2 = "رقم 55" });
+                Headers.Add(new ExcelHeadrsTitles { row1 = "A-2", row2 = "رقم 224" });
+                Headers.Add(new ExcelHeadrsTitles { row1 = "A-3", row2 = "أسم الملف" });
+                Headers.Add(new ExcelHeadrsTitles { row1 = "A-4", row2 = "المراجع" });
+                Headers.Add(new ExcelHeadrsTitles { row1 = "A-5", row2 = "الكلية" });
+                Headers.Add(new ExcelHeadrsTitles { row1 = "A-6", row2 = "الصندوق" });
+                Headers.Add(new ExcelHeadrsTitles { row1 = "A-7", row2 = "تفاصيل" });
+                foreach (var account in debitAccounts)
+                {
+                    Headers.Add(new ExcelHeadrsTitles { row1 = account.Id.ToString(), row2 = account.AccountName });
+                }
+                Headers.Add(new ExcelHeadrsTitles { row1 = "TotalDebit", row2 = "اجمالى مدين" });
+                foreach (var account in creditAccounts)
+                {
+                    Headers.Add(new ExcelHeadrsTitles { row1 = account.Id.ToString(), row2 = account.AccountName });
+                }
+                Headers.Add(new ExcelHeadrsTitles { row1 = "TotalCredit", row2 = "اجمالى دائن" });
+                Headers.Add(new ExcelHeadrsTitles { row1 = "Net", row2 = "الصافى" });
+
+                return this;
+            }
+        }
+        public class ExcelHeadrsTitles
+        {
+            public string row1 { get; set; } = string.Empty;
+            public string row2 { get; set; } = string.Empty;
+
+        }
     }
+
 }

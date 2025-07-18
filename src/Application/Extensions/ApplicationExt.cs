@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using Persistence.Repository;
 using QuestPDF.Infrastructure;
@@ -30,7 +31,9 @@ public static class ApplicationExt
             var subsidaryDailyService = provider.GetRequiredService<SubSidaryDailyService>();
             var config = provider.GetRequiredService<IConfiguration>();
             var webHostEnvironment = provider.GetRequiredService<IWebHostEnvironment>();
-            return new PDFReportService(reportService, subsidaryDailyService, config, webHostEnvironment);
+            //add ilogger
+            var logger = provider.GetRequiredService<ILogger<PDFReportService>>();
+            return new PDFReportService(reportService, subsidaryDailyService, config, webHostEnvironment, logger);
         });
         services.AddScoped<CollageService>();
         services.AddScoped<SubAccountService>();

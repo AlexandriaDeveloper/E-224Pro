@@ -183,19 +183,36 @@ export class FormComponent implements OnInit {
 
 
   downloadExcelTemplate(result) {
-    // this.formService.downloadDailyExcelFormTemplate(result).subscribe({
-    //   next: (response: any) => {
+    this.formService.downloadDailyExcelFormTemplate(result).subscribe({
+      next: (response: any) => {
 
-    //     //dowload excel file 
+        //dowload excel file 
 
-    //     const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    //     const url = window.URL.createObjectURL(blob);
-    //     window.open(url);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error downloading template:', error);
-    //   }
-    // });
+        const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+      },
+      error: (error) => {
+        console.error('Error downloading template:', error);
+      }
+    });
+  }
+  downloadDailyExcelForms(dailyId: number) {
+    console.log(dailyId);
+
+    this.formService.downloadDailyExcelForms(dailyId).subscribe({
+      next: (response: any) => {
+
+        //dowload excel file 
+
+        const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+      },
+      error: (error) => {
+        console.error('Error downloading daily excel forms:', error);
+      }
+    });
   }
   openUploadExcelDialog() {
     const dialogRef = this.dialog.open(UploadExcelFormDialogComponent, {

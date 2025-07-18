@@ -19,7 +19,8 @@ public static class ReportsEndpoint
         // formGroup.MapDelete("/Delete/{id}", DeleteForm);
         formGroup.MapGet("/ReportFormDetails", GetFormDetailsBySpecAsync).RequireAuthorization(); ;
         formGroup.MapGet("/ReportSubsidiaryJournalPdf", DownloadSubsidiaryReport).RequireAuthorization(); ;
-        formGroup.MapGet("/ReportPdf", DownloadReports).RequireAuthorization(); ;
+        formGroup.MapGet("/ReportPdf", DownloadReports).RequireAuthorization();
+        formGroup.MapGet("/ReportDailiesPdf", DownloadDailiesReports).RequireAuthorization(); ;
 
         // formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync);
         // formGroup.MapGet("/{id}", GetByIdAsync);
@@ -38,6 +39,15 @@ public static class ReportsEndpoint
     }
 
     private static async Task<IResult> DownloadReports(PDFReportService service, [AsParameters] GetAccountsBalanceBy request, CancellationToken cancellationToken)
+    {
+        var pdfBytes = await service.GenerateReport(request, cancellationToken);
+        if (pdfBytes == null || pdfBytes.Length == 0)
+        {
+            return Results.NotFound("No data found for the specified report criteria.");
+        }
+        return Results.File(pdfBytes, "application/pdf", "report.pdf");
+    }
+    private static async Task<IResult> DownloadDailiesReports(PDFReportService service, [AsParameters] GetAccountsBalanceBy request, CancellationToken cancellationToken)
     {
         var pdfBytes = await service.GenerateReport(request, cancellationToken);
         if (pdfBytes == null || pdfBytes.Length == 0)
