@@ -23,6 +23,9 @@ public static class SubsidiaryJournal
         // subsidiaryJournalGroup.MapPut("/Update/{id}", UpdateSubsidiaryJournal);
         subsidiaryJournalGroup.MapDelete("/Delete/{id}", DeleteSubsidiaryJournal).RequireAuthorization();
         subsidiaryJournalGroup.MapGet("/DailyRepot", GetSubsidaryDaily).RequireAuthorization();
+        //formDetailsId/${formDetailsId}`
+
+        subsidiaryJournalGroup.MapDelete("/FormDetailsId/{formDetailsId}", DeleteSubsidaryFormDetail).RequireAuthorization();
         return app;
     }
 
@@ -64,6 +67,12 @@ public static class SubsidiaryJournal
     {
         var result = await service.GetSubsidaryDaily(request);
         return TypedResults.Ok(result);
+    }
+
+    private static async Task<IResult> DeleteSubsidaryFormDetail(SubsidiaryJournalService service, int formDetailsId, CancellationToken cancellationToken = default)
+    {
+        await service.DeleteSubsidiaryJournalByFormDetailsId(formDetailsId, cancellationToken);
+        return TypedResults.Ok();
     }
     // private static async Task<IResult> PostTestSubsidiaryJournal(SubsidiaryJournalService service, CancellationToken cancellationToken)
     // {

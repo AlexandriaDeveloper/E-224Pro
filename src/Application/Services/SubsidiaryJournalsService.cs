@@ -121,4 +121,14 @@ public class SubsidiaryJournalService
         await _uow.CommitAsync(cancellationToken);
     }
 
+    public async Task DeleteSubsidiaryJournalByFormDetailsId(int formDetailsId, CancellationToken cancellationToken)
+    {
+        var existingSubsidiaryJournal = await _subsidiaryJournalRepository.GetByFormDetailsId(formDetailsId);
+        if (existingSubsidiaryJournal == null)
+        {
+            throw new ArgumentException("SubsidiaryJournal not found");
+        }
+        _subsidiaryJournalRepository.RemoveRange(existingSubsidiaryJournal);
+        await _uow.CommitAsync(cancellationToken);
+    }
 }

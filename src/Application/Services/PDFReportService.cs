@@ -34,8 +34,7 @@ public partial class PDFReportService
     this._config = config;
   }
 
-
-  public async Task<byte[]> GenerateReport(GetAccountsBalanceBy request, CancellationToken cancellationToken)
+  public async Task<byte[]> GenerateDailysReport(GetAccountsBalanceBy request, CancellationToken cancellationToken)
   {
     // Input validation
     if (request == null)
@@ -54,116 +53,7 @@ public partial class PDFReportService
       var imagePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Content", "images", "logo.png");
       using var stream = new MemoryStream();
 
-      // Document.Create(Container =>
-      // {
-      //   Container.Page(page =>
-      //     {
-      //       // page.Size(PageSizes.A4.Portrait());
-      //       // page.ContentFromRightToLeft();
-      //       // page.Margin(.5f, Unit.Centimetre);
-      //       // page.PageColor(Colors.White);
-      //       // page.DefaultTextStyle(x => x.FontSize(ReportConstants.DataFontSize).FontFamily(ReportConstants.EnglishFont));
-
-      //       page.Header().Column(c =>
-      //         {
-      //           c.Item().Column(c2 =>
-      //             {
-      //               c2.Item().AlignLeft().Text("تاريخ الطباعة : " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-      //                     .FontSize(ReportConstants.DataFontSize).FontFamily(ReportConstants.ArabicFont);
-      //               c2.Item().AlignRight().Text("جامعة الاسكندريه")
-      //                     .FontSize(10).Bold().FontFamily(ReportConstants.ArabicFont);
-      //               c2.Item().AlignRight().Text("الوحدة الحسابيه المركزيه للمجمع الطبى")
-      //                     .FontSize(10).Bold().Underline().FontFamily(ReportConstants.ArabicFont);
-      //               c2.Item().AlignCenter().Text("تقرير أرصدة الحسابات")
-      //                     .FontSize(ReportConstants.TitleFontSize).FontFamily(ReportConstants.ArabicFont).Bold();
-      //               c2.Item().AlignCenter().Text($"من : {request.StartDate:yyyy-MM-dd} إلى : {request.EndDate:yyyy-MM-dd}")
-      //                     .FontSize(ReportConstants.SubtitleFontSize).FontFamily(ReportConstants.ArabicFont).Underline().Bold();
-      //               c2.Item().AlignRight().Text($"الكلية : {report.CollageName}")
-      //                     .FontSize(ReportConstants.DataFontSize).Bold().FontFamily(ReportConstants.ArabicFont);
-      //               c2.Item().AlignRight().Text($"الصندوق : {report.FundName}")
-      //                     .FontSize(ReportConstants.DataFontSize).Bold().FontFamily(ReportConstants.ArabicFont);
-      //               c2.Item().AlignRight().Text($"نوع الحساب : {report.AccountType}")
-      //                     .FontSize(ReportConstants.DataFontSize).Bold().FontFamily(ReportConstants.ArabicFont);
-      //             });
-      //         });
-
-      //       page.Content().Column(page2 =>
-      //         {
-      //           var imagePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Content", "images", "logo.png");
-      //           page.Background().AlignBottom().Image(imagePath);
-
-      //           page2.Item().Table(table =>
-      //             {
-      //               table.ColumnsDefinition(columns =>
-      //                 {
-      //                   columns.RelativeColumn(.5f);  // كود
-      //                   columns.RelativeColumn(2);    // اسم الحساب
-      //                   columns.RelativeColumn(1);    // مدين
-      //                   columns.RelativeColumn(1);    // دائن
-      //                   columns.RelativeColumn(1);    // التوقيع
-      //                 });
-
-      //               table.Header(header =>
-      //                 {
-      //                   header.Cell().Row(1).Column(1).Element(cell => CellStyles.HeaderCellStyle(cell))
-      //                         .Text("كود").FontSize(ReportConstants.HeaderFontSize).FontFamily(ReportConstants.ArabicFont).ExtraBold().ExtraBlack();
-      //                   header.Cell().Row(1).Column(2).Element(cell => CellStyles.HeaderCellStyle(cell))
-      //                         .Text("اسم الحساب").FontSize(ReportConstants.HeaderFontSize).FontFamily(ReportConstants.ArabicFont).ExtraBold().ExtraBlack();
-      //                   header.Cell().Row(1).Column(3).Element(cell => CellStyles.HeaderCellStyle(cell))
-      //                         .Text("مدين").FontSize(ReportConstants.HeaderFontSize).FontFamily(ReportConstants.ArabicFont).ExtraBold().ExtraBlack();
-      //                   header.Cell().Row(1).Column(4).Element(cell => CellStyles.HeaderCellStyle(cell))
-      //                         .Text("دائن").FontSize(ReportConstants.HeaderFontSize).FontFamily(ReportConstants.ArabicFont).ExtraBold().ExtraBlack();
-      //                   header.Cell().Row(1).Column(5).Element(cell => CellStyles.HeaderCellStyle(cell))
-      //                         .Text("التوقيع").FontSize(ReportConstants.HeaderFontSize).FontFamily(ReportConstants.ArabicFont).ExtraBold().ExtraBlack();
-      //                 });
-
-      //               report.ReportDetailsDtos.ForEach(x =>
-      //                 {
-      //                   var debitAmount = x.MonthlyTransAction?.Debit?.ToString("N2") ?? "0.00";
-      //                   var creditAmount = x.MonthlyTransAction?.Credit?.ToString("N2") ?? "0.00";
-
-      //                   table.Cell().Element(cell => CellStyles.DataCellStyle(cell))
-      //                         .Text(x.AccountId.ToString()).FontSize(ReportConstants.DataFontSize).Bold();
-      //                   table.Cell().Element(cell => CellStyles.DataCellStyle(cell))
-      //                         .Text(x.AccountName ?? string.Empty).FontFamily(ReportConstants.ArabicFont).FontSize(ReportConstants.DataFontSize).Bold();
-      //                   table.Cell().Element(cell => CellStyles.DataCellStyle(cell))
-      //                         .Text(debitAmount).FontSize(ReportConstants.DataFontSize).Bold();
-      //                   table.Cell().Element(cell => CellStyles.DataCellStyle(cell))
-      //                         .Text(creditAmount).FontSize(ReportConstants.DataFontSize).Bold();
-      //                   table.Cell().Element(cell => CellStyles.DataCellStyle(cell))
-      //                         .Text(string.Empty).FontSize(ReportConstants.DataFontSize).Bold();
-      //                 });
-
-      //               table.Footer(footer =>
-      //                 {
-      //                   var totalDebit = report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction?.Debit ?? 0);
-      //                   var totalCredit = report.ReportDetailsDtos.Sum(x => x.MonthlyTransAction?.Credit ?? 0);
-
-      //                   footer.Cell().Element(cell => CellStyles.FooterCellStyle(cell))
-      //                         .Text(string.Empty).ExtraBold().ExtraBlack().FontSize(10);
-      //                   footer.Cell().Element(cell => CellStyles.FooterCellStyle(cell))
-      //                         .Text("المجموع").ExtraBold().ExtraBlack().FontFamily(ReportConstants.ArabicFont).FontSize(10);
-      //                   footer.Cell().Element(cell => CellStyles.FooterCellStyle(cell))
-      //                         .Text(totalDebit.ToString("N2")).ExtraBold().ExtraBlack().FontSize(10);
-      //                   footer.Cell().Element(cell => CellStyles.FooterCellStyle(cell))
-      //                         .Text(totalCredit.ToString("N2")).ExtraBold().ExtraBlack().FontSize(10);
-      //                   footer.Cell().Element(cell => CellStyles.FooterCellStyle(cell))
-      //                         .Text(string.Empty).ExtraBold().ExtraBlack().FontSize(10);
-      //                 });
-      //             });
-      //         });
-
-      //       page.Footer().AlignCenter().Text(x =>
-      //         {
-      //           x.CurrentPageNumber();
-      //           x.Span(" / ");
-      //           x.TotalPages();
-      //         });
-      //     });
-      // }).GeneratePdf(stream);
-
-      //(report, request, imagePath);
-      var document = CreateReportDocument(report, request, imagePath);
+      var document = CreateDailyReportDocument(report, request, imagePath);
       document.GeneratePdf(stream);
 
       return stream.ToArray();
@@ -172,7 +62,40 @@ public partial class PDFReportService
     catch (Exception ex)
     {
       // Log the exception if you have a logger
-      // _logger.LogError(ex, "Error generating account balance report");
+      _logger.LogError(ex, "Error generating account balance report");
+      return Array.Empty<byte>();
+    }
+  }
+
+  public async Task<byte[]> GenerateDailiesReport(GetAccountsBalanceBy request, CancellationToken cancellationToken)
+  {
+    // Input validation
+    if (request == null)
+      throw new ArgumentNullException(nameof(request));
+
+    if (request.StartDate > request.EndDate)
+      throw new ArgumentException("Start date cannot be greater than end date");
+
+    try
+    {
+      var report = await reportService.GetFormDetailsReportAsync(request, cancellationToken);
+      if (report == null || !report.ReportDetailsDtos.Any())
+      {
+        return Array.Empty<byte>();
+      }
+      var imagePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Content", "images", "logo.png");
+      using var stream = new MemoryStream();
+
+      var document = CreateDailiesReportDocument(report, request, imagePath);
+      document.GeneratePdf(stream);
+
+      return stream.ToArray();
+
+    }
+    catch (Exception ex)
+    {
+      // Log the exception if you have a logger
+      _logger.LogError(ex, "Error generating account balance report");
       return Array.Empty<byte>();
     }
   }

@@ -4,5 +4,5 @@ namespace Core.Interfaces.Repository;
 
 public interface ISubsidiaryJournalRepository : IGenericRepository<SubsidiaryJournal>
 {
-
+    Task<List<SubsidiaryJournal>> GetByFormDetailsId(int formDetailsId);
 }

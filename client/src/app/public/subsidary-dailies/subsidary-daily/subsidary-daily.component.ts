@@ -181,16 +181,30 @@ export class SubsidaryDailyComponent implements OnInit {
 
   }
   deleteSubsidary(element) {
-    console.log(element);
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: {
+        message: 'هل تريد حذف هذا النموذج؟',
+        title: 'حذف نموذج'
+      },
+      disableClose: true,
+      hasBackdrop: true
+    });
 
-    // this.subsidaryService.deleteSubsidaryDailyForm(element.id).subscribe({
-    //   next: () => {
-    //     this.loadForms(this.params);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error deleting form', error);
-    //   }
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.subsidaryService.deleteSubsidaryDailyForm(element.formDetailsId).subscribe({
+          next: () => {
+            this.loadForms(this.params);
+          },
+          error: (error) => {
+            console.error('Error deleting form', error);
+          }
+        });
+      }
+    });
+
+
+
   }
 
 

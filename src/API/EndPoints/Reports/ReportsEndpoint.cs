@@ -12,18 +12,11 @@ public static class ReportsEndpoint
     {
         var formGroup = app.MapGroup("Reports").RequireAuthorization();
 
-
-        // formGroup.MapPost("/Creat", PostForm);
-        // formGroup.MapPost("/TestCreat", Post200Form);
-        // formGroup.MapPut("/Update/{id}", PutForm);
-        // formGroup.MapDelete("/Delete/{id}", DeleteForm);
         formGroup.MapGet("/ReportFormDetails", GetFormDetailsBySpecAsync).RequireAuthorization(); ;
         formGroup.MapGet("/ReportSubsidiaryJournalPdf", DownloadSubsidiaryReport).RequireAuthorization(); ;
-        formGroup.MapGet("/ReportPdf", DownloadReports).RequireAuthorization();
+        formGroup.MapGet("/ReportDailyPdf", DownloadDailyReports).RequireAuthorization();
         formGroup.MapGet("/ReportDailiesPdf", DownloadDailiesReports).RequireAuthorization(); ;
 
-        // formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync);
-        // formGroup.MapGet("/{id}", GetByIdAsync);
         return app;
     }
 
@@ -38,9 +31,9 @@ public static class ReportsEndpoint
         return result == null ? TypedResults.NotFound() : TypedResults.Ok(result);
     }
 
-    private static async Task<IResult> DownloadReports(PDFReportService service, [AsParameters] GetAccountsBalanceBy request, CancellationToken cancellationToken)
+    private static async Task<IResult> DownloadDailyReports(PDFReportService service, [AsParameters] GetAccountsBalanceBy request, CancellationToken cancellationToken)
     {
-        var pdfBytes = await service.GenerateReport(request, cancellationToken);
+        var pdfBytes = await service.GenerateDailysReport(request, cancellationToken);
         if (pdfBytes == null || pdfBytes.Length == 0)
         {
             return Results.NotFound("No data found for the specified report criteria.");
@@ -49,7 +42,7 @@ public static class ReportsEndpoint
     }
     private static async Task<IResult> DownloadDailiesReports(PDFReportService service, [AsParameters] GetAccountsBalanceBy request, CancellationToken cancellationToken)
     {
-        var pdfBytes = await service.GenerateReport(request, cancellationToken);
+        var pdfBytes = await service.GenerateDailiesReport(request, cancellationToken);
         if (pdfBytes == null || pdfBytes.Length == 0)
         {
             return Results.NotFound("No data found for the specified report criteria.");

@@ -73,7 +73,7 @@ export class FormService {
   downloadDailyPdfFormTemplate(dailyId: number) {
     let params = new HttpParams();
     params = params.append('dailyId', dailyId.toString());
-    return this.http.get(`${this.apiUrl}Reports/ReportPdf`, {
+    return this.http.get(`${this.apiUrl}Reports/ReportDailyPdf`, {
       responseType: 'blob' as 'json',
       params: params
     });

@@ -15,7 +15,7 @@ public static class ReportColors
     public static readonly Color GrandTotal = Color.FromHex("#708090");
     public static readonly Color Subtotal = Color.FromHex("#d3d3d3");
 
-    public static readonly Color TransparentWhite = Color.FromARGB(200, 255, 255, 255); //Color.FromHex("#f5f5f5");
+    public static readonly Color TransparentWhite = Color.FromARGB(150, 255, 255, 255); //Color.FromHex("#f5f5f5");
 }
 
 

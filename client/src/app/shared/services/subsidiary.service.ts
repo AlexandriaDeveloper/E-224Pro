@@ -107,5 +107,8 @@ export class SubsidiaryService {
 
     return this.http.get(`${this.apiUrl}Reports/ReportSubsidiaryJournalPdf`, { responseType: 'blob' as 'json', params: params });
   }
+  deleteSubsidaryDailyForm(formDetailsId: number) {
+    return this.http.delete(`${this.apiUrl}SubsidiaryJournal/formDetailsId/${formDetailsId}`);
+  }
 
 }
