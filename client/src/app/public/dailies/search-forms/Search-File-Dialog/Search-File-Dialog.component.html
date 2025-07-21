@@ -1,0 +1,167 @@
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+
+
+    <h2 mat-dialog-title class="form-dialog-title" cdkDragHandle>
+
+        <button mat-icon-button (click)="onNoClick()" class="dialog-btn-close">
+            <mat-icon>close</mat-icon>
+        </button>
+        <span class="title">البحث</span>
+
+    </h2>
+
+    <mat-dialog-content class="form-dialog-content">
+
+
+
+        <!-- <div class="header">
+            <button mat-icon-button (click)="onNoClick()" class="btn-close">
+                <mat-icon>
+                    close
+                </mat-icon>
+            </button>
+        </div> -->
+        <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+            <div style="display: flex; justify-content: center;gap: 10px;">
+                <mat-form-field style="width: 30%;">
+                    <mat-label>الاسم</mat-label>
+                    <input matInput placeholder="البحث بأسم الملف" formControlName="formName" />
+                </mat-form-field>
+
+                <mat-form-field style="width: 30%;">
+                    <mat-label>رقم 224</mat-label>
+                    <input matInput placeholder="البحث برقم 224" formControlName="formNum224" />
+                </mat-form-field>
+
+                <mat-form-field style="width: 30%;">
+                    <mat-label>رقم 55</mat-label>
+                    <input matInput placeholder="البحث برقم 55" formControlName="formNum55" />
+                </mat-form-field>
+
+            </div>
+            <div style="display: flex; justify-content: center;gap: 10px; ">
+                <mat-form-field style="width: 30%;">
+                    <mat-label>الكليه</mat-label>
+
+                    <mat-select formControlName="collageId" (selectionChange)=" loadFunds($event.value)">
+                        <mat-option [value]="">الكل</mat-option>
+                        @for (collage of collages; track collage.id) {
+                        <mat-option [value]="collage.id">{{collage.collageName}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+
+                <mat-form-field style="width: 30%;">
+                    <mat-label>الصندوق</mat-label>
+
+                    <mat-select formControlName="fundId" (selectionChange)=" onSelectFund($event.value)">
+                        <mat-option [value]="">الكل</mat-option>
+                        @for (fund of funds; track fund.id) {
+                        <mat-option [value]="fund.id">{{fund.fundName}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field style="width: 30%;">
+                    <mat-label>نوع اليوميه</mat-label>
+
+                    <mat-select formControlName="dailyType" (selectionChange)=" onSelectDailyType($event.value)">
+                        <mat-option [value]="">الكل</mat-option>
+                        <mat-option value="General">عاديه</mat-option>
+                        <mat-option value="Payroll">بيروول</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div style="display: flex; justify-content: center;gap: 10px; ">
+                <mat-form-field style="width: 46%;">
+                    <mat-label>اسم المراجع</mat-label>
+                    <input matInput placeholder="البحث باسم المراجع" formControlName="auditorName" />
+                </mat-form-field>
+                <mat-form-field style="width: 46%;">
+                    <mat-label>نوع القيد</mat-label>
+
+                    <mat-label>نوع القيد </mat-label>
+                    <mat-select formControlName="entryType">
+                        <mat-option [value]="">الكل</mat-option>
+                        <mat-option [value]=0>قيد عادى</mat-option>
+                        <mat-option [value]=1>قيد تصحيح</mat-option>
+                        <mat-option [value]=2>قيد سداد</mat-option>
+                        <mat-option [value]=3>قيد تسوية</mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div style="display: flex; justify-content: center;gap: 10px;">
+                <!-- mat date range-->
+                <mat-form-field style="width: 93%;">
+                    <mat-label>Date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate formControlName="startFrom" name="start">
+                        <input matEndDate formControlName="endTo" name="end">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+            <!-- <div style="display: flex; justify-content: space-between; margin: 10px;">
+    
+                <mat-form-field style="width: 100%;">
+                    <mat-label>Date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate formControlName="startDate" name="start">
+                        <input matEndDate formControlName="endDate" name="end">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+
+
+                <mat-form-field style="width: 48%;">
+                    <mat-label>نوع اليوميه</mat-label>
+
+                    <mat-select formControlName="dailyType">
+                        <mat-option [value]="">الكل</mat-option>
+                        @for (dailyType of dailyTypes; track dailyType) {
+                        <mat-option [value]="dailyType.value">{{dailyType.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field style="width: 48%;">
+                    <mat-label>نوع الصرفيه </mat-label>
+                    <mat-select formControlName="accountItem">
+                        <mat-option [value]="">الكل</mat-option>
+                        @for (accountItem of accountItems; track accountItem) {
+                        <mat-option [value]="accountItem.value">{{accountItem.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div> -->
+
+
+        </form>
+    </mat-dialog-content>
+
+    <div style="display:flex !important;justify-content: center;">
+
+        <button mat-mini-fab (click)="onSubmit()" style="width: 160px;" class="btn-secondary">
+            ابحث
+            <mat-icon>search</mat-icon>
+        </button>
+        <div class="spacer"></div>
+
+        <div style="width: 30px;">
+
+
+        </div>
+        <button mat-mini-fab (click)="clear()" style="width: 160px; " class="btn-warning">
+            مسح
+            <mat-icon>clear</mat-icon>
+        </button>
+
+
+    </div>
+</div>

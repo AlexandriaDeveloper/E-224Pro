@@ -64,6 +64,7 @@
 
                         ));
 
+
                 @include mat.toolbar-overrides((container-background-color: $dark-orange,
                                 container-text-color: $cool-gray,
 
@@ -78,7 +79,10 @@
                         ));
                 @include mat.button-overrides((filled-container-color: $night-blue,
                                 filled-label-text-color: $cool-gray,
-                                filled-disabled-container-color:$dark-gray ));
+                                // filled-disabled-container-color:$dark-gray 
+                        ));
+
+                @include mat.menu-overrides((container-color:$night-blue));
                 @include mat.form-field-overrides((filled-container-color:rgba($black, 0.8),
                                 filled-input-text-color:rgba($cool-gray, 0.6),
                                 filled-focus-active-indicator-color: $cool-gray,

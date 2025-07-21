@@ -1,0 +1,15 @@
+table {
+    min-width: 400px;
+}
+
+.table-container {
+    width: 100% !important;
+}
+
+
+
+.fixed-table {
+    width: 80% !important;
+    table-layout: fixed;
+    margin: auto;
+}

@@ -20,6 +20,7 @@ public static class Forms
         formGroup.MapPut("/Update/{id}", PutForm).RequireAuthorization(); ;
         formGroup.MapDelete("/{id}", DeleteForm).RequireAuthorization(); ;
         formGroup.MapGet("/", GetBySpecAsync).RequireAuthorization();
+        formGroup.MapGet("/Search", SearchBySpecAsync).RequireAuthorization(); ;
         formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync).RequireAuthorization(); ;
         formGroup.MapGet("/{id}", GetByIdAsync).RequireAuthorization(); ;
         formGroup.MapPost("/DownloadTemplateExcelSheet", DownloadTemplateExcelSheet).RequireAuthorization(); ;
@@ -59,6 +60,12 @@ public static class Forms
         var form = await service.GetFormBySpecWithFormDetailsAsync(request, cancellationToken);
         return form == null ? TypedResults.NotFound() : TypedResults.Ok(form);
     }
+    private static async Task<IResult> SearchBySpecAsync(FormService service, [AsParameters] SearchFormRequest request, CancellationToken cancellationToken)
+    {
+        var form = await service.SearchFormBySpecAsync(request, cancellationToken);
+        return form == null ? TypedResults.NotFound() : TypedResults.Ok(form);
+    }
+
 
     private static async Task<IResult> GetByIdAsync(FormService service, int id, CancellationToken cancellationToken)
     {

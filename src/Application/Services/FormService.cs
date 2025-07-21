@@ -4,6 +4,7 @@ using Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Specification;
+using Shared.Common;
 using Shared.Contracts.FormDetailsRequest;
 using Shared.Contracts.FormRequests;
 using Shared.DTOs;
@@ -194,6 +195,43 @@ public class FormService
         });
         return formDtos.ToList();
 
+    }
+
+    public async Task<PaginatedResult<SearchFormDto>> SearchFormBySpecAsync(SearchFormRequest request, CancellationToken cancellationToken)
+    {
+        var spec = new SearchFormAsyncSpecification(request);
+        var forms = await _formRepository.GetAll(spec);
+
+        var specCount = new SearchFormCountAsyncSpecification(request);
+        var count = await _formRepository.CountAsync(specCount);
+        if (!forms.Any())
+        {
+            return new PaginatedResult<SearchFormDto>(new List<SearchFormDto>(), request.PageSize.Value, request.PageIndex.Value, count.Value);
+        }
+        var formDtos = forms.Select(form => new SearchFormDto()
+        {
+            Id = form.Id,
+            FormName = form.FormName,
+            CollageName = form.Collage.CollageName,
+            FundName = form.Fund.FundName,
+            Num224 = form.Num224!,
+            Num55 = form.Num55!,
+            DailyId = form.DailyId,
+            AuditorName = form.AuditorName,
+            Details = form.Details,
+            DailyName = form.Daily.Name,
+            DailyDate = form.Daily.DailyDate,
+            DailyType = form.Daily.DailyType,
+            //i want entry type to be arabic string it has 4 values can be 0="قيد عادى" 1
+            //="قيد بيروول" 2="قيد تسوية" 3="قيد تصحيح"
+            EntryType = form.EntryType == Core.Constants.EntryTypeEnum.NormalEntry ? "قيد عادى" :
+                        form.EntryType == Core.Constants.EntryTypeEnum.ReversalEntry ? "قيد تصحيح" :
+                        form.EntryType == Core.Constants.EntryTypeEnum.PaymentEntry ? "قيد سداد" :
+                        form.EntryType == Core.Constants.EntryTypeEnum.SettlementEntry ? "قيد تسوية" : string.Empty
+
+
+        }).ToList();
+        return new PaginatedResult<SearchFormDto>(formDtos, request.PageSize.Value, request.PageIndex.Value, count.Value);
     }
 
     public async Task<FormDto> UpdateFormAsync(int id, PutFormRequest form, CancellationToken cancellationToken)

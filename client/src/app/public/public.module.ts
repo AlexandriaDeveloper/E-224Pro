@@ -29,6 +29,8 @@ import { DownloadExcelTemplateDialogComponent } from './form/download-excel-temp
 import { UploadExcelFormDialogComponent } from './form/upload-excel-form-dialog/upload-excel-form-dialog.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { SearchFormsComponent } from './dailies/search-forms/search-forms.component';
+import { SearchFileDialogComponent } from './dailies/search-forms/Search-File-Dialog/Search-File-Dialog.component';
 
 
 
@@ -40,8 +42,9 @@ import { RegisterComponent } from './auth/register/register.component';
     DailiesComponent,
     DailiesSearchDialogComponent,
     DailiesReportDialogComponent,
+    SearchFormsComponent,
+    SearchFileDialogComponent,
     AddDailyComponent,
-
     FormComponent,
     AddFormComponent,
     DownloadExcelTemplateDialogComponent,
@@ -50,8 +53,10 @@ import { RegisterComponent } from './auth/register/register.component';
     AddFundDialogComponent,
     SubsidaryDailiesComponent,
     SubsidaryDailyComponent,
-    AddSubsidaryFormDetailsDialogComponent, UploadExcelFormDialogComponent,
-    LoginComponent, RegisterComponent
+    AddSubsidaryFormDetailsDialogComponent,
+    UploadExcelFormDialogComponent,
+    LoginComponent,
+    RegisterComponent
 
   ],
   imports: [

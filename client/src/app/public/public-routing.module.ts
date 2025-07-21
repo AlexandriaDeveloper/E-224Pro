@@ -11,6 +11,7 @@ import { SubsidaryDailiesComponent } from './subsidary-dailies/subsidary-dailies
 import { SubsidaryDailyComponent } from './subsidary-dailies/subsidary-daily/subsidary-daily.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { SearchFormsComponent } from './dailies/search-forms/search-forms.component';
 
 
 const routes: Routes = [
@@ -28,6 +29,7 @@ const routes: Routes = [
       { path: 'subsidary-dailies/subId/:subAccountId/dailyId/:dailyId', component: SubsidaryDailyComponent },
       { path: 'auth/login', component: LoginComponent },
       { path: 'auth/register', component: RegisterComponent }, // Redirect register to login for now
+      { path: 'forms/searchForms', component: SearchFormsComponent },
       { path: '', redirectTo: 'public/home', pathMatch: 'full' }
 
 

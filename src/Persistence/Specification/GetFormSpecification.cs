@@ -102,3 +102,59 @@ public class GetFormCountAsyncSpecification : Specification<Form>
         }
     }
 }
+public class GetFormCountSpecification : Specification<Form>
+{
+    public GetFormCountSpecification(GetFormRequest request)
+    {
+        // AddInclude(x => x.FormDetails);
+        AddInclude(x => x.Collage);
+        AddInclude(x => x.Fund);
+
+        if (request.Id.HasValue)
+        {
+            AddCriteries(x => x.Id == request.Id!.Value);
+        }
+
+        if (request.CollageId.HasValue)
+        {
+            AddCriteries(x => x.CollageId == request.CollageId.Value);
+        }
+        if (!string.IsNullOrEmpty(request.FormName))
+        {
+            AddCriteries(x => x.FormName.Contains(request.FormName!));
+        }
+        if (request.FundId.HasValue)
+        {
+            AddCriteries(x => x.FundId == request.FundId.Value);
+        }
+        if (!string.IsNullOrEmpty(request.Num224))
+        {
+            AddCriteries(x => x.Num224 == request.Num224);
+        }
+        if (!string.IsNullOrEmpty(request.Num55))
+        {
+            AddCriteries(x => x.Num55 == request.Num55);
+        }
+        if (request.DailyId.HasValue)
+        {
+            AddCriteries(x => x.DailyId == request.DailyId.Value);
+        }
+        if (!string.IsNullOrEmpty(request.AuditorName))
+        {
+            AddCriteries(x => x.AuditorName!.Contains(request.AuditorName!));
+        }
+        if (request.EntryType.HasValue)
+        {
+            AddCriteries(x => x.EntryType == (Core.Constants.EntryTypeEnum)request.EntryType.Value);
+        }
+        if (!string.IsNullOrEmpty(request.Details))
+        {
+            AddCriteries(x => x.Details!.Contains(request.Details!));
+        }
+        AddOrderByDescending(x => x.Id);
+        if (request.PageIndex.HasValue)
+        {
+            ApplyPaging(request.PageIndex.Value, request.PageSize!.Value);
+        }
+    }
+}

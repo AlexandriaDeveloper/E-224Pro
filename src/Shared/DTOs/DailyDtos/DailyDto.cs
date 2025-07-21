@@ -17,7 +17,7 @@ public class DailyDto
     public decimal? TotalDebit { get; set; }
     public decimal? TotalSubsidiaryCredit { get; set; }
     public decimal? TotalSubsidiaryDebit { get; set; }
-    public bool IsBalanced => TotalCredit == TotalDebit && TotalSubsidiaryCredit == TotalSubsidiaryDebit ? true : false;
+    public bool IsBalanced => TotalCredit == TotalSubsidiaryCredit && TotalDebit == TotalSubsidiaryDebit ? true : false;
 
     public DailyDto(Core.Models.Daily daily)
     {
