@@ -16,43 +16,48 @@ export class FormService {
 
     return this.http.get(`${this.apiUrl}FormDetails/${formId}`);
   }
+  getFormWithDetails(formId: number) {
+    let params = new HttpParams();
+    params = params.append('formId', formId.toString());
+    return this.http.get(`${this.apiUrl}forms/formWithDetail`, { params: params });
+  }
 
   apiUrl = environment.apiUrl
   http = inject(HttpClient)
   constructor() { }
   //Get Forms 
-  getForms(getFormParam: GetFormRequest) {
+  getForms(getFormParam: SearchFormRequest): any {
     let params = new HttpParams();
 
-    if (getFormParam.Id != null) {
-      params = params.append('Id', getFormParam.Id.toString());
+    if (getFormParam.id != null) {
+      params = params.append('id', getFormParam.id.toString());
     }
-    if (getFormParam.FormName != null) {
-      params = params.append('FormName', getFormParam.FormName);
+    if (getFormParam.formName != null) {
+      params = params.append('formName', getFormParam.formName);
     }
-    if (getFormParam.CollageId != null) {
-      params = params.append('CollageId', getFormParam.CollageId.toString());
+    if (getFormParam.collageId != null) {
+      params = params.append('collageId', getFormParam.collageId.toString());
     }
-    if (getFormParam.FundId != null) {
-      params = params.append('FundId', getFormParam.FundId.toString());
+    if (getFormParam.fundId != null) {
+      params = params.append('fundId', getFormParam.fundId.toString());
     }
-    if (getFormParam.Num224 != null) {
-      params = params.append('Num224', getFormParam.Num224);
+    if (getFormParam.formNum224 != null) {
+      params = params.append('formNum224', getFormParam.formNum224);
     }
-    if (getFormParam.Num55 != null) {
-      params = params.append('Num55', getFormParam.Num55);
+    if (getFormParam.formNum55 != null) {
+      params = params.append('formNum55', getFormParam.formNum55);
     }
-    if (getFormParam.DailyId != null) {
-      params = params.append('DailyId', getFormParam.DailyId.toString());
+    if (getFormParam.dailyId != null) {
+      params = params.append('dailyId', getFormParam.dailyId.toString());
     }
-    if (getFormParam.AuditorName != null) {
-      params = params.append('AuditorName', getFormParam.AuditorName);
+    if (getFormParam.auditorName != null) {
+      params = params.append('auditorName', getFormParam.auditorName);
     }
-    if (getFormParam.Details != null) {
-      params = params.append('Details', getFormParam.Details);
+    if (getFormParam.details != null) {
+      params = params.append('details', getFormParam.details);
     }
-    if (getFormParam.EntryType != null) {
-      params = params.append('EntryType', getFormParam.EntryType.toString());
+    if (getFormParam.entryType != null) {
+      params = params.append('entryType', getFormParam.entryType.toString());
     }
     if (getFormParam.pageIndex != null) {
       params = params.append('pageIndex', getFormParam.pageIndex.toString());

@@ -50,7 +50,7 @@ public static class Forms
         await service.UpdateFormAsync(id, form, cancellationToken);
         return TypedResults.Created();
     }
-    private static async Task<IResult> GetBySpecAsync(FormService service, [AsParameters] GetFormRequest request, CancellationToken cancellationToken)
+    private static async Task<IResult> GetBySpecAsync(FormService service, [AsParameters] SearchFormRequest request, CancellationToken cancellationToken)
     {
         var form = await service.GetFormBySpecAsync(request);
         return form == null ? TypedResults.NotFound() : TypedResults.Ok(form);

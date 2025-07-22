@@ -7,6 +7,7 @@ import { GetAccountRequest } from '../../../shared/_requests/getAccountRequest';
 import { AccountInfoDialogComponent } from '../../account/account-info-dialog/account-info-dialog.component';
 import { FundService } from '../../../shared/services/fund.service';
 import { FormDetailDto, FormDto } from '../../../shared/_models/forms/FormDto.model';
+import { GetFormRequest } from '../../../shared/_requests/getFormRequest';
 
 interface Account {
   id: number;
@@ -39,7 +40,7 @@ export class AddFormComponent implements OnInit {
   // Form related
   addForm: FormGroup;
   formDetails: FormDetailDto[] = [];
-  private formDetail: FormDetailDto | null = null;
+  form: FormDto = new FormDto();
 
   // Data
   accounts: Account[] = [];
@@ -57,25 +58,17 @@ export class AddFormComponent implements OnInit {
 
     if (this.data.element === null) {
       this.update = false;
-      this.data.element = {
-        id: 0,
-        formName: '',
-        collageId: 0,
-        fundId: 0,
-        num224: '',
-        num55: '',
-        auditorName: '',
-        details: '',
-        dailyId: this.data.param.DailyId,
-        entryType: 0,
-        formDetailsDto: []
-      } as FormDto;
+
     }
     else {
+      console.log(this.data.element);
+
       this.update = true;
       this.data.param.DailyId = this.data.element.dailyId;
       this.loadFunds(this.data.element.collageId);
-      this.loadFormDetails();
+      this.loadForm();
+      // this.loadFormDetails();
+
 
     }
     this.initializeForm();
@@ -92,18 +85,18 @@ export class AddFormComponent implements OnInit {
   }
 
   private createForm(): FormGroup {
-    console.log(this.formDetails);
+    console.log(this.form);
     return this.fb.group({
-      formName: [this.data.element?.formName || '', Validators.required],
-      collageId: [this.data.element?.collageId || null],
-      fundId: [this.data.element?.fundId || null, Validators.required],
-      num224: [this.data.element?.num224 || '', Validators.required],
-      num55: [this.data.element?.num55 || ''],
-      auditorName: [this.data.element?.auditorName || ''],
-      details: [this.data.element?.details || ''],
+      formName: [this.form.formName || '', Validators.required],
+      collageId: [this.form.collageId || null],
+      fundId: [this.form.fundId || null, Validators.required],
+      num224: [this.form.num224 || '', Validators.required],
+      num55: [this.form.num55 || ''],
+      auditorName: [this.form.auditorName || ''],
+      details: [this.form.details || ''],
       dailyId: [this.data.param.DailyId, Validators.required],
-      entryType: [this.data.element?.entryType || 0],
-      formDetails: this.fb.array(this.formDetails.map(detail => this.createFormDetail(detail)))
+      entryType: [this.form.entryType || 0],
+      formDetails: this.fb.array((this.form.formDetailsDtos ?? []).map(detail => this.createFormDetail(detail)))
     });
 
   }
@@ -161,23 +154,23 @@ export class AddFormComponent implements OnInit {
       (funds: Fund[]) => this.funds = funds
     );
   }
+  loadForm() {
+    this.formService.getFormWithDetails(this.data.element.id).subscribe({
+      next: (response: FormDto) => {
+        console.log(response);
+        this.form = response;
 
-  private loadFormDetails(): void {
-
-
-    if (!this.data.element?.id) return;
-
-    this.formService.getFormDetails(this.data.element.id).subscribe(
-      (details: FormDetailDto[]) => {
-
-        details.forEach(detail => {
-          this.fDetails.push(this.createFormDetail(detail));
-        });
-        this.updateTotals();
-        this.cdr.detectChanges(); // <-- Fix ExpressionChangedAfterItHasBeenCheckedError
+      },
+      error: (error) => {
+        console.error('Error loading forms', error);
+      },
+      complete: () => {
+        this.initializeForm();
       }
-    );
+    });
   }
+
+
 
   // Account handling
   getAccountName(index: number, accountId: string): void {

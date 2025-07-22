@@ -27,39 +27,43 @@ public class GetFormWithDetailsSpecification : Specification<Form>
         if (request.CollageId.HasValue)
         {
             AddCriteries(x => x.CollageId == request.CollageId.Value);
-        }
-        if (!request.FormName.IsNullOrEmpty())
-        {
-            AddCriteries(x => x.FormName.Contains(request.FormName!));
-        }
-        if (request.FundId.HasValue)
-        {
-            AddCriteries(x => x.FundId == request.FundId.Value);
-        }
-        if (!request.FormNum224.IsNullOrEmpty())
-        {
-            AddCriteries(x => x.Num224 == request.FormNum224);
-        }
-        if (!request.FormNum55.IsNullOrEmpty())
-        {
-            AddCriteries(x => x.Num55 == request.FormNum55);
-        }
-        if (request.DailyId.HasValue)
-        {
-            AddCriteries(x => x.DailyId == request.DailyId.Value);
-        }
-        if (!request.AuditorName.IsNullOrEmpty())
-        {
-            AddCriteries(x => x.AuditorName!.Contains(request.AuditorName!));
-        }
+            if (!string.IsNullOrEmpty(request.FormName))
+            {
+                AddCriteries(x => x.FormName.Contains(request.FormName!));
+            }
+            if (request.FundId.HasValue)
+            {
+                AddCriteries(x => x.FundId == request.FundId.Value);
+            }
+            if (!string.IsNullOrEmpty(request.CollageName))
+            {
+                AddCriteries(x => x.Collage!.Name.Contains(request.CollageName!));
+            }
+            if (!string.IsNullOrEmpty(request.FormNum224))
+            {
+                AddCriteries(x => x.Num224 == request.FormNum224);
+            }
+            if (!string.IsNullOrEmpty(request.FormNum55))
+            {
+                AddCriteries(x => x.Num55 == request.FormNum55);
+            }
+            if (request.DailyId.HasValue)
+            {
+                AddCriteries(x => x.DailyId == request.DailyId.Value);
+            }
+            if (!string.IsNullOrEmpty(request.AuditorName))
+            {
+                AddCriteries(x => x.AuditorName!.Contains(request.AuditorName!));
+            }
 
 
 
-        if (request.PageIndex.HasValue)
-        {
-            ApplyPaging(request.PageIndex.Value, request.PageSize!.Value);
-        }
+            if (request.PageIndex.HasValue)
+            {
+                ApplyPaging(request.PageIndex.Value, request.PageSize!.Value);
+            }
 
+        }
     }
 
 

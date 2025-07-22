@@ -6,6 +6,7 @@ import { PaginatorModel } from '../../../shared/_models/paginator.model';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchFileDialogComponent } from './Search-File-Dialog/Search-File-Dialog.component';
+import { AddFormComponent } from '../../form/add-form/add-form.component';
 
 @Component({
   selector: 'app-search-forms',
@@ -85,6 +86,26 @@ export class SearchFormsComponent implements OnInit {
         this.loadSearchForms();
       }
       console.log('The dialog was closed');
+    });
+  }
+  openAddFormDialog(element: any = null) {
+
+    console.log(element);
+
+    const dialogRef = this.dialog.open(AddFormComponent, {
+      data: {
+        param: this.searchForms,
+        element: element
+      },
+      disableClose: true,
+      hasBackdrop: true,
+      minWidth: '60vw',
+      maxHeight: '90vh'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadSearchForms();
+
     });
   }
 

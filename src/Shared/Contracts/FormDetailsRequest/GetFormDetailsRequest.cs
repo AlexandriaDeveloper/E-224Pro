@@ -18,8 +18,7 @@ public class GetFormDetailsRequest : Param
     //   public string? AccountNumber { get; set; }
     public decimal? Debit { get; set; }
     public decimal? Credit { get; set; }
-    public string AccountType { get; set; } = string.Empty;
-
+    public string? AccountType { get; set; }
 
     public DateOnly? StartFrom { get; set; }
     public DateOnly? EndTo { get; set; }

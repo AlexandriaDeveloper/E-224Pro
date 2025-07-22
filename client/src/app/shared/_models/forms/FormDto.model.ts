@@ -9,7 +9,7 @@ export class FormDto {
     auditorName: string;
     details: string;
     entryType: number; // Added entryType field
-    formDetailsDto: Array<FormDetailDto> = new Array<FormDetailDto>();
+    formDetailsDtos: FormDetailDto[] = [];
 }
 export class FormDetailDto {
     id: number;

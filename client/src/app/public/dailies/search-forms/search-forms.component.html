@@ -16,7 +16,13 @@
 
                 </mat-menu>
             </th>
-            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            <td mat-cell *matCellDef="let element">
+                {{element.id}}
+                <button mat-icon-button (click)="openAddFormDialog(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+            </td>
         </ng-container>
         <ng-container matColumnDef="formName">
             <th mat-header-cell *matHeaderCellDef> اسم الاستمارة </th>
@@ -44,7 +50,15 @@
         </ng-container>
         <ng-container matColumnDef="dailyName">
             <th mat-header-cell *matHeaderCellDef> اسم اليومية </th>
-            <td mat-cell *matCellDef="let element"> {{element.dailyName}} </td>
+            <td mat-cell *matCellDef="let element">
+                <a [routerLink]="['/public/dailies', element.dailyId]" target="_blank" rel="noopener noreferrer"
+                    style="color: #fff;">
+                    {{element.dailyName}}
+                </a>
+
+
+
+            </td>
         </ng-container>
         <ng-container matColumnDef="dailyDate">
             <th mat-header-cell *matHeaderCellDef> تاريخ اليومية </th>

@@ -208,7 +208,7 @@ public class FormDetailsService
     private async Task UpdateTotalCount(int formId, CancellationToken cancellationToken = default)
     {
 
-        var spec = new GetFormSpecification(new Shared.Contracts.FormRequests.GetFormRequest()
+        var spec = new GetFormSpecification(new SearchFormRequest()
         {
             Id = formId
 
@@ -230,7 +230,7 @@ public class FormDetailsService
     private async Task UpdatePatchTotalCount(int[] formIds, CancellationToken cancellationToken = default)
     {
 
-        var spec = new GetFormSpecification(new Shared.Contracts.FormRequests.GetFormRequest()
+        var spec = new GetFormSpecification(new SearchFormRequest()
         {
             //Id = formId
 

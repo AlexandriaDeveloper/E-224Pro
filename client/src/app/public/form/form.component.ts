@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormService } from '../../shared/services/form.service';
-import { GetFormRequest } from '../../shared/_requests/getFormRequest';
+import { GetFormRequest, SearchFormRequest } from '../../shared/_requests/getFormRequest';
 import { PageEvent } from '@angular/material/paginator';
 import { PaginatorModel } from '../../shared/_models/paginator.model';
 import { AddFormComponent } from './add-form/add-form.component';
@@ -11,6 +11,8 @@ import { FormSearchDialogComponent } from './form-search-dialog/form-search-dial
 import { FormResponse } from './form-response.interface';
 import { DownloadExcelTemplateDialogComponent } from './download-excel-template-dialog/download-excel-template-dialog.component';
 import { UploadExcelFormDialogComponent } from './upload-excel-form-dialog/upload-excel-form-dialog.component';
+import { DailiesSearchDialogComponent } from '../dailies/dailies-search-dialog/dailies-search-dialog.component';
+import { SearchFileDialogComponent } from '../dailies/search-forms/Search-File-Dialog/Search-File-Dialog.component';
 
 @Component({
   selector: 'app-form',
@@ -22,7 +24,7 @@ export class FormComponent implements OnInit {
   router = inject(ActivatedRoute);
   formService = inject(FormService);
   readonly dialog = inject(MatDialog);
-  params = new GetFormRequest();
+  params = new SearchFormRequest();
   readonly panelOpenState = signal(false);
 
   displayedColumns: string[] = ['action', 'id', 'num224', 'num55', 'formName', 'collageName', 'fundName', 'entryType', 'totalDebit', 'totalCredit', 'isBalanced'];
@@ -38,12 +40,12 @@ export class FormComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this.params.DailyId = this.id;
-    this.loadForms(this.params);
+    this.params.dailyId = this.id;
+    this.loadForms();
   }
 
-  loadForms(param: GetFormRequest) {
-    this.formService.getForms(param).subscribe({
+  loadForms() {
+    this.formService.getForms(this.params).subscribe({
       next: (response: FormResponse) => {
         this.dataSource = response.formDtos;
         this.originalDataSource = [...response.formDtos];
@@ -74,7 +76,7 @@ export class FormComponent implements OnInit {
           next: (response) => {
             console.log('Form deleted successfully:', response);
             // Reload forms with current params
-            this.loadForms(this.params);
+            this.loadForms();
           },
           error: (error) => {
             console.error('Error deleting form:', error);
@@ -86,37 +88,28 @@ export class FormComponent implements OnInit {
     });
   }
 
-  openSearchDialog() {
-    // Determine which data to pass to search dialog
-    const dataToSearch = this.dataSource.length !== this.originalDataSource.length
-      ? this.dataSource
-      : (this.lastSearchedDataSource.length > 0 ? this.lastSearchedDataSource : this.originalDataSource);
-
-    const dialogRef = this.dialog.open(FormSearchDialogComponent, {
-      width: '500px',
-      data: {
-        formData: this.originalDataSource, // Always pass original data
-        currentData: dataToSearch, // Pass last searched or current filtered data
-        // If we have previous search values, pass them to pre-fill the form
-        previousSearchValues: this.lastSearchedDataSource.length > 0 ? this.lastSearchedDataSource[0] : null
-      }
+  openSearchFileDialog(): void {
+    // Logic to open the search file dialog can be implemented here
+    const dialogRef = this.dialog.open(SearchFileDialogComponent, {
+      data: {        // Pass any data needed for the dialog here
+        searchRequest: this.params,
+        paginator: this.paginator
+      },
+      disableClose: true,
+      hasBackdrop: true,
+      minWidth: '40vw'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // If result is the original data source, reset filtering
-        if (result === this.originalDataSource) {
-          this.dataSource = [...this.originalDataSource];
-          this.lastSearchedDataSource = []; // Clear last searched data
-        } else {
-          // Destructure the result to get search results and search values
-          const { results, searchValues } = result;
 
-          // Store the search result as last searched data with search values
-          this.lastSearchedDataSource = results.map(item => ({ ...item, searchValues }));
-          this.dataSource = results;
-        }
+        this.params = result;
+
+
+
+        this.loadForms();
       }
+      console.log('The dialog was closed');
     });
   }
 
@@ -125,7 +118,7 @@ export class FormComponent implements OnInit {
     this.paginator.length = e.length;
     this.params.pageSize = e.pageSize;
     this.params.pageIndex = e.pageIndex;
-    this.loadForms(this.params);
+    this.loadForms();
   }
   openAddFormDialog(element: any = null) {
 
@@ -142,7 +135,7 @@ export class FormComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadForms(this.params);
+      this.loadForms();
 
     });
   }
@@ -227,7 +220,7 @@ export class FormComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.loadForms(this.params);
+        this.loadForms();
       }
     });
   }

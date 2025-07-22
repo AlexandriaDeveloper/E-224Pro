@@ -8,8 +8,8 @@ public class GetFormRequest : Param
     public string? FormName { get; set; }
     public int? CollageId { get; set; }
     public int? FundId { get; set; }
-    public string? Num224 { get; set; }
-    public string? Num55 { get; set; }
+    public string? FormNum224 { get; set; }
+    public string? FormNum55 { get; set; }
     public int? DailyId { get; set; }
     public string? AuditorName { get; set; }
     public int? EntryType { get; set; } // 0 for normal entry, 1 for reversed entry

@@ -102,7 +102,7 @@ public class FormService
         var formDto = new FormDto(form);
         return formDto;
     }
-    public async Task<GetFormBySpecResponse> GetFormBySpecAsync(GetFormRequest request)
+    public async Task<GetFormBySpecResponse> GetFormBySpecAsync(SearchFormRequest request)
     {
         GetFormBySpecResponse response = new GetFormBySpecResponse();
 
@@ -152,7 +152,7 @@ public class FormService
 
     }
 
-    public async Task<List<FormDto>> GetFormBySpecWithFormDetailsAsync(GetFormDetailsRequest request, CancellationToken cancellationToken)
+    public async Task<FormDto> GetFormBySpecWithFormDetailsAsync(GetFormDetailsRequest request, CancellationToken cancellationToken)
     {
         var accounts = await _accountRepository.GetAll(null, cancellationToken);
         var spec = new GetFormWithDetailsSpecification(request);
@@ -193,7 +193,7 @@ public class FormService
             }).ToList()
 
         });
-        return formDtos.ToList();
+        return formDtos.FirstOrDefault() ?? new FormDto();
 
     }
 

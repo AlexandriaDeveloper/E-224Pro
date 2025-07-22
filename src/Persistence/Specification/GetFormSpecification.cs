@@ -1,11 +1,12 @@
 using Core.Models;
+using Shared.Contracts.FormDetailsRequest;
 using Shared.Contracts.FormRequests;
 
 namespace Persistence.Specification;
 
 public class GetFormSpecification : Specification<Form>
 {
-    public GetFormSpecification(GetFormRequest request)
+    public GetFormSpecification(SearchFormRequest request)
     {
         // AddInclude(x => x.FormDetails);
         AddInclude(x => x.Collage);
@@ -28,13 +29,14 @@ public class GetFormSpecification : Specification<Form>
         {
             AddCriteries(x => x.FundId == request.FundId.Value);
         }
-        if (!string.IsNullOrEmpty(request.Num224))
+        if (!string.IsNullOrEmpty(request.FormNum224))
         {
-            AddCriteries(x => x.Num224 == request.Num224);
+            AddCriteries(x => x.Num224 == request.FormNum224);
         }
-        if (!string.IsNullOrEmpty(request.Num55))
+
+        if (!string.IsNullOrEmpty(request.FormNum55))
         {
-            AddCriteries(x => x.Num55 == request.Num55);
+            AddCriteries(x => x.Num55 == request.FormNum55);
         }
         if (request.DailyId.HasValue)
         {
@@ -62,7 +64,7 @@ public class GetFormSpecification : Specification<Form>
 
 public class GetFormCountAsyncSpecification : Specification<Form>
 {
-    public GetFormCountAsyncSpecification(GetFormRequest request)
+    public GetFormCountAsyncSpecification(SearchFormRequest request)
     {
         if (request.Id.HasValue)
         {
@@ -80,13 +82,13 @@ public class GetFormCountAsyncSpecification : Specification<Form>
         {
             AddCriteries(x => x.FundId == request.FundId.Value);
         }
-        if (!string.IsNullOrEmpty(request.Num224))
+        if (!string.IsNullOrEmpty(request.FormNum224))
         {
-            AddCriteries(x => x.Num224 == request.Num224);
+            AddCriteries(x => x.Num224 == request.FormNum224);
         }
-        if (!string.IsNullOrEmpty(request.Num55))
+        if (!string.IsNullOrEmpty(request.FormNum55))
         {
-            AddCriteries(x => x.Num55 == request.Num55);
+            AddCriteries(x => x.Num55 == request.FormNum55);
         }
         if (request.DailyId.HasValue)
         {
@@ -127,13 +129,13 @@ public class GetFormCountSpecification : Specification<Form>
         {
             AddCriteries(x => x.FundId == request.FundId.Value);
         }
-        if (!string.IsNullOrEmpty(request.Num224))
+        if (!string.IsNullOrEmpty(request.FormNum224))
         {
-            AddCriteries(x => x.Num224 == request.Num224);
+            AddCriteries(x => x.Num224 == request.FormNum224);
         }
-        if (!string.IsNullOrEmpty(request.Num55))
+        if (!string.IsNullOrEmpty(request.FormNum55))
         {
-            AddCriteries(x => x.Num55 == request.Num55);
+            AddCriteries(x => x.Num55 == request.FormNum55);
         }
         if (request.DailyId.HasValue)
         {
