@@ -26,6 +26,7 @@ public static class SubsidiaryJournal
         //formDetailsId/${formDetailsId}`
 
         subsidiaryJournalGroup.MapDelete("/FormDetailsId/{formDetailsId}", DeleteSubsidaryFormDetail).RequireAuthorization();
+        subsidiaryJournalGroup.MapGet("/ExportSubsidiaryDailyToExcel", ExportSubsidiaryDailyToExcel).RequireAuthorization();
         return app;
     }
 
@@ -41,6 +42,12 @@ public static class SubsidiaryJournal
         return TypedResults.Ok(subsidiaryForms);
     }
     public static async Task<IResult> GetSubsidaryFormDetailsAsync(int formDetailsId, int subaccountId, SubSidaryDailyService _subsidiaryJournalRepository, CancellationToken cancellationToken = default)
+    {
+        var subSidaryFormDetails = await _subsidiaryJournalRepository.GetSubsidaryFormDetailsByFormDetailsId(formDetailsId, subaccountId, cancellationToken);
+        return TypedResults.Ok(subSidaryFormDetails);
+    }
+
+    public static async Task<IResult> ExportSubsidiaryDailyToExcel(int formDetailsId, int subaccountId, SubSidaryDailyService _subsidiaryJournalRepository, CancellationToken cancellationToken = default)
     {
         var subSidaryFormDetails = await _subsidiaryJournalRepository.GetSubsidaryFormDetailsByFormDetailsId(formDetailsId, subaccountId, cancellationToken);
         return TypedResults.Ok(subSidaryFormDetails);

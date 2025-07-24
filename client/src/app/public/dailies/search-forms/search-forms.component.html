@@ -51,10 +51,10 @@
         <ng-container matColumnDef="dailyName">
             <th mat-header-cell *matHeaderCellDef> اسم اليومية </th>
             <td mat-cell *matCellDef="let element">
-                <a [routerLink]="['/public/dailies', element.dailyId]" target="_blank" rel="noopener noreferrer"
-                    style="color: #fff;">
+                <button mat-fab color="accent" mat-button [routerLink]="['/public/dailies', element.dailyId]"
+                    target="_blank" rel="noopener noreferrer">
                     {{element.dailyName}}
-                </a>
+                </button>
 
 
 

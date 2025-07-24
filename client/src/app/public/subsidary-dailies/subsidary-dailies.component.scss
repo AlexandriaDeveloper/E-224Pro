@@ -1,0 +1,168 @@
+/* Main container styles */
+.table-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  direction: rtl;
+}
+
+/* Header and actions bar */
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  // margin-bottom: 16px;
+  // padding-bottom: 16px;
+
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0;
+  color: #333;
+}
+
+.actions-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  height: 36px;
+}
+
+.filter-badge {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ff4081;
+  margin-left: 4px;
+}
+
+/* Table section styles */
+.table-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.table-wrapper {
+  flex: 1;
+  overflow: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Table styles */
+.data-table {
+  width: 100%;
+}
+
+.action-column {
+  width: 60px;
+}
+
+.id-column {
+  width: 80px;
+}
+
+.name-column {
+  min-width: 200px;
+}
+
+.date-column {
+  width: 120px;
+}
+
+.amount-column {
+  width: 120px;
+  text-align: left;
+}
+
+.type-column {
+  width: 100px;
+}
+
+.balance-column {
+  width: 100px;
+}
+
+/* Style for badge indicators */
+.type-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: inline-block;
+  text-align: center;
+}
+
+
+/* Table row hover and alternate row styles */
+.data-row:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.balanced-row {
+  background-color: rgba(46, 125, 50, 0.04);
+}
+
+.unbalanced-row {
+  background-color: rgba(198, 40, 40, 0.04);
+}
+
+/* No data styling */
+.no-data-row {
+  height: 100px;
+}
+
+.no-data-cell {
+  text-align: center;
+  font-style: italic;
+  color: #757575;
+}
+
+/* Table header styling */
+th.mat-header-cell {
+  background-color: #f5f5f5;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Make table header sticky */
+.mat-mdc-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .actions-bar {
+    width: 100%;
+    justify-content: center;
+  }
+}

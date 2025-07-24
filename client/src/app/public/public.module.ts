@@ -31,6 +31,8 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { SearchFormsComponent } from './dailies/search-forms/search-forms.component';
 import { SearchFileDialogComponent } from './dailies/search-forms/Search-File-Dialog/Search-File-Dialog.component';
+import { SubsidaryFilterDialogComponent } from './subsidary-dailies/subsidary-filter-dialog/subsidary-filter-dialog.component';
+import { SubsidarySearchDialogComponent } from './subsidary-dailies/subsidary-daily/subsidary-search-dialog/subsidary-search-dialog.component';
 
 
 
@@ -53,6 +55,8 @@ import { SearchFileDialogComponent } from './dailies/search-forms/Search-File-Di
     AddFundDialogComponent,
     SubsidaryDailiesComponent,
     SubsidaryDailyComponent,
+    SubsidaryFilterDialogComponent,
+    SubsidarySearchDialogComponent,
     AddSubsidaryFormDetailsDialogComponent,
     UploadExcelFormDialogComponent,
     LoginComponent,

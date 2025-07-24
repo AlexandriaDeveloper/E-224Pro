@@ -25,6 +25,7 @@ public class SubsidaryFormDto
     public int FormDetailsId { get; set; }
     public string? CollageName { get; set; }
     public string? DailyType { get; set; }
+    public bool isBalanced => TotalCredit == SubsidaryTotalCredit && TotalDebit == SubsidaryTotalDebit;
 }
 
 public class SubsidaryFormDetailsDto

@@ -13,6 +13,7 @@ import { DownloadExcelTemplateDialogComponent } from './download-excel-template-
 import { UploadExcelFormDialogComponent } from './upload-excel-form-dialog/upload-excel-form-dialog.component';
 import { DailiesSearchDialogComponent } from '../dailies/dailies-search-dialog/dailies-search-dialog.component';
 import { SearchFileDialogComponent } from '../dailies/search-forms/Search-File-Dialog/Search-File-Dialog.component';
+import { ToasterService } from '../../shared/services/toaster.service';
 
 @Component({
   selector: 'app-form',
@@ -23,6 +24,7 @@ import { SearchFileDialogComponent } from '../dailies/search-forms/Search-File-D
 export class FormComponent implements OnInit {
   router = inject(ActivatedRoute);
   formService = inject(FormService);
+  toast = inject(ToasterService);
   readonly dialog = inject(MatDialog);
   params = new SearchFormRequest();
   readonly panelOpenState = signal(false);
@@ -135,7 +137,19 @@ export class FormComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.toast.info('تم تحديث الملف  بنجاح');
+
+      }
+      else if (result == false) {
+        this.toast.success('تم اضافة الملف بنجاح');
+
+      }
+      else {
+        return;
+      }
       this.loadForms();
+
 
     });
   }

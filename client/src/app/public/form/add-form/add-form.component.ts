@@ -64,7 +64,7 @@ export class AddFormComponent implements OnInit {
       console.log(this.data.element);
 
       this.update = true;
-      this.data.param.DailyId = this.data.element.dailyId;
+      this.data.param.dailyId = this.data.element.dailyId;
       this.loadFunds(this.data.element.collageId);
       this.loadForm();
       // this.loadFormDetails();
@@ -94,7 +94,7 @@ export class AddFormComponent implements OnInit {
       num55: [this.form.num55 || ''],
       auditorName: [this.form.auditorName || ''],
       details: [this.form.details || ''],
-      dailyId: [this.data.param.DailyId, Validators.required],
+      dailyId: [this.data.param.dailyId, Validators.required],
       entryType: [this.form.entryType || 0],
       formDetails: this.fb.array((this.form.formDetailsDtos ?? []).map(detail => this.createFormDetail(detail)))
     });
@@ -242,12 +242,12 @@ export class AddFormComponent implements OnInit {
     console.log(formValue);
     if (this.update) {
 
-      this.formService.updateForm(this.data.element.id, formValue).subscribe(() => this.dialogRef.close());
+      this.formService.updateForm(this.data.element.id, formValue).subscribe(() => this.dialogRef.close(this.update));
 
     }
     else {
 
-      this.formService.addForm(formValue).subscribe(() => this.dialogRef.close());
+      this.formService.addForm(formValue).subscribe(() => this.dialogRef.close(this.update));
     }
   }
 

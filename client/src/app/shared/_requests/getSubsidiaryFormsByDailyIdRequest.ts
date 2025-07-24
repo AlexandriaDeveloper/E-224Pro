@@ -15,4 +15,7 @@ export class GetSubsidiaryFormsByDailyIdRequest extends Param {
     public startDate?: Date;
     public endDate?: Date;
     public entryType?: number;
+    public formName?: string;
+    public auditorName?: string;
+    public isBalanced?: any;
 }

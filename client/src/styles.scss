@@ -6,7 +6,39 @@
 @use './assets/themes/theme-colors-gray';
 @use './assets/themes/theme-colors-orange';
 @use './assets/themes/theme-colors_blue-gray';
-
 @use './assets/themes/global.scss';
 @use './assets/themes/light-theme.scss' as light-theme;
 @use './assets/themes/dark-theme.scss' as dark-theme;
+
+// Toastr styling
+@import 'ngx-toastr/toastr';
+
+.balance-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.general-badge {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.payroll-badge {
+    background-color: #fff8e1;
+    color: #ff8f00;
+}
+
+
+
+.balanced {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.unbalanced {
+    background-color: #ffebee;
+    color: #c62828;
+}

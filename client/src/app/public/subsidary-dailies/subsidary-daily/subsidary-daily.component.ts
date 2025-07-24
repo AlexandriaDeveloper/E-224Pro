@@ -8,7 +8,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { DeleteDialogComponent } from '../../../shared/components/dialog/delete-dialog/delete-dialog.component';
 import { AddFormComponent } from '../../form/add-form/add-form.component';
 import { FormResponse } from '../../form/form-response.interface';
-import { FormSearchDialogComponent } from '../../form/form-search-dialog/form-search-dialog.component';
+import { SubsidarySearchDialogComponent } from './subsidary-search-dialog/subsidary-search-dialog.component';
 import { SubsidiaryService } from '../../../shared/services/subsidiary.service';
 import { Collage } from '../../../shared/_models/collage.model';
 import { CollageService } from '../../../shared/services/collage.service';
@@ -34,7 +34,7 @@ export class SubsidaryDailyComponent implements OnInit {
   params = new GetSubsidiaryFormsByDailyIdRequest();
   readonly panelOpenState = signal(false);
 
-  displayedColumns: string[] = ['action', 'id', 'num224', 'num55', 'formName', 'collageName', 'fundName', 'totalDebit', 'totalCredit', 'SubsidaryTotalDebit', 'SubsidaryTotalCredit', 'isBalanced', 'auditorName'];
+  displayedColumns: string[] = ['action', 'id', 'num224', 'num55', 'formName', 'collageName', 'fundName', 'totalDebit', 'totalCredit', 'SubsidaryTotalDebit', 'SubsidaryTotalCredit', 'isBalanced'];
   dataSource: any[] = [];
   originalDataSource: any[] = [];
   lastSearchedDataSource: any[] = []; // Track last searched data
@@ -44,7 +44,7 @@ export class SubsidaryDailyComponent implements OnInit {
   collages: Collage[] = []
   funds: Fund[] = [];
   filterdFunds: Fund[] = [];
-
+  hasActiveSearch = false;
 
   paginator: PaginatorModel = new PaginatorModel();
   constructor() {
@@ -167,8 +167,48 @@ export class SubsidaryDailyComponent implements OnInit {
 
     });
   }
-  onSearch() {
-    this.loadForms(this.params);
+  openSearchDialog() {
+    // تحضير معلمات البحث الحالية
+    const currentParams = {
+      formName: this.params.formName || '',
+      num224: this.params.num224 || '',
+      num55: this.params.num55 || '',
+      collageId: this.params.collageId || 0,
+      fundId: this.params.fundId || 0,
+      auditorName: this.params.auditorName || '',
+      isBalanced: this.params.isBalanced || ''
+    };
+
+    const dialogRef = this.dialog.open(SubsidarySearchDialogComponent, {
+      width: '700px',
+      disableClose: false,
+      data: { searchParams: currentParams },
+      direction: 'rtl'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.applied) {
+        const searchParams = result.searchParams;
+
+        // تحديث معلمات البحث
+        this.params.formName = searchParams.formName;
+        this.params.num224 = searchParams.num224;
+        this.params.num55 = searchParams.num55;
+        this.params.collageId = searchParams.collageId;
+        this.params.fundId = searchParams.fundId;
+        this.params.auditorName = searchParams.auditorName;
+        this.params.isBalanced = searchParams.isBalanced;
+
+        // التحقق مما إذا كانت هناك معايير بحث نشطة
+        this.hasActiveSearch = !!(searchParams.formName || searchParams.num224 ||
+          searchParams.num55 || (searchParams.collageId && searchParams.collageId > 0) ||
+          (searchParams.fundId && searchParams.fundId > 0) ||
+          searchParams.auditorName || searchParams.isBalanced !== '');
+
+        // تحميل البيانات بناءً على معايير البحث الجديدة
+        this.loadForms(this.params);
+      }
+    });
   }
   onPrint() {
     this.params.dailyId = this.dailyId;
@@ -180,6 +220,8 @@ export class SubsidaryDailyComponent implements OnInit {
     });
 
   }
+  
+
   deleteSubsidary(element) {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       data: {

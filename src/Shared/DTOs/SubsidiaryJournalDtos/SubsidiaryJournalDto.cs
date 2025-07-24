@@ -36,6 +36,7 @@ public class SubsidiaryJournalDto
     public string? CollageName { get; set; }
     public int? FundId { get; set; }
     public string? FundName { get; set; }
+    public bool isBalanced { get; set; }
 
 
     // PayRoll or General

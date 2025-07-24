@@ -3,23 +3,46 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { GetFormRequest, SearchFormRequest } from '../_requests/getFormRequest';
 import { StringToDateOnlyProviderService } from '../_helper/string-to-date-only-provider.service';
+import { ToasterService } from './toaster.service';
+import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormService {
   dateProvider = inject(StringToDateOnlyProviderService);
-  deleteForm(formId: number) {
-    return this.http.delete(`${this.apiUrl}forms/${formId}`);
-  }
-  getFormDetails(formId: number) {
+  toasterService = inject(ToasterService);
 
-    return this.http.get(`${this.apiUrl}FormDetails/${formId}`);
+  deleteForm(formId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}forms/${formId}`)
+      .pipe(
+        catchError(error => {
+          this.toasterService.handleError(error);
+          return throwError(() => error);
+        })
+      );
   }
-  getFormWithDetails(formId: number) {
+
+  getFormDetails(formId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}FormDetails/${formId}`)
+      .pipe(
+        catchError(error => {
+          this.toasterService.handleError(error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  getFormWithDetails(formId: number): Observable<any> {
     let params = new HttpParams();
     params = params.append('formId', formId.toString());
-    return this.http.get(`${this.apiUrl}forms/formWithDetail`, { params: params });
+    return this.http.get(`${this.apiUrl}forms/formWithDetail`, { params: params })
+      .pipe(
+        catchError(error => {
+          this.toasterService.handleError(error);
+          return throwError(() => error);
+        })
+      );
   }
 
   apiUrl = environment.apiUrl
