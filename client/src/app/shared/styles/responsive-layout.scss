@@ -1,0 +1,244 @@
+/* متغيرات CSS للتخطيط والألوان والمسافات */
+:root {
+  /* المسافات */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* أحجام الحاويات */
+  --container-xs: 100%;
+  --container-sm: 540px;
+  --container-md: 720px;
+  --container-lg: 960px;
+  --container-xl: 1140px;
+
+  /* حجم الخط */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+
+  /* نصف قطر الزوايا */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 16px;
+
+  /* ظلال */
+  --box-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --box-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --box-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* فئات CSS العامة للتخطيط المتجاوب */
+
+/* حاوية متجاوبة */
+.responsive-container {
+  width: 100%;
+  padding-right: var(--spacing-md);
+  padding-left: var(--spacing-md);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* تخطيط شبكة متجاوب */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+}
+
+/* تخطيط flex متجاوب */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.flex-item {
+  flex: 1 1 300px;
+  min-width: 0; /* لمنع العناصر من الامتداد خارج الحاوية */
+}
+
+/* فئات لأحجام الشاشات المختلفة */
+.xs-layout .title {
+  font-size: var(--font-size-md);
+}
+
+.sm-layout .title {
+  font-size: var(--font-size-lg);
+}
+
+.md-layout .title, 
+.lg-layout .title, 
+.xl-layout .title {
+  font-size: var(--font-size-xl);
+}
+
+/* إخفاء/إظهار عناصر بناءً على حجم الشاشة */
+@media (max-width: 599px) {
+  .hide-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+  .hide-sm {
+    display: none !important;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  .hide-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1919px) {
+  .hide-lg {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1920px) {
+  .hide-xl {
+    display: none !important;
+  }
+}
+
+/* تخطيط الأعمدة المتجاوبة */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: calc(var(--spacing-md) * -1);
+  margin-left: calc(var(--spacing-md) * -1);
+}
+
+.col {
+  padding-right: var(--spacing-md);
+  padding-left: var(--spacing-md);
+  flex-grow: 1;
+}
+
+/* تعريف أحجام الأعمدة */
+@media (min-width: 0) {
+  .col-xs-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+  .col-xs-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-xs-3 { flex: 0 0 25%; max-width: 25%; }
+  .col-xs-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-xs-6 { flex: 0 0 50%; max-width: 50%; }
+  .col-xs-12 { flex: 0 0 100%; max-width: 100%; }
+}
+
+@media (min-width: 600px) {
+  .col-sm-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+  .col-sm-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-sm-3 { flex: 0 0 25%; max-width: 25%; }
+  .col-sm-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-sm-6 { flex: 0 0 50%; max-width: 50%; }
+  .col-sm-12 { flex: 0 0 100%; max-width: 100%; }
+}
+
+@media (min-width: 960px) {
+  .col-md-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+  .col-md-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .col-md-3 { flex: 0 0 25%; max-width: 25%; }
+  .col-md-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+  .col-md-6 { flex: 0 0 50%; max-width: 50%; }
+  .col-md-12 { flex: 0 0 100%; max-width: 100%; }
+}
+
+/* تعديل حجم الحاويات بناءً على حجم الشاشة */
+@media (min-width: 576px) {
+  .responsive-container {
+    max-width: var(--container-sm);
+  }
+}
+
+@media (min-width: 768px) {
+  .responsive-container {
+    max-width: var(--container-md);
+  }
+}
+
+@media (min-width: 992px) {
+  .responsive-container {
+    max-width: var(--container-lg);
+  }
+}
+
+@media (min-width: 1200px) {
+  .responsive-container {
+    max-width: var(--container-xl);
+  }
+}
+
+/* نسق القوائم المتجاوبة */
+.responsive-menu {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .responsive-menu {
+    flex-direction: column;
+  }
+}
+
+/* بطاقات متجاوبة */
+.responsive-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--box-shadow-sm);
+  transition: box-shadow 0.3s ease;
+}
+
+.responsive-card:hover {
+  box-shadow: var(--box-shadow-md);
+}
+
+/* تصميم الجداول المتجاوبة */
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+@media (max-width: 768px) {
+  .responsive-table thead {
+    display: none;
+  }
+
+  .responsive-table, .responsive-table tbody, .responsive-table tr, .responsive-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .responsive-table tr {
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid #ddd;
+  }
+
+  .responsive-table td {
+    display: flex;
+    justify-content: space-between;
+    text-align: right;
+    padding: var(--spacing-sm);
+    border-bottom: 1px solid #eee;
+  }
+
+  .responsive-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    text-align: left;
+  }
+}

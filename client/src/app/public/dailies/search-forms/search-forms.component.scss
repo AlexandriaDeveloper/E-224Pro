@@ -1,15 +1,30 @@
-table {
-    min-width: 400px;
+.mat-column-id {
+    width: 7% !important;
 }
 
-.table-container {
-    width: 100% !important;
+.mat-column-num224 {
+    width: 7% !important;
 }
 
+.mat-column-num55 {
+    width: 7% !important;
+}
+
+.mat-column-formName {
+    width: 15% !important;
+    text-align: center;
+
+}
+
+.mat-column-dailyName {
+    width: 15% !important;
+    text-align: center;
+
+}
+
+.mat-column-num55,
+.mat-column-num224 {
+    width: 7% !important;
 
 
-.fixed-table {
-    width: 80% !important;
-    table-layout: fixed;
-    margin: auto;
 }

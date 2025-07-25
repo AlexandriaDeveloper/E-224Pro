@@ -2,6 +2,7 @@ using System;
 using Azure.Core;
 using Core.Models;
 using Shared.Contracts;
+using Shared.DTOs.FormDtos;
 
 namespace Persistence.Specification;
 
@@ -86,4 +87,41 @@ public class DailyCountAsyncSpecification : Specification<Daily>
 
 
 
+}
+public class SubsidaryToExcelSpecification : Specification<FormDetails>
+{
+    public SubsidaryToExcelSpecification(SubsidaryToExcelRequest request)
+    {
+        AddInclude(x => x.Form.Daily);
+        AddInclude(x => x.Form);
+        AddInclude(x => x.Form.Collage);
+        AddInclude(x => x.Form.Fund);
+        AddInclude(x => x.SubsidiaryJournals);
+        AddInclude(x => x.Account);
+
+        if (request.Id.HasValue)
+        {
+            AddCriteries(x => x.Id == request.Id.Value);
+        }
+        if (request.DailyId.HasValue)
+        {
+            AddCriteries(x => x.Form.Daily.Id == request.DailyId.Value);
+        }
+        if (request.CollageId.HasValue)
+        {
+            AddCriteries(x => x.Form.Collage.Id == request.CollageId.Value);
+        }
+        if (request.FundId.HasValue)
+        {
+            AddCriteries(x => x.Form.Fund.Id == request.FundId.Value);
+        }
+        if (request.AccountId.HasValue)
+        {
+            AddCriteries(x => x.AccountId == request.AccountId.Value);
+        }
+
+
+
+
+    }
 }

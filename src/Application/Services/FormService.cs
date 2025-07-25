@@ -109,7 +109,7 @@ public class FormService
         if (request.DailyId.HasValue)
         {
             var daily = await _dailyRepository.GetQueryable(null).Where(x => x.Id == request.DailyId.Value).Include(x => x.Forms).ThenInclude(x => x.FormDetails).ThenInclude(x => x.SubsidiaryJournals).FirstOrDefaultAsync();
-            response.Daily = new DailyDto(daily);
+            response.Daily = new DailyDto(daily, true);
         }
         var spec = new GetFormSpecification(request);
         var forms = _formRepository.GetQueryable(spec)

@@ -17,6 +17,11 @@ public static class ReportsEndpoint
         formGroup.MapGet("/ReportDailyPdf", DownloadDailyReports).RequireAuthorization();
         formGroup.MapGet("/ReportDailiesPdf", DownloadDailiesReports).RequireAuthorization(); ;
 
+
+        formGroup.MapGet("/ReportSubsidiaryJournal", GetSubsidiaryJournalBySpecAsync).RequireAuthorization();
+        formGroup.MapGet("/GetSubsidaryAsExcel", GetSubsidaryAsExcel).AllowAnonymous();
+
+
         return app;
     }
 
@@ -58,6 +63,11 @@ public static class ReportsEndpoint
             return Results.NotFound("No data found for the specified report criteria.");
         }
         return Results.File(pdfBytes, "application/pdf", "report.pdf");
+    }
+    private static async Task<IResult> GetSubsidaryAsExcel(SubSidaryDailyService service, [AsParameters] SubsidaryToExcelRequest request, CancellationToken cancellationToken)
+    {
+        var result = await service.GenerateSubsidiaryExcelFile(request, cancellationToken);
+        return result == null ? TypedResults.NotFound() : TypedResults.Ok(result);
     }
 
 }

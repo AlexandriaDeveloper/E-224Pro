@@ -17,7 +17,7 @@
                 </mat-menu>
             </th>
             <td mat-cell *matCellDef="let element">
-                {{element.id}}
+
                 <button mat-icon-button (click)="openAddFormDialog(element)">
                     <mat-icon>edit</mat-icon>
                 </button>
@@ -25,39 +25,38 @@
             </td>
         </ng-container>
         <ng-container matColumnDef="formName">
-            <th mat-header-cell *matHeaderCellDef> اسم الاستمارة </th>
+            <th mat-header-cell *matHeaderCellDef> الاستمارة </th>
             <td mat-cell *matCellDef="let element"> {{element.formName}} </td>
         </ng-container>
         <ng-container matColumnDef="num224">
-            <th mat-header-cell *matHeaderCellDef> رقم الاستمارة 224 </th>
+            <th mat-header-cell *matHeaderCellDef> 224 </th>
             <td mat-cell *matCellDef="let element"> {{element.num224}} </td>
         </ng-container>
         <ng-container matColumnDef="num55">
-            <th mat-header-cell *matHeaderCellDef> رقم الاستمارة 55 </th>
+            <th mat-header-cell *matHeaderCellDef> 55 </th>
             <td mat-cell *matCellDef="let element"> {{element.num55}} </td>
         </ng-container>
         <ng-container matColumnDef="collageName">
-            <th mat-header-cell *matHeaderCellDef> اسم الكلية </th>
+            <th mat-header-cell *matHeaderCellDef> الكلية </th>
             <td mat-cell *matCellDef="let element"> {{element.collageName}} </td>
         </ng-container>
         <ng-container matColumnDef="fundName">
-            <th mat-header-cell *matHeaderCellDef> اسم الصندوق </th>
+            <th mat-header-cell *matHeaderCellDef> الصندوق </th>
             <td mat-cell *matCellDef="let element"> {{element.fundName}} </td>
         </ng-container>
+
         <ng-container matColumnDef="dailyType">
             <th mat-header-cell *matHeaderCellDef> اليومية </th>
             <td mat-cell *matCellDef="let element"> {{element.dailyType=="General"?"عاديه":"بيروول" }} </td>
         </ng-container>
+        <!--        //i want it to be wider other cells-->
         <ng-container matColumnDef="dailyName">
-            <th mat-header-cell *matHeaderCellDef> اسم اليومية </th>
+            <th mat-header-cell *matHeaderCellDef> اليومية </th>
             <td mat-cell *matCellDef="let element">
-                <button mat-fab color="accent" mat-button [routerLink]="['/public/dailies', element.dailyId]"
-                    target="_blank" rel="noopener noreferrer">
+                <button mat-stroked-button color="primary" mat-button
+                    [routerLink]="['/public/dailies', element.dailyId]" target="_blank" rel="noopener noreferrer">
                     {{element.dailyName}}
                 </button>
-
-
-
             </td>
         </ng-container>
         <ng-container matColumnDef="dailyDate">
@@ -73,7 +72,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         <tr class="mat-row" *matNoDataRow>
-            <td style="width: 100%;text-align: center; padding: 20px;" class="mat-cell" colspan="11">لا يوجد بيانات
+            <td style="width: 100%;text-align: center; padding: 20px;" class="mat-cell" colspan="10">لا يوجد بيانات
                 للعرض</td>
         </tr>
     </table>

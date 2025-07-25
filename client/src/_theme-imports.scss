@@ -1,0 +1,27 @@
+// استيراد جميع الأنماط بأسلوب حديث (@use)
+// هذا الملف يجمع كل استيرادات SCSS في مكان واحد بأسلوب حديث
+
+// استيرادات Angular Material
+@forward '@angular/material';
+
+// استيرادات السمات والألوان
+@forward './assets/themes/theme-colors-black';
+@forward './assets/themes/variables.scss';
+@forward './assets/themes/theme-colors-gray';
+@forward './assets/themes/theme-colors-orange';
+@forward './assets/themes/theme-colors_blue-gray';
+@forward './assets/themes/global.scss';
+@forward './assets/themes/light-theme.scss';
+@forward './assets/themes/dark-theme.scss';
+
+// استيراد Toastr
+@forward 'ngx-toastr/toastr';
+
+// استيراد الأنماط المتجاوبة
+@forward './app/shared/styles/responsive-layout.scss';
+
+// تعريف الاستخدامات بشكل صحيح
+@use '@angular/material' as mat;
+@use './assets/themes/light-theme.scss' as light-theme;
+@use './assets/themes/dark-theme.scss' as dark-theme;
+

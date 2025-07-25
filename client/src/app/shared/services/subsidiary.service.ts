@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { GetSubsidiaryFormsByDailyIdRequest } from '../_requests/getSubsidiaryFormsByDailyIdRequest';
+import { GetSubsidiaryFormsByDailyIdRequest, SubsidaryToExcelRequest } from '../_requests/getSubsidiaryFormsByDailyIdRequest';
 import { GetDailiesRequest } from '../_requests/getDailiesRequest';
 import { StringToDateOnlyProviderService } from '../_helper/string-to-date-only-provider.service';
 
@@ -9,6 +9,20 @@ import { StringToDateOnlyProviderService } from '../_helper/string-to-date-only-
   providedIn: 'root'
 })
 export class SubsidiaryService {
+  exportSubsidaryDailyExcel(params: SubsidaryToExcelRequest) {
+    let httpParams = new HttpParams();
+    if (params.id) httpParams = httpParams.append('Id', params.id.toString());
+    if (params.accountId) httpParams = httpParams.append('AccountId', params.accountId.toString());
+
+    if (params.dailyId) httpParams = httpParams.append('DailyId', params.dailyId.toString());
+    //fundId
+    if (params.fundId) httpParams = httpParams.append('FundId', params.fundId.toString());
+    //collage id 
+    if (params.collageId) httpParams = httpParams.append('CollageId', params.collageId.toString());
+
+
+    return this.http.get(`${this.apiUrl}SubsidiaryJournal/ExportSubsidiaryDailyToExcel`, { responseType: 'blob', params: httpParams });
+  }
   apiUrl = environment.apiUrl
   http = inject(HttpClient)
   dateProvider = inject(StringToDateOnlyProviderService);

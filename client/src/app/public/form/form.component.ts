@@ -29,7 +29,7 @@ export class FormComponent implements OnInit {
   params = new SearchFormRequest();
   readonly panelOpenState = signal(false);
 
-  displayedColumns: string[] = ['action', 'id', 'num224', 'num55', 'formName', 'collageName', 'fundName', 'entryType', 'totalDebit', 'totalCredit', 'isBalanced'];
+  displayedColumns: string[] = ['action', 'num224', 'num55', 'formName', 'collageName', 'fundName', 'entryType', 'totalDebit', 'totalCredit', 'isBalanced'];
   dataSource: any[] = [];
   originalDataSource: any[] = [];
   lastSearchedDataSource: any[] = []; // Track last searched data

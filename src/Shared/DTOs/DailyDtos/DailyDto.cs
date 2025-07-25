@@ -17,9 +17,11 @@ public class DailyDto
     public decimal? TotalDebit { get; set; }
     public decimal? TotalSubsidiaryCredit { get; set; }
     public decimal? TotalSubsidiaryDebit { get; set; }
-    public bool IsBalanced => TotalCredit == TotalSubsidiaryCredit && TotalDebit == TotalSubsidiaryDebit ? true : false;
+    public bool IsBalanced { get; set; }  //=> TotalCredit == TotalSubsidiaryCredit && TotalDebit == TotalSubsidiaryDebit ? true : false;
 
-    public DailyDto(Core.Models.Daily daily)
+
+
+    public DailyDto(Core.Models.Daily daily, bool checkCreditDebit)
     {
         Id = daily.Id;
         Name = daily.Name ?? string.Empty;
@@ -30,9 +32,18 @@ public class DailyDto
         TotalDebit = daily.Forms != null ? daily.Forms.Sum(x => x.FormDetails.Sum(x => x.Debit)) : 0;
         TotalSubsidiaryCredit = daily.Forms.Sum(x => x.FormDetails.Sum(x => x.SubsidiaryJournals.Sum(t => t.Credit))) ?? 0;
         TotalSubsidiaryDebit = daily.Forms.Sum(x => x.FormDetails.Sum(x => x.SubsidiaryJournals.Sum(t => t.Debit))) ?? 0;
+        if (checkCreditDebit)
+        {
+            IsBalanced = TotalCredit == TotalDebit;
+        }
+        else
+        {
+            IsBalanced = TotalCredit == TotalSubsidiaryCredit && TotalDebit == TotalSubsidiaryDebit;
+        }
 
 
     }
+
 
     public Daily ToCore()
     {

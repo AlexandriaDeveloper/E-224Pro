@@ -151,16 +151,7 @@ public class ReportService
 
     }
 
-    private AccountBalance GetClosingBalanceByAccount(AccountBalance openingAccount, AccountBalance monthlyAccount)
-    {
-        var closingBalance = new AccountBalance
-        {
-            Credit = openingAccount.Credit + monthlyAccount.Credit,
-            Debit = openingAccount.Debit + monthlyAccount.Debit
-        };
 
-        return closingBalance;
-    }
 
     private async Task<AccountBalance?> GetOpeningBalanceByAccount(int AccountId, GetAccountsBalanceBy getAccountsBalanceByAccount, CancellationToken cancellationToken)
     {

@@ -7,6 +7,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs/internal/Observable';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { LayoutService } from '../../services/layout.service';
 import { MatExpansionModule } from '@angular/material/expansion'
 import { RouterModule } from '@angular/router';
 import { AccountService } from '../../services/account.service';
@@ -36,15 +37,22 @@ import { CommonModule } from '@angular/common';
 export class SidebarComponent implements OnInit {
 
   @Input("isOpened") isOpened: boolean = false; // حالة القائمة الجانبية من المكون الأب
-  subAccountsService = inject(AccountService)
+  subAccountsService = inject(AccountService);
   public auth = inject(AuthService);
-  isHandset$: Observable<boolean>
+  layoutService = inject(LayoutService);
+  isHandset$: Observable<boolean>;
   subAccounts: any = [];
+  
+  // متغيرات للتصميم المتجاوب
+  isCompactView = false;
+  layoutClass = '';
 
   constructor(
     private breakpointObserver: BreakpointObserver,
 
   ) {
+    // استخدام خدمة LayoutService للحصول على حالة الشاشة
+    this.isHandset$ = this.layoutService.isHandset$;
     // if (!this.auth.isAuthenticated()) {
     //   //navigate to login page
     //   this.router.navigate(['/account/login']);
@@ -52,6 +60,9 @@ export class SidebarComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    // إعداد التصميم المتجاوب
+    this.setupResponsiveLayout();
+    
     console.log(this.auth.getUserAccounRoles());
     this.subAccountsService.getAccountsHasSubAccounts().subscribe({
       next: (res: []) => {
@@ -72,5 +83,18 @@ export class SidebarComponent implements OnInit {
     console.log('تسجيل الخروج');
   }
 
-
+  /**
+   * إعداد التخطيط المتجاوب للقائمة الجانبية
+   */
+  setupResponsiveLayout() {
+    // مراقبة حجم الشاشة لتعديل عرض القائمة الجانبية
+    this.layoutService.isHandset$.subscribe(isHandset => {
+      this.isCompactView = isHandset;
+    });
+    
+    // الحصول على فئة CSS مناسبة بناءً على حجم الشاشة
+    this.layoutService.getResponsiveClass().subscribe(className => {
+      this.layoutClass = className;
+    });
+  }
 }

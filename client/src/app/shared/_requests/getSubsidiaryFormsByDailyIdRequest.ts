@@ -19,3 +19,16 @@ export class GetSubsidiaryFormsByDailyIdRequest extends Param {
     public auditorName?: string;
     public isBalanced?: any;
 }
+
+
+export class SubsidaryToExcelRequest {
+    //make it camel case
+    public id?: number; //make it camel case
+    public accountId?: number; //make it camel case
+
+    public dailyId?: number; //make it camel case
+    public fundId?: number; //make it camel case
+    public collageId?: number; //make it camel case
+
+
+}

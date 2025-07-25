@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { LayoutService } from '../../../shared/services/layout.service';
 import { PaginatorModel } from '../../../shared/_models/paginator.model';
 import { GetFormRequest } from '../../../shared/_requests/getFormRequest';
 import { ActivatedRoute } from '@angular/router';
@@ -12,7 +13,7 @@ import { SubsidarySearchDialogComponent } from './subsidary-search-dialog/subsid
 import { SubsidiaryService } from '../../../shared/services/subsidiary.service';
 import { Collage } from '../../../shared/_models/collage.model';
 import { CollageService } from '../../../shared/services/collage.service';
-import { GetSubsidiaryFormsByDailyIdRequest } from '../../../shared/_requests/getSubsidiaryFormsByDailyIdRequest';
+import { GetSubsidiaryFormsByDailyIdRequest, SubsidaryToExcelRequest } from '../../../shared/_requests/getSubsidiaryFormsByDailyIdRequest';
 import { Fund } from '../../../shared/_models/fund.model';
 import { FundService } from '../../../shared/services/fund.service';
 import { AddSubsidaryFormDetailsDialogComponent } from './add-subsidary-form-details-dialog/add-subsidary-form-details-dialog.component';
@@ -31,10 +32,17 @@ export class SubsidaryDailyComponent implements OnInit {
   collageService = inject(CollageService);
   fundService = inject(FundService);
   readonly dialog = inject(MatDialog);
+  layoutService = inject(LayoutService);
   params = new GetSubsidiaryFormsByDailyIdRequest();
+  exportParam = new SubsidaryToExcelRequest();
   readonly panelOpenState = signal(false);
 
-  displayedColumns: string[] = ['action', 'id', 'num224', 'num55', 'formName', 'collageName', 'fundName', 'totalDebit', 'totalCredit', 'SubsidaryTotalDebit', 'SubsidaryTotalCredit', 'isBalanced'];
+  displayedColumns: string[] = ['action', 'num224', 'num55', 'formName', 'collageName', 'fundName', 'totalDebit', 'totalCredit', 'SubsidaryTotalDebit', 'SubsidaryTotalCredit', 'isBalanced'];
+
+  // متغيرات للتصميم المتجاوب
+  isHandset = false;
+  responsiveDisplayedColumns: string[] = [];
+  layoutClass = '';
   dataSource: any[] = [];
   originalDataSource: any[] = [];
   lastSearchedDataSource: any[] = []; // Track last searched data
@@ -60,6 +68,9 @@ export class SubsidaryDailyComponent implements OnInit {
 
     this.params.dailyId = this.dailyId;
     this.loadForms(this.params);
+
+    // إعداد التصميم المتجاوب
+    this.setupResponsiveLayout();
   }
 
   loadForms(param: GetSubsidiaryFormsByDailyIdRequest) {
@@ -220,7 +231,7 @@ export class SubsidaryDailyComponent implements OnInit {
     });
 
   }
-  
+
 
   deleteSubsidary(element) {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
@@ -249,6 +260,43 @@ export class SubsidaryDailyComponent implements OnInit {
 
   }
 
+  /**
+   * إعداد التخطيط المتجاوب للجدول والواجهة
+   * يقوم بضبط أعمدة الجدول بناءً على حجم الشاشة
+   */
+  setupResponsiveLayout() {
+    // مراقبة حجم الشاشة وتعديل عرض الأعمدة وفقًا لذلك
+    this.layoutService.isHandset$.subscribe(isHandset => {
+      this.isHandset = isHandset;
+      this.updateDisplayColumns(isHandset);
+    });
 
+    // الحصول على فئة CSS مناسبة بناءً على حجم الشاشة
+    this.layoutService.getResponsiveClass().subscribe(className => {
+      this.layoutClass = className;
+    });
+  }
+
+  /**
+   * تحديث الأعمدة المعروضة بناءً على حجم الشاشة
+   */
+  updateDisplayColumns(isHandset: boolean) {
+    if (isHandset) {
+      // للشاشات الصغيرة، نعرض عدد أقل من الأعمدة
+      this.responsiveDisplayedColumns = ['action', 'num224', 'formName', 'totalDebit', 'totalCredit', 'isBalanced'];
+    } else {
+      // للشاشات الكبيرة، نعرض كل الأعمدة
+      this.responsiveDisplayedColumns = this.displayedColumns;
+    }
+  }
+  onExport() {
+    this.exportParam.dailyId = this.dailyId;
+    this.exportParam.accountId = this.subsidaryId;
+    this.subsidaryService.exportSubsidaryDailyExcel(this.exportParam).subscribe((response: any) => {
+      const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url);
+    });
+  }
 }
 

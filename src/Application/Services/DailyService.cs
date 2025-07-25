@@ -106,7 +106,7 @@ public class DailyService
             throw new Exception("Could not find");
         }
         // Return the daily
-        var dailyToReturn = new DailyDto(daily);
+        var dailyToReturn = new DailyDto(daily, false);
         return dailyToReturn;
 
     }
@@ -123,7 +123,7 @@ public class DailyService
 
         // Return the daily
 
-        var dailiesResponse = dailies.Select(x => new DailyDto(x!)).ToList();
+        var dailiesResponse = dailies.Select(x => new DailyDto(x!, true)).ToList();
 
 
         return PaginatedResult<DailyDto>.Create(dailiesResponse, request.PageIndex, request.PageSize, dailyCountResult);

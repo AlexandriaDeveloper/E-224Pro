@@ -26,7 +26,7 @@ public static class SubsidiaryJournal
         //formDetailsId/${formDetailsId}`
 
         subsidiaryJournalGroup.MapDelete("/FormDetailsId/{formDetailsId}", DeleteSubsidaryFormDetail).RequireAuthorization();
-        subsidiaryJournalGroup.MapGet("/ExportSubsidiaryDailyToExcel", ExportSubsidiaryDailyToExcel).RequireAuthorization();
+        subsidiaryJournalGroup.MapGet("/ExportSubsidiaryDailyToExcel", ExportSubsidiaryDailyToExcel).AllowAnonymous();
         return app;
     }
 
@@ -47,10 +47,19 @@ public static class SubsidiaryJournal
         return TypedResults.Ok(subSidaryFormDetails);
     }
 
-    public static async Task<IResult> ExportSubsidiaryDailyToExcel(int formDetailsId, int subaccountId, SubSidaryDailyService _subsidiaryJournalRepository, CancellationToken cancellationToken = default)
+    public static async Task<IResult> ExportSubsidiaryDailyToExcel([AsParameters] SubsidaryToExcelRequest request, SubSidaryDailyService _subsidiaryJournalRepository, CancellationToken cancellationToken = default)
     {
-        var subSidaryFormDetails = await _subsidiaryJournalRepository.GetSubsidaryFormDetailsByFormDetailsId(formDetailsId, subaccountId, cancellationToken);
-        return TypedResults.Ok(subSidaryFormDetails);
+        var excelFileBytes = await _subsidiaryJournalRepository.GenerateSubsidiaryExcelFile(request, cancellationToken);
+        
+        // Create a descriptive filename with current date
+        string fileName = $"Subsidiary_Excel_{DateTime.Now:yyyy-MM-dd}.xlsx";
+        
+        // Return the Excel file as a downloadable file
+        return TypedResults.File(
+            fileContents: excelFileBytes,
+            contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            fileDownloadName: fileName
+        );
     }
 
     private static async Task<IResult> DeleteSubsidiaryJournal(SubsidiaryJournalService service, int id, CancellationToken cancellationToken = default)
