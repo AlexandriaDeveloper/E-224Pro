@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { AddFormComponent } from '../add-form/add-form.component';
 import { AccountService } from '../../../shared/services/account.service';
 import { FormService } from '../../../shared/services/form.service';
+import { AccountInfoDialogComponent } from '../../account/account-info-dialog/account-info-dialog.component';
 export class Account {
   id: number;
   accountName: string;
@@ -69,19 +70,7 @@ export class DownloadExcelTemplateDialogComponent implements OnInit {
   }
 
 
-  private createAccount(account: any): FormGroup {
 
-
-    return this.fb.group({
-
-      creditAccountNumber: [account.id || 0],
-      creditAccountName: [account.accountName || ''],
-      debitAccountNumber: [account.id || 0],
-      debitAccountName: [account.accountName || ''],
-
-    });
-
-  }
 
   getAccountName(accountType: string, index: number, accountId: number): void {
     console.log(accountType, accountId);
@@ -115,6 +104,38 @@ export class DownloadExcelTemplateDialogComponent implements OnInit {
       });
 
     }
+
+  }
+  getAccount(index: number, accountStatus: string): void {
+    const dialogRef = this.dialog.open(AccountInfoDialogComponent, {
+      data: {},
+      disableClose: true,
+      hasBackdrop: true,
+      minWidth: '80vw'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(result);
+
+        const control = this.fAccounts.at(index);
+        if (accountStatus === 'Debit') {
+          control.patchValue({
+            debitAccountNumber: result.id,
+            debitAccountName: result.accountName,
+          }
+          )
+        };
+        if (accountStatus === 'Credit') {
+          control.patchValue({
+            creditAccountNumber: result.id,
+            creditAccountName: result.accountName,
+            accountId: result.id
+          });
+        }
+      }
+    });
+
 
   }
 

@@ -2,6 +2,7 @@ namespace Shared.DTOs.FormDtos;
 
 public class SubsidaryToExcelDto
 {
+    public int FormDetailsId { get; set; }
     public string FormName { get; set; } = string.Empty;
     public string CollageName { get; set; } = string.Empty;
     public string FundName { get; set; } = string.Empty;

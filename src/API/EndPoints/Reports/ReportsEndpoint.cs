@@ -64,7 +64,7 @@ public static class ReportsEndpoint
         }
         return Results.File(pdfBytes, "application/pdf", "report.pdf");
     }
-    private static async Task<IResult> GetSubsidaryAsExcel(SubSidaryDailyService service, [AsParameters] SubsidaryToExcelRequest request, CancellationToken cancellationToken)
+    private static async Task<IResult> GetSubsidaryAsExcel(ExcelService service, [AsParameters] SubsidaryToExcelRequest request, CancellationToken cancellationToken)
     {
         var result = await service.GenerateSubsidiaryExcelFile(request, cancellationToken);
         return result == null ? TypedResults.NotFound() : TypedResults.Ok(result);

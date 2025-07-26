@@ -23,6 +23,9 @@
                         <!-- <button mat-icon-button type="button" (click)="getAccount(i)">
                             <mat-icon>more_vert</mat-icon>
                         </button> -->
+                        <button mat-icon-button type="button" (click)="getAccount(i,'Debit')">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
                         <mat-form-field style="flex: 1;">
                             <mat-label>كود الحساب</mat-label>
 
@@ -34,10 +37,14 @@
 
                         </mat-form-field>
                         <mat-form-field style="flex: 4;">
+
                             <mat-label>اسم الحساب الحساب</mat-label>
                             <input matInput formControlName="debitAccountName" readonly />
                             <mat-error> </mat-error>
                         </mat-form-field>
+                        <button mat-icon-button type="button" (click)="getAccount(i,'Credit')">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
                         <mat-form-field style="flex: 1;">
                             <mat-label>كود الحساب</mat-label>
 

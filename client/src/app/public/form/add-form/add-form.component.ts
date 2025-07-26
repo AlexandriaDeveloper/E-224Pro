@@ -201,9 +201,11 @@ export class AddFormComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        console.log(result);
+
         const control = this.fDetails.at(index);
         control.patchValue({
-          accountNumber: result.accountNumber,
+          accountNumber: result.id,
           accountName: result.accountName,
           accountId: result.id
         });

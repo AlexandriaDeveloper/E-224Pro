@@ -47,13 +47,13 @@ public static class SubsidiaryJournal
         return TypedResults.Ok(subSidaryFormDetails);
     }
 
-    public static async Task<IResult> ExportSubsidiaryDailyToExcel([AsParameters] SubsidaryToExcelRequest request, SubSidaryDailyService _subsidiaryJournalRepository, CancellationToken cancellationToken = default)
+    public static async Task<IResult> ExportSubsidiaryDailyToExcel([AsParameters] SubsidaryToExcelRequest request, ExcelService _subsidiaryJournalRepository, CancellationToken cancellationToken = default)
     {
         var excelFileBytes = await _subsidiaryJournalRepository.GenerateSubsidiaryExcelFile(request, cancellationToken);
-        
+
         // Create a descriptive filename with current date
         string fileName = $"Subsidiary_Excel_{DateTime.Now:yyyy-MM-dd}.xlsx";
-        
+
         // Return the Excel file as a downloadable file
         return TypedResults.File(
             fileContents: excelFileBytes,
