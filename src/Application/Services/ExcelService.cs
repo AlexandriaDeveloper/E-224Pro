@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.DTOs.AccountDtos;
 
 using Shared.DTOs.FormDtos;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Services
 {
@@ -22,17 +23,23 @@ namespace Application.Services
     {
         private readonly ICollageRepository _collageRepository;
         private readonly SubSidaryDailyService _subsidaryDailyService;
+        private readonly ISubsidiaryJournalRepository _subsidaryJournalRepository;
+
         private readonly IFundRepository _fundRepository;
         private readonly IAccountRepository _accountRepository;
         private readonly IDailyRepository _dailyRepository;
+        private readonly IUow _uow;
 
-        public ExcelService(IDailyRepository dailyRepository, ICollageRepository collageRepository, SubSidaryDailyService subsidaryDailyService, IFundRepository fundRepository, IAccountRepository accountRepository)
+        public ExcelService(IDailyRepository dailyRepository, IUow uow, ISubsidiaryJournalRepository subsidiaryJournalRepository, ICollageRepository collageRepository, SubSidaryDailyService subsidaryDailyService, IFundRepository fundRepository, IAccountRepository accountRepository)
         {
             _collageRepository = collageRepository;
             _subsidaryDailyService = subsidaryDailyService;
             _fundRepository = fundRepository;
             _accountRepository = accountRepository;
             _dailyRepository = dailyRepository;
+            _uow = uow;
+            _subsidaryJournalRepository = subsidiaryJournalRepository;
+
 
         }
 
@@ -103,7 +110,106 @@ namespace Application.Services
             return headers;
         }
 
+        public async Task UploadSubsidiaryExcelFile(UploadSubsidaryDailyRequest request, IFormFile file, CancellationToken cancellationToken)
+        {
+            if (file == null || file.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(file));
+            }
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var tempPath = Path.GetTempPath();
+            if (tempPath == null)
+            {
 
+                throw new Exception("Error getting temp path");
+            }
+            var filePath = Path.Combine(tempPath, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+            var excelService = new NpoiService(filePath); // Assuming you have a method to create an instance of NpoiService
+            var sheetHeader = excelService.GetSheetHeader(0, "Subsidiary Data");
+            var sheetData = excelService.GetSheetData(2, "Subsidiary Data");
+
+            // Find indices of headers that are numbers only (no letters, not empty)
+            var numericHeaderIndices = new List<int>();
+            for (int i = 0; i < sheetHeader.Count(); i++)
+            {
+                var cell = sheetHeader[i]?.ToString()?.Trim();
+                if (!string.IsNullOrEmpty(cell) && cell.All(char.IsDigit))
+                {
+                    numericHeaderIndices.Add(i);
+                }
+            }
+
+            // For debugging: print the indices
+            Console.WriteLine("Numeric header indices: " + string.Join(", ", numericHeaderIndices));
+            var subsToAdd = new List<SubsidiaryJournal>();
+            // Example: Loop through each row in sheetData
+            foreach (var row in sheetData)
+            {
+                // For each numeric header index, get the value (assume it's formDetailsId or similar)
+                var rowList = row as IList<object>;
+                if (rowList == null) continue;
+                foreach (var colIdx in numericHeaderIndices)
+                {
+                    var cellValue = rowList[colIdx]?.ToString()?.Trim();
+                    if (string.IsNullOrEmpty(cellValue)) continue;
+                    decimal cellValueParsed;
+                    if (!decimal.TryParse(cellValue, out cellValueParsed)) continue;
+
+                    // Check if record exists in Subsidiary table by formDetailsId
+                    var formDetailsIdValue = rowList[0]?.ToString();
+                    var subAccountIdValue = sheetHeader[colIdx]?.ToString();
+                    int parsedFormDetailsId = 0;
+                    int parsedSubAccountId = 0;
+                    if (!int.TryParse(formDetailsIdValue, out parsedFormDetailsId) || !int.TryParse(subAccountIdValue, out parsedSubAccountId))
+                        continue;
+
+                    var existing = _subsidaryJournalRepository.GetQueryable()
+                        .Where(x => x.FormDetailsId == parsedFormDetailsId && x.SubAccountId == parsedSubAccountId)
+                        .AsNoTracking()
+                        .FirstOrDefault(); // You must implement this method
+
+
+                    if (existing != null)
+                    {
+                        // // Update the record
+                        if (int.Parse(cellValue) > 0)
+                        {
+                            existing.Credit = decimal.Parse(cellValue);
+                        }
+                        else
+                        {
+                            existing.Debit = decimal.Parse(cellValue);
+                        }
+
+
+                        await _subsidaryJournalRepository.UpdateAsync(existing); // You must implement this method
+                    }
+                    else
+                    {
+                        // Create a new record
+                        var subsidiaryJournal = new SubsidiaryJournal
+                        {
+                            // Id = _subsidaryJournalRepository.GetQueryable().Max(x => x.Id) + 1,
+                            FormDetailsId = parsedFormDetailsId,
+                            SubAccountId = int.Parse(sheetHeader[colIdx]),
+                            Credit = decimal.Parse(cellValue) > 0 ? decimal.Parse(cellValue) : 0,
+                            Debit = decimal.Parse(cellValue) < 0 ? decimal.Parse(cellValue) * -1 : 0
+                        };
+                        subsToAdd.Add(subsidiaryJournal);
+                    }
+
+                }
+
+            }
+            await _subsidaryJournalRepository.AddRange2Async(subsToAdd);
+            await _uow.CommitAsync(cancellationToken);
+
+        }
 
         public class ExcelHeaders
         {

@@ -1,3 +1,6 @@
+using System.IO;
+using Microsoft.AspNetCore.Http;
+
 namespace Shared.DTOs.FormDtos;
 
 public class SubsidaryToExcelDto
@@ -32,3 +35,10 @@ public class SubsidaryToExcelRequest
     public int? AccountId { get; set; }
 
 }
+public class UploadSubsidaryDailyRequest
+{
+    public int DailyId { get; set; }
+    public int AccountId { get; set; }
+
+}
+

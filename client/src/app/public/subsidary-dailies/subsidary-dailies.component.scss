@@ -4,7 +4,7 @@
 }
 
 .action-column {
-  width: 60px;
+  width: 80px;
 }
 
 .id-column {
@@ -12,6 +12,7 @@
 }
 
 .name-column {
+  width: 200px;
   min-width: 200px;
 }
 
@@ -23,6 +24,11 @@
   width: 120px;
   text-align: left;
 }
+
+.type-column {
+  width: 100px;
+}
+
 
 
 

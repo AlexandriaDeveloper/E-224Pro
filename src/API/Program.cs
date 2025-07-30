@@ -72,6 +72,11 @@ builder.Services.AddCors(opt =>
                 ]);
     });
 });
+
+builder.Services.AddCors(opt => opt.AddPolicy("ProductionCors", policy =>
+    policy.WithOrigins("http://192.168.1.98:5000", "https://192.168.1.98:5000", "http://localhost:5000", "https://localhost:5000") // or your domain
+          .AllowAnyHeader()
+          .AllowAnyMethod()));
 builder.Services.AddAuthorization();
 
 // Add services to the container.
@@ -113,8 +118,10 @@ if (app.Environment.IsDevelopment())
         opt.WithTheme(ScalarTheme.Moon);
         opt.WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
     });
+    app.UseCors("CorsPolicy");
 }
-app.UseCors("CorsPolicy");
+
+app.UseCors("ProductionCors");
 app.UseHttpsRedirection();
 
 app.UseStaticFiles(new StaticFileOptions
@@ -128,5 +135,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseAntiforgery(); // Enable CSRF protection
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.Run();

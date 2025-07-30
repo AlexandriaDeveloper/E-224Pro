@@ -35,13 +35,13 @@ public static class AuthEndpoints
                 Token = token,
                 Email = user?.Email ?? string.Empty
             });
-        });
+        }).AllowAnonymous();
 
         app.MapPost("/auth/register", async (UserManager<AppUser> userManager, TokenService tokenService, [FromBody] RegisterDto registerDto) =>
         {
             var user = new AppUser
             {
-                UserName = registerDto.DisplayName,
+                UserName = registerDto.UserName,
                 Email = registerDto.Email
             };
 
@@ -62,7 +62,7 @@ public static class AuthEndpoints
                 Token = token,
                 Email = user.Email
             });
-        });
+        }).AllowAnonymous();
     }
 }
 

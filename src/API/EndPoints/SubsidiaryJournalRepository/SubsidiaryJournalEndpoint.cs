@@ -26,8 +26,17 @@ public static class SubsidiaryJournal
         //formDetailsId/${formDetailsId}`
 
         subsidiaryJournalGroup.MapDelete("/FormDetailsId/{formDetailsId}", DeleteSubsidaryFormDetail).RequireAuthorization();
-        subsidiaryJournalGroup.MapGet("/ExportSubsidiaryDailyToExcel", ExportSubsidiaryDailyToExcel).AllowAnonymous();
+        subsidiaryJournalGroup.MapGet("/ExportSubsidiaryDailyToExcel", ExportSubsidiaryDailyToExcel).RequireAuthorization();
+
+        subsidiaryJournalGroup.MapPost("/UploadSubsidiaryDailyToExcel", UploadSubsidiaryDailyToExcel).DisableAntiforgery().AllowAnonymous();
         return app;
+    }
+
+    private static async Task<IResult> UploadSubsidiaryDailyToExcel([AsParameters] UploadSubsidaryDailyRequest request, IFormFile file, ExcelService _subsidiaryJournalRepository, CancellationToken cancellationToken = default)
+    {
+        await _subsidiaryJournalRepository.UploadSubsidiaryExcelFile(request, file, cancellationToken);
+        return TypedResults.Ok();
+
     }
 
     private static async Task<IResult> GetDailiesBySpecAsync(int accountId, SubSidaryDailyService service, [AsParameters] GetDailyRequest request)

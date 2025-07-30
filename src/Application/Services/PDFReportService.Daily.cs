@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Services.PDFProviders;
+using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using Shared.Contracts.ReportRequest;
@@ -16,6 +17,7 @@ namespace Application.Services
         {
             return Document.Create(container =>
             {
+                //FontManager.RegisterFont(File.OpenRead(""));
                 container.Page(page =>
                 {
                     PdfProvider.ConfigurePageSettings(page, PageSizes.A4.Portrait());

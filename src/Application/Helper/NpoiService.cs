@@ -83,6 +83,7 @@ public class NpoiService
             throw new ArgumentException($"Sheet '{sheetName}' does not exist in the workbook.", nameof(sheetName));
         }
         var data = new List<object[]>();
+        var evaluater = _workbook.GetCreationHelper().CreateFormulaEvaluator();
         for (int i = startRow; i <= sheet.LastRowNum; i++)
         {
             var row = sheet.GetRow(i);
@@ -90,7 +91,55 @@ public class NpoiService
             var rowData = new object[row.LastCellNum];
             for (int j = 0; j < row.LastCellNum; j++)
             {
-                rowData[j] = row.GetCell(j)?.ToString() ?? string.Empty;
+                var cell = row.GetCell(j);
+                if (cell == null) continue; // Skip empty cells
+
+                switch (cell.CellType)
+                {
+                    case CellType.Numeric:
+                        rowData[j] = cell.NumericCellValue;
+                        break;
+                    case CellType.String:
+                        rowData[j] = cell.StringCellValue;
+                        break;
+                    case CellType.Boolean:
+                        rowData[j] = cell.BooleanCellValue;
+                        break;
+                    case CellType.Error:
+                        rowData[j] = cell.ErrorCellValue;
+                        break;
+                    case CellType.Formula:
+                        var evalResult = evaluater.Evaluate(cell);
+                        if (evalResult != null)
+                        {
+                            switch (evalResult.CellType)
+                            {
+                                case CellType.Numeric:
+                                    rowData[j] = evalResult.NumberValue;
+                                    break;
+                                case CellType.String:
+                                    rowData[j] = evalResult.StringValue;
+                                    break;
+                                case CellType.Boolean:
+                                    rowData[j] = evalResult.BooleanValue;
+                                    break;
+                                case CellType.Error:
+                                    rowData[j] = evalResult.ErrorValue;
+                                    break;
+                                default:
+                                    rowData[j] = null;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            rowData[j] = null;
+                        }
+                        break;
+                    default:
+                        rowData[j] = cell.ToString();
+                        break;
+                }
             }
             data.Add(rowData);
         }

@@ -3,7 +3,7 @@ import { ToasterExampleComponent } from './shared/components/toaster-example.com
 
 export const routes: Routes = [
     {
-        path: 'public',
+        path: '',
         loadChildren: () => import('./public/public.module').then(m => m.PublicModule)
     },
     // {
@@ -16,12 +16,7 @@ export const routes: Routes = [
     },
     {
         path: '',
-        redirectTo: '/public',
-        pathMatch: 'full'
-    },
-    {
-        path: '**',
-        redirectTo: '/public',
+        redirectTo: '/',
         pathMatch: 'full'
     }
 ];

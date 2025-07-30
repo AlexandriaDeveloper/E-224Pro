@@ -18,6 +18,8 @@ import { Fund } from '../../../shared/_models/fund.model';
 import { FundService } from '../../../shared/services/fund.service';
 import { AddSubsidaryFormDetailsDialogComponent } from './add-subsidary-form-details-dialog/add-subsidary-form-details-dialog.component';
 import { SubaccountService } from '../../../shared/services/subaccount.service';
+import { UploadExcelFormDialogComponent } from '../../form/upload-excel-form-dialog/upload-excel-form-dialog.component';
+import { UploadSubsidiaryComponent } from './upload-subsidiary/upload-subsidiary.component';
 
 @Component({
   selector: 'app-subsidary-daily',
@@ -297,6 +299,25 @@ export class SubsidaryDailyComponent implements OnInit {
       const url = window.URL.createObjectURL(blob);
       window.open(url);
     });
+  }
+  onUploadExcel() {
+    //open upload dialog
+    const dialogRef = this.dialog.open(UploadSubsidiaryComponent, {
+      width: '60%',
+      disableClose: false,
+      data: {
+        dailyId: this.dailyId,
+        accountId: this.subsidaryId
+
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(result);
+
+      }
+    });
+
   }
 }
 

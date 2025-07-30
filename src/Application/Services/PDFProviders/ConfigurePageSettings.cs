@@ -12,6 +12,7 @@ namespace Application.Services.PDFProviders
     {
         public static void ConfigurePageSettings(PageDescriptor page, PageSize pageSizes)
         {
+
             page.ContentFromRightToLeft();
             page.Size(pageSizes);
             page.Margin(ReportConstants.MarginSize, Unit.Centimetre);

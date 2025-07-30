@@ -20,7 +20,7 @@ import { SubsidaryFilterDialogComponent } from './subsidary-filter-dialog/subsid
   styleUrl: './subsidary-dailies.component.scss'
 })
 export class SubsidaryDailiesComponent implements OnInit {
-  displayedColumns: string[] = ['action', 'id', 'name', 'dailyDate', 'dailyType', 'totalCredit', 'totalDebit', 'SubsidaryTotalCredit', 'SubsidaryTotalDebit', 'isBalanced'];
+  displayedColumns: string[] = ['action', 'name', 'dailyDate', 'dailyType', 'totalCredit', 'totalDebit', 'SubsidaryTotalCredit', 'SubsidaryTotalDebit', 'isBalanced'];
   dataSource;
   params: GetSubsidiaryFormsByDailyIdRequest = new GetSubsidiaryFormsByDailyIdRequest();
   route = inject(ActivatedRoute);
@@ -140,7 +140,7 @@ export class SubsidaryDailiesComponent implements OnInit {
     });
 
   }
-  
+
   openFilterDialog() {
     // Prepare current filter values to pass to the dialog
     const currentFilters = {
@@ -151,7 +151,7 @@ export class SubsidaryDailiesComponent implements OnInit {
       startDate: this.range.start,
       endDate: this.range.end
     };
-    
+
     const dialogRef = this.dialog.open(SubsidaryFilterDialogComponent, {
       width: '600px',
       disableClose: false,
@@ -161,37 +161,37 @@ export class SubsidaryDailiesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.applied) {
         const filters = result.filters;
-        
+
         // Update params with the filter values
         this.params.dailyType = filters.dailyType || null;
         this.params.entryType = filters.entryType || null;
         this.params.collageId = filters.collageId || null;
         this.params.fundId = filters.fundId || null;
-        
+
         // Update date range
         this.range.start = filters.startDate || null;
         this.range.end = filters.endDate || null;
-        
+
         if (this.range.start && this.range.end) {
           this.params.startDate = this.range.start;
           this.params.endDate = this.range.end;
         }
-        
+
         // Check if any filters are active
-        this.hasActiveFilters = !!(filters.dailyType || filters.entryType || 
-                               filters.collageId || filters.fundId || 
-                               filters.startDate || filters.endDate);
-        
+        this.hasActiveFilters = !!(filters.dailyType || filters.entryType ||
+          filters.collageId || filters.fundId ||
+          filters.startDate || filters.endDate);
+
         // Load data with the new filters
         this.loadDailies(this.params);
       }
     });
   }
-  
+
   openSearchDialog() {
     // Existing search dialog functionality
   }
-  
+
   openDailiesReportDialog() {
     // Existing reports dialog functionality
   }

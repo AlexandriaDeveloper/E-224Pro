@@ -33,6 +33,7 @@ import { SearchFormsComponent } from './dailies/search-forms/search-forms.compon
 import { SearchFileDialogComponent } from './dailies/search-forms/Search-File-Dialog/Search-File-Dialog.component';
 import { SubsidaryFilterDialogComponent } from './subsidary-dailies/subsidary-filter-dialog/subsidary-filter-dialog.component';
 import { SubsidarySearchDialogComponent } from './subsidary-dailies/subsidary-daily/subsidary-search-dialog/subsidary-search-dialog.component';
+import { UploadSubsidiaryComponent } from './subsidary-dailies/subsidary-daily/upload-subsidiary/upload-subsidiary.component';
 
 
 
@@ -55,6 +56,7 @@ import { SubsidarySearchDialogComponent } from './subsidary-dailies/subsidary-da
     AddFundDialogComponent,
     SubsidaryDailiesComponent,
     SubsidaryDailyComponent,
+    UploadSubsidiaryComponent,
     SubsidaryFilterDialogComponent,
     SubsidarySearchDialogComponent,
     AddSubsidaryFormDetailsDialogComponent,
