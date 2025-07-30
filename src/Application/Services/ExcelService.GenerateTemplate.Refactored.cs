@@ -14,8 +14,6 @@ namespace Application.Services
 {
     public partial class ExcelService
     {
-
-
         public async Task<byte[]> GenerateTemplateExcelSheet(GetAccountDownloadTemplateRequest request, CancellationToken cancellationToken)
         {
             var workbook = new XSSFWorkbook();
@@ -85,14 +83,51 @@ namespace Application.Services
         }
 
 
+        /*************  ✨ Windsurf Command ⭐  *************/
+        /// <summary>
+        /// Creates a header row for an Excel sheet with specified column titles and subaccount IDs.
+        /// </summary>
+        /// <param name="sheet">The Excel sheet where the header row will be created.</param>
+        /// <param name="debitAccounts">List of debit accounts used to populate the header.</param>
+        /*******  18066867-be99-49f5-a351-283229fdb41c  *******/
         private void CreateHeaderRow(ISheet sheet, List<Account> debitAccounts, List<Account> creditAccounts, int debitAccountsStartIndex, int totalDebitColumnIndex, int creditAccountsStartIndex, int totalCreditColumnIndex, int netColumnIndex)
         {
+
+            // Create the first header row with ID numbers or codes
+            var headerCodeRow = sheet.CreateRow(0);
+            headerCodeRow.CreateCell(0).SetCellValue(string.Empty); // ID
+            headerCodeRow.CreateCell(1).SetCellValue("A-1"); // Auditor Name
+            headerCodeRow.CreateCell(2).SetCellValue("A-2"); // Num55
+            headerCodeRow.CreateCell(3).SetCellValue("A-3"); // Num224
+            headerCodeRow.CreateCell(4).SetCellValue("A-4"); // Form Name
+            headerCodeRow.CreateCell(5).SetCellValue("A-5"); // College Name
+            headerCodeRow.CreateCell(6).SetCellValue("A-6"); // Fund Name
+            headerCodeRow.CreateCell(7).SetCellValue("A-7"); // Details
+            headerCodeRow.CreateCell(8).SetCellValue(string.Empty); // Total Debit
+            headerCodeRow.CreateCell(9).SetCellValue(string.Empty); // Total Credit
+
+            // Add subaccount IDs to the first header row
+            for (int i = 0; i < debitAccounts.Count; i++)
+            {
+                headerCodeRow.CreateCell(debitAccountsStartIndex + i).SetCellValue(debitAccounts[i].Id);
+                //     headerCodeRow.CreateCell(debitAccountsStartIndex + i).SetCellValue(subAccounts[i].Id); // Use index+1 as ID
+            }
+            headerCodeRow.CreateCell(totalDebitColumnIndex).SetCellValue(string.Empty);
+
+            for (int i = 0; i < creditAccounts.Count; i++)
+            {
+                headerCodeRow.CreateCell(creditAccountsStartIndex + i).SetCellValue(creditAccounts[i].Id);
+            }
+            headerCodeRow.CreateCell(totalCreditColumnIndex).SetCellValue(string.Empty);
+            headerCodeRow.CreateCell(netColumnIndex).SetCellValue(string.Empty);
+
+
             var headerRow = sheet.CreateRow(1);
             headerRow.CreateCell(0).SetCellValue("م");
-            headerRow.CreateCell(1).SetCellValue("رقم 55");
-            headerRow.CreateCell(2).SetCellValue("رقم 224");
-            headerRow.CreateCell(3).SetCellValue("أسم الملف");
-            headerRow.CreateCell(4).SetCellValue("المراجع");
+            headerRow.CreateCell(1).SetCellValue("المراجع");
+            headerRow.CreateCell(2).SetCellValue("رقم 55");
+            headerRow.CreateCell(3).SetCellValue("رقم 224");
+            headerRow.CreateCell(4).SetCellValue("أسم الملف");
             headerRow.CreateCell(5).SetCellValue("الكليه");
             headerRow.CreateCell(6).SetCellValue("الصندوق");
             headerRow.CreateCell(7).SetCellValue("تفاصيل");
@@ -239,13 +274,13 @@ namespace Application.Services
             var dvHelper = new XSSFDataValidationHelper((XSSFSheet)sheet);
 
             var collages = listsSheet.GetRow(0).Cells
-                .Where(c => c.ColumnIndex == 0)
+                // .Where(c => c.ColumnIndex == 0)
                 .Select(c => c.StringCellValue)
                 .ToList();
 
             if (collages != null && collages.Any())
             {
-                string collageListRange = $"Lists!$A$2:$A${collages.Count + 1}";
+                string collageListRange = $"Lists!$A$2:$A${collages.Count}";
                 var collageConstraint = dvHelper.CreateFormulaListConstraint(collageListRange);
                 var collageAddressList = new NPOI.SS.Util.CellRangeAddressList(2, 1001, 5, 5);
                 var collageValidation = dvHelper.CreateValidation(collageConstraint, collageAddressList);

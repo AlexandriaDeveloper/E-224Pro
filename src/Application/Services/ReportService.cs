@@ -47,7 +47,7 @@ public class ReportService
 
     public async Task<ReportDto> GetFormDetailsReportAsync(GetAccountsBalanceBy getAccountsBalanceByAccount, CancellationToken cancellationToken = default)
     {
-        if (getAccountsBalanceByAccount.DailyId.HasValue)
+        if (getAccountsBalanceByAccount.DailyId != null && getAccountsBalanceByAccount.DailyId.HasValue)
         {
             var daily = await _dailyRepository.GetById(getAccountsBalanceByAccount.DailyId.Value);
             getAccountsBalanceByAccount.DailyType = daily.DailyType;
@@ -163,6 +163,7 @@ public class ReportService
             FundId = getAccountsBalanceByAccount.FundId,
             DailyType = getAccountsBalanceByAccount.DailyType,
             AccountItem = getAccountsBalanceByAccount.AccountItem,
+            EntryType = getAccountsBalanceByAccount.EntryType,
 
             //ByMonth = getAccountsBalanceByAccount.ByMonth,
             //ByYear = getAccountsBalanceByAccount.ByYear

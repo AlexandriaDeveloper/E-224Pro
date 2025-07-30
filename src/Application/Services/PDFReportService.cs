@@ -81,7 +81,7 @@ public partial class PDFReportService
       var report = await reportService.GetFormDetailsReportAsync(request, cancellationToken);
       if (report == null || !report.ReportDetailsDtos.Any())
       {
-        return Array.Empty<byte>();
+        //return Array.Empty<byte>();
       }
       var imagePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Content", "images", "logo.png");
       using var stream = new MemoryStream();
