@@ -38,6 +38,7 @@ namespace Application.Services
                 foreach (var userAccount in userAccounts)
                 {
                     claims.Add(new Claim("UserAccount", userAccount.AccountId.ToString()));
+                    claims.Add(new Claim("UserAccount", string.Empty));
                 }
 
 

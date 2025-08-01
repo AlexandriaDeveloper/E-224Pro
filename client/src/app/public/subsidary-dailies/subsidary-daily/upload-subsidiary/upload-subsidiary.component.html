@@ -29,6 +29,7 @@
 
             <button mat-raised-button color="primary" type="submit"
                 [disabled]="uploading || !file || !accountId || !dailyId">رفع الملف</button>
+            <button mat-button (click)="onClose()">إلغاء</button>
         </form>
     </mat-dialog-content>
 </div>

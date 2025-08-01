@@ -110,7 +110,7 @@ namespace Application.Services
             return headers;
         }
 
-        public async Task UploadSubsidiaryExcelFile(UploadSubsidaryDailyRequest request, IFormFile file, CancellationToken cancellationToken)
+        public async Task UploadSubsidiaryExcelFile(int dailyId, int accountId, IFormFile file, CancellationToken cancellationToken)
         {
             if (file == null || file.Length == 0)
             {

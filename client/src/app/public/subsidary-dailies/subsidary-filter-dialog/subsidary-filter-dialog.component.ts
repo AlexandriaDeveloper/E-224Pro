@@ -42,12 +42,12 @@ export class SubsidaryFilterDialogComponent implements OnInit {
     this.loadCollages();
 
     // If a collage ID is already selected, load its funds
-    const collageId = this.filterForm.get('collageId')?.value;
-    if (collageId) {
-      this.loadFunds(collageId);
-    } else {
-      this.loadAllFunds();
-    }
+   // const collageId = this.filterForm.get('collageId')?.value;
+    // if (collageId) {
+    //   this.loadFunds(collageId);
+    // } else {
+    //   this.loadAllFunds();
+    // }
   }
 
   loadCollages(): void {
@@ -95,10 +95,14 @@ export class SubsidaryFilterDialogComponent implements OnInit {
 
   clear(): void {
     this.filterForm.reset();
+    
     // Reset all form fields
     Object.keys(this.filterForm.controls).forEach(key => {
-      this.filterForm.get(key)?.setValue('');
+      this.filterForm.get(key)?.setValue(null);
     });
+       const filters = this.filterForm.value;
+       console.log(filters)
+      this.dialogRef.close({ filters: filters, applied: true });
   }
 
   onNoClick(): void {

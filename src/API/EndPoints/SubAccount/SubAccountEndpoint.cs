@@ -3,8 +3,8 @@ public static class SubAccount
 
     public static WebApplication MapSubAccountsEndPoint(this WebApplication app)
     {
-        var subAccountsGroup = app.MapGroup("SubAccount/{accountId}").RequireAuthorization(
-            x => x.RequireRole("Admin", "SubsidaryAcountant")); ;
+        var subAccountsGroup = app.MapGroup("api/SubAccount/{accountId}").RequireAuthorization(
+            x => x.RequireRole("Admin", "SubsidaryAccountant")); ;
 
 
         // dailiesGroup.MapPost("/Create", CreateAsync);

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Core.Models;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Data.Migrations;
 
 namespace Infrastructure
 {
@@ -9,6 +10,14 @@ namespace Infrastructure
     {
         public static async Task SeedAdminUserAsync(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+
+            if (!await roleManager.Roles.AnyAsync())
+            {
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
+                await roleManager.CreateAsync(new IdentityRole("GeneralAccountant"));
+                await roleManager.CreateAsync(new IdentityRole("SubsidaryAccountant"));
+            }
+
             // Check if any users exist
             if (await userManager.Users.AnyAsync()) return;
 

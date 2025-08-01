@@ -39,6 +39,7 @@ public class UploadSubsidaryDailyRequest
 {
     public int DailyId { get; set; }
     public int AccountId { get; set; }
+    public IFormFile File { get; set; }
 
 }
 

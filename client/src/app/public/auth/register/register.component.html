@@ -14,5 +14,11 @@
         Password:
         <input [(ngModel)]="password" name="password" type="password" required />
     </label>
+    <label>
+        Role:
+        <select [(ngModel)]="selectedRole" name="role" required (change)="onRoleChange($event)">
+            <option *ngFor="let role of roles" [value]="role.name">{{ role.name }}</option>
+        </select>
+    </label>
     <button type="submit">Register</button>
 </form>

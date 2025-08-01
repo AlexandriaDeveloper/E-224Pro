@@ -1,5 +1,5 @@
 using Application.Services;
-using FastEndpoints;
+
 using Shared.Contracts;
 
 namespace API.EndPoints.Daily;
@@ -8,7 +8,7 @@ public static class Dailies
 {
     public static WebApplication MapDailiesEndPoint(this WebApplication app)
     {
-        var dailiesGroup = app.MapGroup("dailies").RequireAuthorization(
+        var dailiesGroup = app.MapGroup("api/dailies").RequireAuthorization(
             x => x.RequireRole("Admin", "GeneralAccountant"));
 
 

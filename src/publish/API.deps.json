@@ -9,10 +9,10 @@
       "API/1.0.0": {
         "dependencies": {
           "Application": "1.0.0",
-          "FastEndpoints": "5.34.0.17-beta",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "9.0.6",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.6",
           "Microsoft.AspNetCore.OpenApi": "9.0.0",
+          "Microsoft.AspNetCore.SpaServices.Extensions": "9.0.6",
           "Microsoft.EntityFrameworkCore.Tools": "9.0.2",
           "Persistence": "1.0.0",
           "Scalar.AspNetCore": "2.0.20"
@@ -77,46 +77,6 @@
           "lib/net8.0/ExtendedNumerics.BigDecimal.dll": {
             "assemblyVersion": "2025.1001.2.129",
             "fileVersion": "2025.1001.2.129"
-          }
-        }
-      },
-      "FastEndpoints/5.34.0.17-beta": {
-        "dependencies": {
-          "FastEndpoints.Attributes": "5.34.0.17-beta",
-          "FastEndpoints.Messaging.Core": "5.34.0.17-beta",
-          "FluentValidation": "11.11.0"
-        },
-        "runtime": {
-          "lib/net9.0/FastEndpoints.dll": {
-            "assemblyVersion": "5.34.0.17",
-            "fileVersion": "5.34.0.17"
-          }
-        }
-      },
-      "FastEndpoints.Attributes/5.34.0.17-beta": {
-        "dependencies": {
-          "Microsoft.Extensions.Primitives": "9.0.6"
-        },
-        "runtime": {
-          "lib/netstandard2.0/FastEndpoints.Attributes.dll": {
-            "assemblyVersion": "5.34.0.17",
-            "fileVersion": "5.34.0.17"
-          }
-        }
-      },
-      "FastEndpoints.Messaging.Core/5.34.0.17-beta": {
-        "runtime": {
-          "lib/netstandard2.1/FastEndpoints.Messaging.Core.dll": {
-            "assemblyVersion": "5.34.0.17",
-            "fileVersion": "5.34.0.17"
-          }
-        }
-      },
-      "FluentValidation/11.11.0": {
-        "runtime": {
-          "lib/net8.0/FluentValidation.dll": {
-            "assemblyVersion": "11.0.0.0",
-            "fileVersion": "11.11.0.0"
           }
         }
       },
@@ -206,6 +166,17 @@
           "lib/net9.0/Microsoft.AspNetCore.OpenApi.dll": {
             "assemblyVersion": "9.0.0.0",
             "fileVersion": "9.0.24.52903"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.SpaServices.Extensions/9.0.6": {
+        "dependencies": {
+          "Microsoft.Extensions.FileProviders.Physical": "9.0.6"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.AspNetCore.SpaServices.Extensions.dll": {
+            "assemblyVersion": "9.0.6.0",
+            "fileVersion": "9.0.625.26701"
           }
         }
       },
@@ -715,6 +686,38 @@
           "lib/net9.0/Microsoft.Extensions.DependencyModel.dll": {
             "assemblyVersion": "9.0.0.2",
             "fileVersion": "9.0.225.6610"
+          }
+        }
+      },
+      "Microsoft.Extensions.FileProviders.Abstractions/9.0.6": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "9.0.6"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.FileProviders.Abstractions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.625.26613"
+          }
+        }
+      },
+      "Microsoft.Extensions.FileProviders.Physical/9.0.6": {
+        "dependencies": {
+          "Microsoft.Extensions.FileProviders.Abstractions": "9.0.6",
+          "Microsoft.Extensions.FileSystemGlobbing": "9.0.6",
+          "Microsoft.Extensions.Primitives": "9.0.6"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.FileProviders.Physical.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.625.26613"
+          }
+        }
+      },
+      "Microsoft.Extensions.FileSystemGlobbing/9.0.6": {
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.FileSystemGlobbing.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.625.26613"
           }
         }
       },
@@ -1541,34 +1544,6 @@
       "path": "extendednumerics.bigdecimal/2025.1001.2.129",
       "hashPath": "extendednumerics.bigdecimal.2025.1001.2.129.nupkg.sha512"
     },
-    "FastEndpoints/5.34.0.17-beta": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-Yxu2dVbXNFKKi8q5isS3+AyNHJGTghQFksgqEq7cngf393DXEcEy6+7Eal0gT5PvYqK0pvKnUsGhsnOxh2CM+g==",
-      "path": "fastendpoints/5.34.0.17-beta",
-      "hashPath": "fastendpoints.5.34.0.17-beta.nupkg.sha512"
-    },
-    "FastEndpoints.Attributes/5.34.0.17-beta": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-dCoHMO8Dib0DYCF3Md0n4aC2Fu76YJhDkfZbO/5ZBPWStiIFQz8y1QJMHUmQe9OH5Oq07v0JotHR+FNlGnI0MQ==",
-      "path": "fastendpoints.attributes/5.34.0.17-beta",
-      "hashPath": "fastendpoints.attributes.5.34.0.17-beta.nupkg.sha512"
-    },
-    "FastEndpoints.Messaging.Core/5.34.0.17-beta": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-gINTwgeL75TQiiOH90ZP3JnhCwjMEu2R9xbio3pUx3N4e/xxNfHJhk7FwJ4TPeMsjNYsomVFvHQNNa2CFWLOxw==",
-      "path": "fastendpoints.messaging.core/5.34.0.17-beta",
-      "hashPath": "fastendpoints.messaging.core.5.34.0.17-beta.nupkg.sha512"
-    },
-    "FluentValidation/11.11.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-cyIVdQBwSipxWG8MA3Rqox7iNbUNUTK5bfJi9tIdm4CAfH71Oo5ABLP4/QyrUwuakqpUEPGtE43BDddvEehuYw==",
-      "path": "fluentvalidation/11.11.0",
-      "hashPath": "fluentvalidation.11.11.0.nupkg.sha512"
-    },
     "Humanizer.Core/2.14.1": {
       "type": "package",
       "serviceable": true,
@@ -1638,6 +1613,13 @@
       "sha512": "sha512-FqUK5j1EOPNuFT7IafltZQ3cakqhSwVzH5ZW1MhZDe4pPXs9sJ2M5jom1Omsu+mwF2tNKKlRAzLRHQTZzbd+6Q==",
       "path": "microsoft.aspnetcore.openapi/9.0.0",
       "hashPath": "microsoft.aspnetcore.openapi.9.0.0.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.SpaServices.Extensions/9.0.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AFEzhgxgum/HqzHx8cIaWk8Pyb5QVIeyuk0czn8tMGzGnZ3NbpH/8zUwzcF6Uft9p5yTNSP4gmJD2f2wgf196g==",
+      "path": "microsoft.aspnetcore.spaservices.extensions/9.0.6",
+      "hashPath": "microsoft.aspnetcore.spaservices.extensions.9.0.6.nupkg.sha512"
     },
     "Microsoft.AspNetCore.WebUtilities/2.3.0": {
       "type": "package",
@@ -1813,6 +1795,27 @@
       "sha512": "sha512-3ImbcbS68jy9sKr9Z9ToRbEEX0bvIRdb8zyf5ebtL9Av2CUCGHvaO5wsSXfRfAjr60Vrq0tlmNji9IzAxW6EOw==",
       "path": "microsoft.extensions.dependencymodel/9.0.2",
       "hashPath": "microsoft.extensions.dependencymodel.9.0.2.nupkg.sha512"
+    },
+    "Microsoft.Extensions.FileProviders.Abstractions/9.0.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-q9FPkSGVA9ipI255p3PBAvWNXas5Tzjyp/DwYSwT+46mIFw9fWZahsF6vHpoxLt5/vtANotH2sAm7HunuFIx9g==",
+      "path": "microsoft.extensions.fileproviders.abstractions/9.0.6",
+      "hashPath": "microsoft.extensions.fileproviders.abstractions.9.0.6.nupkg.sha512"
+    },
+    "Microsoft.Extensions.FileProviders.Physical/9.0.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-l+dFA0NRl90vSIiJNy5d7V0kpTEOWHTqbgoWYzlTwF5uiM5sWJ953haaELKE05jkyJdnemVTnqjrlgo4wo7oyg==",
+      "path": "microsoft.extensions.fileproviders.physical/9.0.6",
+      "hashPath": "microsoft.extensions.fileproviders.physical.9.0.6.nupkg.sha512"
+    },
+    "Microsoft.Extensions.FileSystemGlobbing/9.0.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1HJCAbwukNEoYbHgHbKHmenU0V/0huw8+i7Qtf5rLUG1E+3kEwRJQxpwD3wbTEagIgPSQisNgJTvmUX9yYVc6g==",
+      "path": "microsoft.extensions.filesystemglobbing/9.0.6",
+      "hashPath": "microsoft.extensions.filesystemglobbing.9.0.6.nupkg.sha512"
     },
     "Microsoft.Extensions.Identity.Core/9.0.6": {
       "type": "package",

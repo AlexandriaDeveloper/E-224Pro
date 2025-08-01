@@ -159,7 +159,9 @@ export class SubsidaryDailiesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+
       if (result && result.applied) {
+        
         const filters = result.filters;
 
         // Update params with the filter values
@@ -172,19 +174,20 @@ export class SubsidaryDailiesComponent implements OnInit {
         this.range.start = filters.startDate || null;
         this.range.end = filters.endDate || null;
 
-        if (this.range.start && this.range.end) {
+       // if (this.range.start && this.range.end) {
           this.params.startDate = this.range.start;
           this.params.endDate = this.range.end;
-        }
+       // }
 
         // Check if any filters are active
         this.hasActiveFilters = !!(filters.dailyType || filters.entryType ||
           filters.collageId || filters.fundId ||
           filters.startDate || filters.endDate);
 
-        // Load data with the new filters
-        this.loadDailies(this.params);
+  
       }
+            // Load data with the new filters
+        this.loadDailies(this.params);
     });
   }
 

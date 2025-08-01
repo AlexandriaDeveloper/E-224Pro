@@ -1,6 +1,6 @@
 using System;
 using Application.Services;
-using FastEndpoints;
+
 using Microsoft.AspNetCore.Mvc;
 using Shared.Contracts.FormDetailsRequest;
 using Shared.Contracts.FormRequests;
@@ -12,13 +12,13 @@ public static class Forms
 {
     public static WebApplication MapFormsEndPoint(this WebApplication app)
     {
-        var formGroup = app.MapGroup("Forms").RequireAuthorization();
+        var formGroup = app.MapGroup("api/Forms").RequireAuthorization();
 
 
-        formGroup.MapPost("/Creat", PostForm).RequireAuthorization();
-        formGroup.MapPost("/AddForm", AddForm).RequireAuthorization(); ;
-        formGroup.MapPut("/Update/{id}", PutForm).RequireAuthorization(); ;
-        formGroup.MapDelete("/{id}", DeleteForm).RequireAuthorization(); ;
+        formGroup.MapPost("/Creat", PostForm).RequireAuthorization().RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
+        formGroup.MapPost("/AddForm", AddForm).RequireAuthorization().RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
+        formGroup.MapPut("/Update/{id}", PutForm).RequireAuthorization().RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
+        formGroup.MapDelete("/{id}", DeleteForm).RequireAuthorization().RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
         formGroup.MapGet("/", GetBySpecAsync).RequireAuthorization();
         formGroup.MapGet("/Search", SearchBySpecAsync).RequireAuthorization(); ;
         formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync).RequireAuthorization(); ;

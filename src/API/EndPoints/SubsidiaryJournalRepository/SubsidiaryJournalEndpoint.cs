@@ -1,6 +1,6 @@
 
 using Application.Services;
-using FastEndpoints;
+
 using Shared.Contracts;
 using Shared.DTOs.FormDtos;
 
@@ -8,8 +8,8 @@ public static class SubsidiaryJournal
 {
     public static WebApplication MapSubsidiaryJournalEndPoint(this WebApplication app)
     {
-        var subsidiaryJournalGroup = app.MapGroup("SubsidiaryJournal/").RequireAuthorization(
-            x => x.RequireRole("Admin", "SubsidaryAcountant"));
+        var subsidiaryJournalGroup = app.MapGroup("api/SubsidiaryJournal/").RequireAuthorization(
+            x => x.RequireRole("Admin", "SubsidaryAccountant"));
 
 
         //  subsidiaryJournalGroup.MapGet("/", GetSubsidiaryJournal);
@@ -28,13 +28,13 @@ public static class SubsidiaryJournal
         subsidiaryJournalGroup.MapDelete("/FormDetailsId/{formDetailsId}", DeleteSubsidaryFormDetail).RequireAuthorization();
         subsidiaryJournalGroup.MapGet("/ExportSubsidiaryDailyToExcel", ExportSubsidiaryDailyToExcel).RequireAuthorization();
 
-        subsidiaryJournalGroup.MapPost("/UploadSubsidiaryDailyToExcel", UploadSubsidiaryDailyToExcel).DisableAntiforgery().AllowAnonymous();
+        subsidiaryJournalGroup.MapPost("/UploadSubsidiaryDailyToExcel/dailyId/{dailyId}/accountId/{accountId}", UploadSubsidiaryDailyToExcel).DisableAntiforgery().RequireAuthorization();
         return app;
     }
 
-    private static async Task<IResult> UploadSubsidiaryDailyToExcel([AsParameters] UploadSubsidaryDailyRequest request, IFormFile file, ExcelService _subsidiaryJournalRepository, CancellationToken cancellationToken = default)
+    private static async Task<IResult> UploadSubsidiaryDailyToExcel(int dailyId, int accountId, IFormFile file, ExcelService service, CancellationToken cancellationToken = default)
     {
-        await _subsidiaryJournalRepository.UploadSubsidiaryExcelFile(request, file, cancellationToken);
+        await service.UploadSubsidiaryExcelFile(dailyId, accountId, file, cancellationToken);
         return TypedResults.Ok();
 
     }

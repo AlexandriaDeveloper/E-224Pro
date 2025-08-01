@@ -11,7 +11,7 @@ public static class AuthEndpoints
 {
     public static void MapAuthEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/auth/login", async (UserManager<AppUser> userManager, TokenService tokenService, IUserAccountRepository userAccountRepository, [FromBody] LoginDto loginDto) =>
+        app.MapPost("api/auth/login", async (UserManager<AppUser> userManager, TokenService tokenService, IUserAccountRepository userAccountRepository, [FromBody] LoginDto loginDto) =>
         {
             var user = await userManager.FindByNameAsync(loginDto.Username);
             if (user == null)
@@ -37,7 +37,7 @@ public static class AuthEndpoints
             });
         }).AllowAnonymous();
 
-        app.MapPost("/auth/register", async (UserManager<AppUser> userManager, TokenService tokenService, [FromBody] RegisterDto registerDto) =>
+        app.MapPost("api/auth/register", async (UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, TokenService tokenService, [FromBody] RegisterDto registerDto) =>
         {
             var user = new AppUser
             {
@@ -51,8 +51,12 @@ public static class AuthEndpoints
             {
                 return Results.BadRequest(result.Errors);
             }
-            await userManager.AddToRoleAsync(user, "User");
 
+            if (!await roleManager.RoleExistsAsync(registerDto.Role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(registerDto.Role));
+            }
+            await userManager.AddToRoleAsync(user, registerDto.Role);
             var roles = await userManager.GetRolesAsync(user);
             var token = tokenService.CreateToken(user, roles, new List<UserAccount>());
 
@@ -62,7 +66,7 @@ public static class AuthEndpoints
                 Token = token,
                 Email = user.Email
             });
-        }).AllowAnonymous();
+        }).RequireAuthorization();
     }
 }
 

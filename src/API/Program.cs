@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Core.Models;
 using Infrastructure;
+using API.EndPoints.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
@@ -22,7 +23,15 @@ builder.Services
 ;
 
 // Add Identity services
-builder.Services.AddIdentity<AppUser, IdentityRole>()
+builder.Services.AddIdentity<AppUser, IdentityRole>(x =>
+{ 
+    x.Password.RequireDigit = false;
+    x.Password.RequiredLength = 6;
+    x.Password.RequireLowercase = true;
+    x.Password.RequireUppercase = false;
+    x.Password.RequireNonAlphanumeric = false; // Set to false if you don't want special characters
+    x.User.RequireUniqueEmail = true; // Ensure unique email addresses
+})
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -69,6 +78,7 @@ builder.Services.AddCors(opt =>
                     "https://localhost:5001",
                     "http://localhost",
                     "https://localhost",
+                    "http://192.168.1.98:4200",
                 ]);
     });
 });
@@ -82,7 +92,10 @@ builder.Services.AddAuthorization();
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAntiforgery();
-
+builder.Services.AddSpaStaticFiles(config =>
+{
+    config.RootPath = "wwwroot";
+});
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -108,6 +121,8 @@ app.MapCollgaesEndPoint();
 app.MapFundsEndpoint();
 app.MapSubAccountsEndPoint();
 app.MapAuthEndpoints();
+app.MapRoleEndPoint();
+app.MapFallbackEndPoint();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -128,7 +143,8 @@ app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
         Path.Combine(Directory.GetCurrentDirectory(), @"Content")),
-    RequestPath = "/content"
+    RequestPath = "/content",
+
 });
 
 app.UseAuthentication();
@@ -137,5 +153,27 @@ app.UseAuthorization();
 app.UseAntiforgery(); // Enable CSRF protection
 app.UseDefaultFiles();
 app.UseStaticFiles();
+//app.UseSpaStaticFiles();
+
+// app.UseSpa(spa =>
+// {
+//     spa.Options.SourcePath = "wwwroot"; // مسار مشروع Angular
+
+//     spa.ApplicationBuilder.UseSpaStaticFiles();
+
+//     spa.ApplicationBuilder.Use((context, next) =>
+//     {
+//         // يرجع index.html لأي route غير ملفات حقيقية
+//         if (!context.Request.Path.Value.StartsWith("/api"))
+//         {
+//             context.Response.Redirect("/index.html");
+//             return Task.CompletedTask;
+//         }
+//         return next();
+//     });
+// });
+
+
+//app.MapFallbackToFile("index.html"); // Serve the index.html file as the fallbackMapFallbackEndPoint);
 
 app.Run();

@@ -75,70 +75,7 @@ public class FormDetailsService
 
     }
 
-    public async Task<bool> Create20FormDetailsAsync(CancellationToken cancellationToken = default)
-    {
-        int id = 1;
-        for (int i = 0; i < 30000; i++)
-        {
-            var formId = i + 1;
-            var form = await _formRepository.GetById(formId, false, cancellationToken);
-            var formDetails = new List<FormDetails>();
-
-            if (form == null)
-            {
-                return false;
-            }
-
-            for (int f = 0; f < 4; f++)
-            {
-
-                var Random2 = new Random().Next(1, 100000);
-
-                var formDetail = new FormDetails()
-                {
-                    Id = id,
-                    AccountId = 41,
-                    FormId = formId,
-                    Debit = Random2,
-                    Credit = null,
-                    //  AccountType = "AccountType" + i,
-                };
-                id++;
-                formDetails.Add(formDetail);
-
-                var formDetail2 = new FormDetails()
-                {
-                    Id = id,
-                    AccountId = 42,
-                    FormId = formId,
-                    Debit = null,
-                    Credit = Random2,
-                    //   AccountType = "AccountType" + i,
-                };
-                id++;
-                formDetails.Add(formDetail2);
-
-            }
-            await _formDetailsRepository.AddRangeAsync(formDetails);
-
-
-            form.TotalCredit = formDetails.Sum(x => x.Credit);
-            form.TotalDebit = formDetails.Sum(x => x.Debit);
-
-            await _formRepository.UpdateAsync(form);
-
-
-        }
-
-        await _uow.CommitAsync(cancellationToken);
-
-
-        return true;
-
-
-
-    }
-
+    
     public async Task<List<FormDetailDto>> GetByFormIdAsync(int formId, CancellationToken cancellationToken)
     {
         var formDetails = await _formDetailsRepository.GetByFormId(formId);

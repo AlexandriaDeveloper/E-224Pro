@@ -150,4 +150,13 @@ export class SubsidiaryService {
     return this.http.delete(`${this.apiUrl}SubsidiaryJournal/formDetailsId/${formDetailsId}`);
   }
 
+
+  uploadSubsidaryDailyFormAsExcel(dailyId: number, accountId: number, file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(`${this.apiUrl}SubsidiaryJournal/UploadSubsidiaryDailyToExcel/dailyId/${dailyId}/accountId/${accountId}`, formData, { responseType: 'blob' });
+
+  }
+
 }

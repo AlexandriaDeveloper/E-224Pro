@@ -10,13 +10,9 @@ export const routes: Routes = [
     //     path: 'auth',
     //     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
     // },
+
     {
-        path: 'toast-example',
-        component: ToasterExampleComponent
-    },
-    {
-        path: '',
-        redirectTo: '/',
-        pathMatch: 'full'
+        path: '**',
+        redirectTo: '/'
     }
 ];

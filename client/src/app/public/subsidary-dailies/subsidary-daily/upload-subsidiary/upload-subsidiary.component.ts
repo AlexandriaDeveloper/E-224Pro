@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { SubsidiaryService } from '../../../../shared/services/subsidiary.service';
 
 @Component({
     selector: 'app-upload-subsidiary',
@@ -7,14 +9,20 @@ import { HttpClient } from '@angular/common/http';
     styleUrls: ['./upload-subsidiary.component.scss'],
     standalone: false
 })
-export class UploadSubsidiaryComponent {
+export class UploadSubsidiaryComponent implements OnInit {
     accountId: number | null = null;
     dailyId: number | null = null;
     file: File | null = null;
     uploading = false;
     message = '';
-
+    public readonly data = inject<any>(MAT_DIALOG_DATA);
+    private readonly dialogRef = inject(MatDialogRef<UploadSubsidiaryComponent>);
+    subsidaryService = inject(SubsidiaryService);
     constructor(private http: HttpClient) { }
+    ngOnInit(): void {
+        this.accountId = this.data.accountId;
+        this.dailyId = this.data.dailyId;
+    }
 
     onFileChange(event: any) {
         const input = event.target as HTMLInputElement;
@@ -25,35 +33,34 @@ export class UploadSubsidiaryComponent {
     }
 
     upload() {
+        
         if (!this.file || !this.accountId || !this.dailyId) {
             this.message = 'يرجى اختيار الملف وادخال رقم الحساب واليومي';
             return;
         }
         this.uploading = true;
         this.message = '';
-        const formData = new FormData();
-        formData.append('file', this.file);
-        formData.append('accountId', this.accountId.toString());
-        formData.append('dailyId', this.dailyId.toString());
 
-        this.http.post('/SubsidiaryJournal/UploadSubsidiaryDailyToExcel', formData)
-            .subscribe({
-                next: () => {
-                    this.message = 'تم رفع الملف بنجاح!';
-                    this.file = null;
-                },
-                error: () => {
-                    this.message = 'حدث خطأ أثناء رفع الملف!';
-                },
-                complete: () => {
-                    this.uploading = false;
-                }
-            });
+        this.subsidaryService.uploadSubsidaryDailyFormAsExcel(this.dailyId, this.accountId, this.file).subscribe({
+            next: (response) => {
+                this.uploading = false;
+                this.message = 'تم تحميل الملف بنجاح';
+                this.dialogRef.close();
+            },
+            error: (error) => {
+                this.uploading = false;
+                this.message = 'حدث خطأ أثناء تحميل الملف';
+            },
+            complete: () => {
+                this.uploading = false;
+            }
+
+        })
     }
 
     onClose() {
-        // If using MatDialogRef, inject and call close()
-        // Otherwise, emit event or hide dialog as needed
-        // Placeholder for dialog close logic
+
+        this.dialogRef.close();
+
     }
 }

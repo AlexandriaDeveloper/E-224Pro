@@ -12,17 +12,17 @@ import {
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader
 } from "./chunk-W2KG5DJE.js";
-import {
-  coerceArray
-} from "./chunk-YNRXC4MO.js";
 import "./chunk-65RJ5ZZ2.js";
 import {
   Directionality
 } from "./chunk-62E4P4UW.js";
 import {
+  coerceArray
+} from "./chunk-YNRXC4MO.js";
+import {
   _CdkPrivateStyleLoader,
   _bindEventWithOptions
-} from "./chunk-KSQNEII4.js";
+} from "./chunk-5UNU7PO3.js";
 import {
   coerceElement,
   coerceNumberProperty
@@ -65,11 +65,11 @@ import {
   ɵɵdefineInjector,
   ɵɵdefineNgModule
 } from "./chunk-GNOYUWC5.js";
-import "./chunk-6Q4RANH6.js";
 import {
   animationFrameScheduler,
   merge
 } from "./chunk-FFZIAYYX.js";
+import "./chunk-6Q4RANH6.js";
 import {
   BehaviorSubject,
   Observable,

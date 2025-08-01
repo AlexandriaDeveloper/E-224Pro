@@ -13,9 +13,6 @@ import {
   provideNativeDateAdapter
 } from "./chunk-YHHNI3GQ.js";
 import {
-  _MatInternalFormField
-} from "./chunk-SRDR55Y2.js";
-import {
   MAT_OPTGROUP,
   MAT_OPTION_PARENT_COMPONENT,
   MatOptgroup,
@@ -24,28 +21,31 @@ import {
   MatOptionSelectionChange,
   _countGroupLabelsBeforeOption,
   _getOptionScrollPosition
-} from "./chunk-QGICOI43.js";
-import {
-  MatPseudoCheckbox,
-  MatPseudoCheckboxModule
-} from "./chunk-6QJB3B7C.js";
+} from "./chunk-66MFJH7G.js";
 import {
   ErrorStateMatcher,
   ShowOnDirtyErrorStateMatcher,
   _ErrorStateTracker
 } from "./chunk-SME7XM3W.js";
+import {
+  MatPseudoCheckbox,
+  MatPseudoCheckboxModule
+} from "./chunk-U6TT3C7R.js";
+import {
+  _MatInternalFormField
+} from "./chunk-SRDR55Y2.js";
 import "./chunk-SZS4RJEH.js";
 import {
   MatLine,
   MatLineModule,
   setLines
-} from "./chunk-4EDFOQ5V.js";
+} from "./chunk-DZWXGAER.js";
 import {
   MatRippleLoader
-} from "./chunk-T52OKUVK.js";
+} from "./chunk-NNAJB62D.js";
 import {
   MatRippleModule
-} from "./chunk-UNP3BODU.js";
+} from "./chunk-TK634LJC.js";
 import {
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatRipple,
@@ -53,30 +53,30 @@ import {
   RippleRenderer,
   RippleState,
   defaultRippleAnimationConfig
-} from "./chunk-C6UUIWMK.js";
-import "./chunk-GSGLLFD7.js";
+} from "./chunk-O27U37T5.js";
 import {
   _StructuralStylesLoader
 } from "./chunk-BXMGNAHW.js";
+import "./chunk-GSGLLFD7.js";
 import "./chunk-UU5Z7QKS.js";
 import "./chunk-X3P5GA7C.js";
 import {
   MATERIAL_SANITY_CHECKS,
   MatCommonModule
-} from "./chunk-5CZBNRIH.js";
+} from "./chunk-WV3P5AJB.js";
 import "./chunk-M3HR6BUY.js";
 import "./chunk-EPGUN3PN.js";
 import "./chunk-W2KG5DJE.js";
-import "./chunk-YNRXC4MO.js";
 import "./chunk-65RJ5ZZ2.js";
 import "./chunk-62E4P4UW.js";
-import "./chunk-KSQNEII4.js";
+import "./chunk-YNRXC4MO.js";
+import "./chunk-5UNU7PO3.js";
 import "./chunk-V7AYIQMM.js";
 import "./chunk-YRAFBTF7.js";
 import "./chunk-ANDIA7NN.js";
 import "./chunk-GNOYUWC5.js";
-import "./chunk-6Q4RANH6.js";
 import "./chunk-FFZIAYYX.js";
+import "./chunk-6Q4RANH6.js";
 import "./chunk-CXCX2JKZ.js";
 export {
   AnimationCurves,

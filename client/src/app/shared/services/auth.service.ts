@@ -73,6 +73,7 @@ export class AuthService {
         const token = this.getToken();
         if (!token) return [];
         const payload = JSON.parse(atob(token.split('.')[1]));
-        return payload['UserAccount'] ? payload['UserAccount'].map((acc: any) => acc) : [];
+        console.log(payload)
+        return payload['UserAccount']  ? payload['UserAccount'].map((acc: any) => acc) : [];
     }
 }

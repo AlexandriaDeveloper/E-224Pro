@@ -10,15 +10,14 @@ public static class FormDetailsEndPoint
 {
     public static WebApplication MapFormsDetailsEndPoint(this WebApplication app)
     {
-        var formGroup = app.MapGroup("FormDetails").RequireAuthorization();
+        var formGroup = app.MapGroup("api/FormDetails").RequireAuthorization();
 
 
-        formGroup.MapPost("/Creat", PostFormDetails).RequireAuthorization();
+        formGroup.MapPost("/Creat", PostFormDetails).RequireAuthorization().RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
 
-        formGroup.MapPost("/TestCreat", TestPostFormDetails).RequireAuthorization();
         formGroup.MapGet("/{formId}", GetByFormIdAsync).RequireAuthorization();
-        formGroup.MapPut("/Update/{id}", PutFormDetails).RequireAuthorization();
-        formGroup.MapDelete("/Delete/{id}", DeleteFormDetails).RequireAuthorization();
+        formGroup.MapPut("/Update/{id}", PutFormDetails).RequireAuthorization().RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
+        formGroup.MapDelete("/Delete/{id}", DeleteFormDetails).RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
         formGroup.MapGet("/Transfer/{dailyId}", TransferToSubsidaryJournalAsync).RequireAuthorization();
         formGroup.MapGet("/", GetBySpecAsync).RequireAuthorization();
         // formGroup.MapGet("/{id}", GetByIdAsync);
@@ -40,12 +39,6 @@ public static class FormDetailsEndPoint
     private static async Task<IResult> PutFormDetails(FormDetailsService service, int id, PutFormDetailsRequest formDetails, CancellationToken cancellationToken)
     {
         await service.PutFormDetailAsync(id, formDetails, cancellationToken);
-        return TypedResults.Created();
-    }
-    private static async Task<IResult> TestPostFormDetails(FormDetailsService service, CancellationToken cancellationToken)
-    {
-
-        await service.Create20FormDetailsAsync(cancellationToken);
         return TypedResults.Created();
     }
     private static async Task<IResult> GetBySpecAsync(FormDetailsService service, [AsParameters] GetFormDetailsRequest request, CancellationToken cancellationToken)

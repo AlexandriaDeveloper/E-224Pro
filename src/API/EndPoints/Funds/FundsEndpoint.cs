@@ -6,7 +6,7 @@ public static class FundsEndpoint
 {
     public static WebApplication MapFundsEndpoint(this WebApplication app)
     {
-        var fundGroup = app.MapGroup("Funds").RequireAuthorization();
+        var fundGroup = app.MapGroup("api/Funds").RequireAuthorization();
 
 
         // formGroup.MapPost("/Creat", PostForm);

@@ -10,7 +10,7 @@ public static class ReportsEndpoint
 {
     public static WebApplication MapReportEndPoint(this WebApplication app)
     {
-        var formGroup = app.MapGroup("Reports").RequireAuthorization();
+        var formGroup = app.MapGroup("api/Reports").RequireAuthorization();
 
         formGroup.MapGet("/ReportFormDetails", GetFormDetailsBySpecAsync).RequireAuthorization(); ;
         formGroup.MapGet("/ReportSubsidiaryJournalPdf", DownloadSubsidiaryReport).RequireAuthorization(); ;
