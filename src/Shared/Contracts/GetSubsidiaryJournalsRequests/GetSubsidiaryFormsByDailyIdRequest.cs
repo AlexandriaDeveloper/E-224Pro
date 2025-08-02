@@ -11,4 +11,6 @@ public class GetSubsidiaryFormsByDailyIdRequest : Param
     public int? FundId { get; set; }
     public string? Num224 { get; set; }
     public string? Num55 { get; set; }
+    public int? EntryType { get; set; }
+    public bool? IsBalanced { get; set; }
 }

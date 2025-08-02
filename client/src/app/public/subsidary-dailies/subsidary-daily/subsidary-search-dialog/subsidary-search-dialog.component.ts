@@ -31,6 +31,7 @@ export class SubsidarySearchDialogComponent implements OnInit {
       collageId: [0],
       fundId: [0],
       auditorName: [''],
+      entryType: [],
       isBalanced: ['']
     });
 
@@ -47,8 +48,6 @@ export class SubsidarySearchDialogComponent implements OnInit {
     const collageId = this.searchForm.get('collageId')?.value;
     if (collageId && collageId > 0) {
       this.loadFunds(collageId);
-    } else {
-      this.loadAllFunds();
     }
   }
 
@@ -107,6 +106,7 @@ export class SubsidarySearchDialogComponent implements OnInit {
       collageId: 0,
       fundId: 0,
       auditorName: '',
+      entryType: '',
       isBalanced: ''
     });
   }

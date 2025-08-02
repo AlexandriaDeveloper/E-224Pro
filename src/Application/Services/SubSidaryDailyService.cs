@@ -109,7 +109,7 @@ public class SubSidaryDailyService
                    FundName = x.Fund?.FundName ?? string.Empty,
                    Num224 = x.Num224 ?? string.Empty,
                    Num55 = x.Num55 ?? string.Empty,
-
+                   EntryType = (int)x.EntryType,
                    DailyId = x.DailyId,
                    AuditorName = x.AuditorName,
                    Details = x.Details,
@@ -284,6 +284,7 @@ public class SubSidaryDailyService
                 FormName = string.Empty,
                 Num224 = string.Empty,
                 Num55 = string.Empty,
+                EntryType = null,
                 TotalCredit = 0,
                 TotalDebit = 0,
                 SubsidaryAccountDtos = subAccounts.Select(sa => new SubsidaryToExcelDto.SubsidaryAccountDto
@@ -313,6 +314,7 @@ public class SubSidaryDailyService
                 FormName = item.Form?.FormName ?? string.Empty,
                 Num224 = item.Form?.Num224 ?? string.Empty,
                 Num55 = item.Form?.Num55 ?? string.Empty,
+                EntryType = item.Form?.EntryType != null ? (int)item.Form.EntryType : 0,
                 TotalCredit = item.Form?.FormDetails.Where(x => x.AccountId == item.AccountId).Sum(x => x.Credit) ?? 0,
                 TotalDebit = item.Form?.FormDetails.Where(x => x.AccountId == item.AccountId).Sum(x => x.Debit) ?? 0,
                 SubsidaryAccountDtos = new List<SubsidaryToExcelDto.SubsidaryAccountDto>()
@@ -452,6 +454,8 @@ public class SubSidaryDailyService
             AccountType = !string.IsNullOrEmpty(request.AccountType) ? request.AccountType : "الكل",
             AccountName = request.AccountId.HasValue ? accounts.SingleOrDefault(x => x.Id == request.AccountId.Value)?.AccountName ?? "الكل" : "الكل",
             Collages = subsResult,
+            StartDate = request.StartDate.HasValue ? "عن الفترة من :" + request.StartDate.Value.ToString("yyyy-MM-dd") : string.Empty,
+            EndDate = request.EndDate.HasValue ? "حتى الفترة من :" + request.EndDate.Value.ToString("yyyy-MM-dd") : string.Empty,
             TotalSubsidaries = totalSubsidaries
         };
     }

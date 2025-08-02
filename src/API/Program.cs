@@ -24,7 +24,7 @@ builder.Services
 
 // Add Identity services
 builder.Services.AddIdentity<AppUser, IdentityRole>(x =>
-{ 
+{
     x.Password.RequireDigit = false;
     x.Password.RequiredLength = 6;
     x.Password.RequireLowercase = true;
@@ -79,6 +79,7 @@ builder.Services.AddCors(opt =>
                     "http://localhost",
                     "https://localhost",
                     "http://192.168.1.98:4200",
+                    "http://localhost:5128"
                 ]);
     });
 });

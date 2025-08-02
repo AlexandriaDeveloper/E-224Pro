@@ -23,15 +23,15 @@ import {
   _getEventTarget
 } from "./chunk-W2KG5DJE.js";
 import {
+  coerceArray
+} from "./chunk-YNRXC4MO.js";
+import {
   supportsScrollBehavior
 } from "./chunk-65RJ5ZZ2.js";
 import {
   BidiModule,
   Directionality
 } from "./chunk-62E4P4UW.js";
-import {
-  coerceArray
-} from "./chunk-YNRXC4MO.js";
 import {
   _CdkPrivateStyleLoader,
   _bindEventWithOptions
@@ -2897,4 +2897,4 @@ export {
   CdkConnectedOverlay,
   OverlayModule
 };
-//# sourceMappingURL=chunk-G7LFCKLX.js.map
+//# sourceMappingURL=chunk-LUCLB6BL.js.map

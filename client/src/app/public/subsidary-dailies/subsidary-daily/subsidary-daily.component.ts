@@ -188,6 +188,7 @@ export class SubsidaryDailyComponent implements OnInit {
       num55: this.params.num55 || '',
       collageId: this.params.collageId || 0,
       fundId: this.params.fundId || 0,
+      entryType: this.params.entryType || '',
       auditorName: this.params.auditorName || '',
       isBalanced: this.params.isBalanced || ''
     };
@@ -211,6 +212,8 @@ export class SubsidaryDailyComponent implements OnInit {
         this.params.fundId = searchParams.fundId;
         this.params.auditorName = searchParams.auditorName;
         this.params.isBalanced = searchParams.isBalanced;
+        this.params.entryType = searchParams.entryType;
+
 
         // التحقق مما إذا كانت هناك معايير بحث نشطة
         this.hasActiveSearch = !!(searchParams.formName || searchParams.num224 ||

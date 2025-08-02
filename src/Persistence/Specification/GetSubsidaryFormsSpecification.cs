@@ -1,3 +1,4 @@
+using Core.Constants;
 using Core.Models;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Specification;
@@ -39,6 +40,10 @@ public class GetSubsidaryFormsSpecification : Specification<Form>
         {
             AddCriteries(x => x.Num224! == request.Num224);
 
+        }
+        if (request.EntryType.HasValue)
+        {
+            AddCriteries(x => x.EntryType == (EntryTypeEnum)request.EntryType.Value);
         }
 
         AddOrderByDescending(x => x.Id);
@@ -91,7 +96,14 @@ public class GetSubsidaryFormsCountSpecification : Specification<Form>
 
         }
 
-
+        if (request.EntryType.HasValue)
+        {
+            AddCriteries(x => x.EntryType == (EntryTypeEnum)request.EntryType.Value);
+        }
+        // if (request.IsBalanced.HasValue)
+        // {
+        //     AddCriteries(x => x. == request.IsBalanced);
+        // }
 
 
     }

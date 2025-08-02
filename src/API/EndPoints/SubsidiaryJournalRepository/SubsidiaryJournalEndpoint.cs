@@ -14,19 +14,19 @@ public static class SubsidiaryJournal
 
         //  subsidiaryJournalGroup.MapGet("/", GetSubsidiaryJournal);
 
-        subsidiaryJournalGroup.MapGet("SubId/{subAccountId}/dailyId/{dailyId}", GetSubsidiaryFormsByDailyId).RequireAuthorization();
+        subsidiaryJournalGroup.MapGet("SubId/{subAccountId}/dailyId/{dailyId}", GetSubsidiaryFormsByDailyId);
         subsidiaryJournalGroup.MapGet("SubId/{subAccountId}", GetDailiesBySpecAsync);
-        subsidiaryJournalGroup.MapGet("SubId/{subAccountId}/formDetailsId/{formDetailsId}", GetSubsidaryFormDetailsAsync).RequireAuthorization();
-        subsidiaryJournalGroup.MapPost("/Creat", PostSubsidiaryJournal).RequireAuthorization();
-        subsidiaryJournalGroup.MapPost("/AddOrUpdate", AddOrUpdateSubsidaryFormDetail).RequireAuthorization();
+        subsidiaryJournalGroup.MapGet("SubId/{subAccountId}/formDetailsId/{formDetailsId}", GetSubsidaryFormDetailsAsync);
+        subsidiaryJournalGroup.MapPost("/Creat", PostSubsidiaryJournal);
+        subsidiaryJournalGroup.MapPost("/AddOrUpdate", AddOrUpdateSubsidaryFormDetail);
         // subsidiaryJournalGroup.MapPost("/TestCreat", PostTestSubsidiaryJournal);
         // subsidiaryJournalGroup.MapPut("/Update/{id}", UpdateSubsidiaryJournal);
-        subsidiaryJournalGroup.MapDelete("/Delete/{id}", DeleteSubsidiaryJournal).RequireAuthorization();
-        subsidiaryJournalGroup.MapGet("/DailyRepot", GetSubsidaryDaily).RequireAuthorization();
+        subsidiaryJournalGroup.MapDelete("/Delete/{id}", DeleteSubsidiaryJournal);
+        subsidiaryJournalGroup.MapGet("/DailyRepot", GetSubsidaryDaily);
         //formDetailsId/${formDetailsId}`
 
-        subsidiaryJournalGroup.MapDelete("/FormDetailsId/{formDetailsId}", DeleteSubsidaryFormDetail).RequireAuthorization();
-        subsidiaryJournalGroup.MapGet("/ExportSubsidiaryDailyToExcel", ExportSubsidiaryDailyToExcel).RequireAuthorization();
+        subsidiaryJournalGroup.MapDelete("/FormDetailsId/{formDetailsId}", DeleteSubsidaryFormDetail);
+        subsidiaryJournalGroup.MapGet("/ExportSubsidiaryDailyToExcel", ExportSubsidiaryDailyToExcel);
 
         subsidiaryJournalGroup.MapPost("/UploadSubsidiaryDailyToExcel/dailyId/{dailyId}/accountId/{accountId}", UploadSubsidiaryDailyToExcel).DisableAntiforgery().RequireAuthorization();
         return app;

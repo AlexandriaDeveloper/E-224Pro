@@ -14,7 +14,7 @@ export class RegisterComponent implements OnInit {
     username = '';
     email = '';
     password = '';
-    selctedRole = '';
+    selectedRole = '';
     error = '';
     success = '';
 
@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
             username: this.username,
             email: this.email,
             password: this.password,
-            role: this.selctedRole
+            role: this.selectedRole
         }).subscribe({
             next: () => {
                 this.success = 'Registration successful! Please login.';
@@ -56,7 +56,7 @@ export class RegisterComponent implements OnInit {
     }
     onRoleChange(event: any) {
         console.log('Selected role:', event.target.value);
-        this.selctedRole = event.target.value;
+        this.selectedRole = event.target.value;
         // Handle role change logic here if needed
     }
 }

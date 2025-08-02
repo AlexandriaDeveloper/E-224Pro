@@ -18,6 +18,7 @@ public class SubsidaryFormDto
     public int DailyId { get; set; }
     public string? AuditorName { get; set; }
     public string? Details { get; set; }
+    public int? EntryType { get; set; }
     public decimal? TotalCredit { get; set; }
     public decimal? TotalDebit { get; set; }
     public decimal? SubsidaryTotalCredit { get; set; }
@@ -70,6 +71,10 @@ public class SubsidaryDailyReportDto
     public string? Daily { get; set; } = "الكل";
     public string AccountType { get; set; } = "الكل";
     public string AccountName { get; set; } = "الكل";
+    public string EntryType { get; set; } = "الكل";
+
+    public string StartDate { get; set; }
+    public string EndDate { get; set; }
     public List<SubsidaryDailyCollageReportDto> Collages { get; set; }
 
     public List<SubsidaryDailyDetailsReportDto> TotalSubsidaries { get; set; }

@@ -74,6 +74,8 @@ export class SubsidiaryService {
     if (param.fundId) params = params.append('FundId', param.fundId.toString());
     if (param.num55) params = params.set('num55', param.num55);
     if (param.num224) params = params.set('num224', param.num224);
+    if (param.entryType) params = params.set('entryType', param.entryType.toString());
+    if (param.isBalanced) params = params.set('isBalanced', param.isBalanced.toString());
 
     params = params.append('pageIndex', param.pageIndex);
     params = params.append('pageSize', param.pageSize);

@@ -50,13 +50,19 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-
             <div style="display: flex; justify-content: center;gap: 10px; ">
                 <mat-form-field style="width: 46%;">
-                    <mat-label>اسم المراجع</mat-label>
-                    <input matInput placeholder="البحث باسم المراجع" formControlName="auditorName" />
+                    <mat-label>نوع القيد</mat-label>
+                    <mat-select formControlName="entryType">
+                        <mat-option [value]="''">كل الأنواع</mat-option>
+                        <mat-option [value]="0">قيد عادى</mat-option>
+                        <mat-option [value]="1">قيد تصحيح</mat-option>
+                        <mat-option [value]="2">قيد سداد</mat-option>
+                        <mat-option [value]="3">قيد تسويه</mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>category</mat-icon>
                 </mat-form-field>
-
+                <!-- 
                 <mat-form-field style="width: 46%;">
                     <mat-label>حالة التوازن</mat-label>
                     <mat-select formControlName="isBalanced">
@@ -64,8 +70,18 @@
                         <mat-option [value]="true">متوازن</mat-option>
                         <mat-option [value]="false">غير متوازن</mat-option>
                     </mat-select>
+                </mat-form-field> -->
+                <mat-form-field style="width: 46%;">
+                    <mat-label>اسم المراجع</mat-label>
+                    <input matInput placeholder="البحث باسم المراجع" formControlName="auditorName" />
                 </mat-form-field>
+
             </div>
+
+            <!-- <div style="display: flex; justify-content: center;gap: 10px; ">
+
+
+            </div> -->
         </form>
     </mat-dialog-content>
 

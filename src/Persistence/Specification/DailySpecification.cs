@@ -1,5 +1,6 @@
 using System;
 using Azure.Core;
+using Core.Constants;
 using Core.Models;
 using Shared.Contracts;
 using Shared.DTOs.FormDtos;
@@ -118,6 +119,10 @@ public class SubsidaryToExcelSpecification : Specification<FormDetails>
         if (request.AccountId.HasValue)
         {
             AddCriteries(x => x.AccountId == request.AccountId.Value);
+        }
+        if (request.EntryType.HasValue)
+        {
+            AddCriteries(x => x.Form.EntryType == (EntryTypeEnum)request.EntryType.Value);
         }
 
 

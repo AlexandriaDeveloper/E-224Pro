@@ -264,7 +264,8 @@ public partial class PDFReportService
         return Array.Empty<byte>();
 
       using var stream = new MemoryStream();
-      var document = CreateReportDocument(report, request);
+      var imagePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Content", "images", "logo.png");
+      var document = CreateReportDocument(report, request, imagePath);
       document.GeneratePdf(stream);
 
       return stream.ToArray();

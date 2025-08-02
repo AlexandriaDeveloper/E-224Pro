@@ -41,7 +41,7 @@
 
 
         <div style="display: flex; justify-content: space-between;">
-            <mat-form-field style="width: 47%;">
+            <mat-form-field style="width: 24%;">
                 <mat-label>اسم المراجع</mat-label>
                 <input matInput placeholder="أدخل اسم المدقق" [value]="form.auditorName" readonly />
 
@@ -54,6 +54,10 @@
             <mat-form-field style="width: 24%;">
                 <mat-label> الصندوق</mat-label>
                 <input matInput placeholder="أدخل اسم المدقق" [value]="form.fundName" readonly />
+            </mat-form-field>
+            <mat-form-field style="width: 24%;">
+                <mat-label> قيد السداد</mat-label>
+                <input matInput placeholder="أدخل اسم المدقق" [value]="GetEntryTypeByName(form.entryType)" readonly />
             </mat-form-field>
 
         </div>

@@ -183,7 +183,7 @@ namespace Application.Services
                         }
                         else
                         {
-                            existing.Debit = decimal.Parse(cellValue);
+                            existing.Debit = decimal.Parse(cellValue) * -1;
                         }
 
 

@@ -13,6 +13,7 @@ public class SubsidaryToExcelDto
     public string Num224 { get; set; } = string.Empty;
     public string AuditorName { get; set; } = string.Empty;
     public string Details { get; set; } = string.Empty;
+    public int? EntryType { get; set; }
     public decimal? TotalCredit { get; set; }
     public decimal? TotalDebit { get; set; }
     public List<SubsidaryAccountDto> SubsidaryAccountDtos { get; set; } = new List<SubsidaryAccountDto>();
@@ -33,6 +34,8 @@ public class SubsidaryToExcelRequest
     public int? FundId { get; set; }
     public int? DailyId { get; set; }
     public int? AccountId { get; set; }
+    public int? EntryType { get; set; }
+
 
 }
 public class UploadSubsidaryDailyRequest

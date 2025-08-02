@@ -12,13 +12,13 @@ import {
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader
 } from "./chunk-W2KG5DJE.js";
+import {
+  coerceArray
+} from "./chunk-YNRXC4MO.js";
 import "./chunk-65RJ5ZZ2.js";
 import {
   Directionality
 } from "./chunk-62E4P4UW.js";
-import {
-  coerceArray
-} from "./chunk-YNRXC4MO.js";
 import {
   _CdkPrivateStyleLoader,
   _bindEventWithOptions

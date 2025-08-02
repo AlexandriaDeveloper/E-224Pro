@@ -145,7 +145,25 @@ export class AddSubsidaryFormDetailsDialogComponent implements OnInit, AfterView
   }
   getFunds(value) {
 
-  } onSubmit(): void {
+  }
+  GetEntryTypeByName(value) {
+    switch (value) {
+      case 0:
+        return "قيد عادى";
+      case 1:
+        return "قيد تصحيح";
+      case 2:
+        return "قيد سداد";
+      case 3:
+        return "قيد تسويه";
+      //default
+      default:
+        return "غير معروف";
+
+    }
+
+  }
+  onSubmit(): void {
     // debugger
     // if (this.addSubsidaryForm.invalid) {
     //   return;
