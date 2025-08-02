@@ -5,7 +5,7 @@ namespace Application.Services.PDFProviders;
 
 public static class ReportColors
 {
-    public static readonly Color Opening = Color.FromHex("#f0f0f0");
+    public static readonly Color Opening = Color.FromARGB(150, 255, 255, 255);
     public static readonly Color Monthly = Color.FromHex("#d1d1d1");
     public static readonly Color Closing = Color.FromHex("#fafafa");
     public static readonly Color Account = Color.FromHex("#fff");
