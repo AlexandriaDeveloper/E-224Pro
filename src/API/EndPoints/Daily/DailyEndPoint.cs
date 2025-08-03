@@ -8,16 +8,15 @@ public static class Dailies
 {
     public static WebApplication MapDailiesEndPoint(this WebApplication app)
     {
-        var dailiesGroup = app.MapGroup("api/dailies").RequireAuthorization(
-            x => x.RequireRole("Admin", "GeneralAccountant"));
+        var dailiesGroup = app.MapGroup("api/dailies");
 
 
-        dailiesGroup.MapPost("/Create", CreateAsync).RequireAuthorization();
-        dailiesGroup.MapPut("/Update/{id}", UpdateAsync).RequireAuthorization();
-        dailiesGroup.MapGet("/", GetBySpecAsync).RequireAuthorization();
-        dailiesGroup.MapGet("/{id}", GetByIdAsync).RequireAuthorization();
-        dailiesGroup.MapDelete("delete/{id}", DeleteAsync).RequireAuthorization();
-        dailiesGroup.MapPost("/{dailyId}/UploadExcelForm", UploadExcelFormAsync).DisableAntiforgery().RequireAuthorization();
+        dailiesGroup.MapPost("/Create", CreateAsync).RequireAuthorization().RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
+        dailiesGroup.MapPut("/Update/{id}", UpdateAsync).RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
+        dailiesGroup.MapGet("/", GetBySpecAsync).RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant", "SubsidaryAccountant"));
+        dailiesGroup.MapGet("/{id}", GetByIdAsync).RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant", "SubsidaryAccountant"));
+        dailiesGroup.MapDelete("delete/{id}", DeleteAsync).RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
+        dailiesGroup.MapPost("/{dailyId}/UploadExcelForm", UploadExcelFormAsync).DisableAntiforgery().RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
         return app;
     }
 

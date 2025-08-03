@@ -177,7 +177,7 @@ namespace Application.Services
                     if (existing != null)
                     {
                         // // Update the record
-                        if (int.Parse(cellValue) > 0)
+                        if (decimal.Parse(cellValue) > 0)
                         {
                             existing.Credit = decimal.Parse(cellValue);
                         }

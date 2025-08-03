@@ -26,7 +26,15 @@ public static class AuthEndpoints
             }
 
             var roles = await userManager.GetRolesAsync(user);
-            var userAccounts = userAccountRepository.GetQueryable(null).Where(x => x.UserId == user.Id);
+            IQueryable<UserAccount> userAccounts;
+            if (roles.Contains("Admin"))
+            {
+                userAccounts = userAccountRepository.GetQueryable(null);
+            }
+            else
+            {
+                userAccounts = userAccountRepository.GetQueryable(null).Where(x => x.UserId == user.Id);
+            }
             var token = tokenService.CreateToken(user, roles, userAccounts.ToList());
 
             return Results.Ok(new UserDto

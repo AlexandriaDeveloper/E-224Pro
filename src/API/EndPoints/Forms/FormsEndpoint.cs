@@ -18,7 +18,7 @@ public static class Forms
         formGroup.MapPost("/Creat", PostForm).RequireAuthorization().RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
         formGroup.MapPost("/AddForm", AddForm).RequireAuthorization().RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
         formGroup.MapPut("/Update/{id}", PutForm).RequireAuthorization().RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
-        formGroup.MapDelete("/{id}", DeleteForm).RequireAuthorization().RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant"));
+        formGroup.MapDelete("/{id}", DeleteForm).RequireAuthorization().RequireAuthorization(x => x.RequireRole("Admin", "GeneralAccountant", "SubsidaryAcountant"));
         formGroup.MapGet("/", GetBySpecAsync).RequireAuthorization();
         formGroup.MapGet("/Search", SearchBySpecAsync).RequireAuthorization(); ;
         formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync).RequireAuthorization(); ;
