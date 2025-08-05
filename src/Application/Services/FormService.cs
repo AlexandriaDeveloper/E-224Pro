@@ -291,4 +291,15 @@ public class FormService
         return new FormDto(formFromDb);
 
     }
+
+
+
+    public async Task<FormDto> GetDailyFormToExportAsExcel(DailyFormsToExcelRequest request, CancellationToken cancellationToken)
+    {
+        var spec = new GetDailyFormToExportAsExcelSpecification(request);
+        var forms = await _formRepository.GetAll(spec, cancellationToken);
+        var formDtos = forms.Select(form => new FormDto(form));
+        return formDtos.FirstOrDefault() ?? new FormDto();
+    }
+
 }

@@ -11,6 +11,7 @@ import { DailiesReportDialogComponent } from './dailies-report-dialog/dailies-re
 import { CollageService } from '../../shared/services/collage.service';
 import { Collage } from '../../shared/_models/collage.model';
 import { PaginatorModel } from '../../shared/_models/paginator.model';
+import { ToasterService } from '../../shared/services/toaster.service';
 
 
 
@@ -33,6 +34,7 @@ export class DailiesComponent implements OnInit {
   dataSource;
   params: GetDailiesRequest = new GetDailiesRequest();
   daily: Daily = null;
+  toast = inject(ToasterService);
 
   paginator: PaginatorModel = new PaginatorModel();
   pageEvent: PageEvent;
@@ -122,7 +124,19 @@ export class DailiesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadDailies(this.params);
+      console.log(result);
+
+
+      if (result) {
+        if (result === 'Added') {
+          this.toast.success('تم أضافة يوم جديد بنجاح');
+        }
+        if (result === 'Updated') {
+          this.toast.info('تم تحديث يوم بنجاح');
+        }
+        this.loadDailies(this.params);
+      }
+
     });
   }
   openDeleteDialog(element) {

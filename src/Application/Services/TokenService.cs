@@ -1,6 +1,7 @@
 using Core.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -35,11 +36,25 @@ namespace Application.Services
             }
 
             if (userAccounts is not null)
+            {
+                var userAccountsArr = new List<string>();
+
                 foreach (var userAccount in userAccounts)
                 {
-                    claims.Add(new Claim("UserAccount", userAccount.AccountId.ToString()));
-                    claims.Add(new Claim("UserAccount", string.Empty));
+
+
+                    claims.Add(new Claim("userAccount", userAccount.AccountId.ToString()));
+
+
+
                 }
+                if (userAccounts.Count == 1)
+                {
+                    claims.Add(new Claim("userAccount", string.Empty));
+                }
+
+            }
+            ;
 
 
 

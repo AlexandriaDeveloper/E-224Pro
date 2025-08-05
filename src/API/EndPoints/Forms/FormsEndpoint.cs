@@ -24,7 +24,7 @@ public static class Forms
         formGroup.MapGet("/FormWithDetail", GetBySpecWithFormDetailAsync).RequireAuthorization(); ;
         formGroup.MapGet("/{id}", GetByIdAsync).RequireAuthorization(); ;
         formGroup.MapPost("/DownloadTemplateExcelSheet", DownloadTemplateExcelSheet).RequireAuthorization(); ;
-        formGroup.MapPost("/DownloadExcelSheet/{dailyId}", DownloadExcelSheet).RequireAuthorization(); ;
+        formGroup.MapPost("/DownloadExcelSheet", DownloadExcelSheet).AllowAnonymous(); ;
         return app;
     }
 
@@ -83,9 +83,9 @@ public static class Forms
         return Results.File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "template.xlsx");
     }
 
-    private static async Task<IResult> DownloadExcelSheet(ExcelService service, int dailyId, CancellationToken cancellationToken)
+    private static async Task<IResult> DownloadExcelSheet(ExcelService service, DailyFormsToExcelRequest request, CancellationToken cancellationToken)
     {
-        var excelBytes = await service.GenerateFilledExcelSheetByDailyId(dailyId, cancellationToken);
+        var excelBytes = await service.GenerateExcelSheet(request, cancellationToken);
         if (excelBytes == null || excelBytes.Length == 0)
         {
             return Results.NotFound("No data found for the specified report criteria.");

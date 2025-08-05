@@ -54,17 +54,17 @@ export class AddDailyComponent implements OnInit {
 
   onNoClick(): void {
 
-    this.dialogRef.close();
+    this.dialogRef.close(null);
 
   }
   onSubmit() {
     this.addForm.value.dailyDate = this.dateService.stringToDateOnlyProvider(this.addForm.value.dailyDate);
     if (!this.isUpdateMode) {
 
-      this.dailyService.addDaily(this.addForm.value).subscribe(() => this.dialogRef.close());
+      this.dailyService.addDaily(this.addForm.value).subscribe(() => this.dialogRef.close("Added"));
     }
     else {
-      this.dailyService.updateDaily(this.daily.id, this.addForm.value).subscribe(() => this.dialogRef.close());
+      this.dailyService.updateDaily(this.daily.id, this.addForm.value).subscribe(() => this.dialogRef.close("Updated"));
     }
 
 

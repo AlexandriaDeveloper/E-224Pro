@@ -42,7 +42,7 @@ export class SidebarComponent implements OnInit {
   layoutService = inject(LayoutService);
   isHandset$: Observable<boolean>;
   subAccounts: any = [];
-  
+
   // متغيرات للتصميم المتجاوب
   isCompactView = false;
   layoutClass = '';
@@ -62,12 +62,19 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     // إعداد التصميم المتجاوب
     this.setupResponsiveLayout();
-    
+
     console.log(this.auth.getUserAccounRoles());
     this.subAccountsService.getAccountsHasSubAccounts().subscribe({
       next: (res: []) => {
         console.log(res);
         //add to subAccounts only if res contain ids in auth.getUserAccounRoles
+
+        if (this.auth.getUserRoles().includes('Admin')) {
+          this.subAccounts = res;
+          return;
+        }
+        //if auth
+
         this.subAccounts = res.filter((account: any) => this.auth.getUserAccounRoles().includes(account.id.toString()));
         console.log(this.subAccounts);
       },
@@ -91,7 +98,7 @@ export class SidebarComponent implements OnInit {
     this.layoutService.isHandset$.subscribe(isHandset => {
       this.isCompactView = isHandset;
     });
-    
+
     // الحصول على فئة CSS مناسبة بناءً على حجم الشاشة
     this.layoutService.getResponsiveClass().subscribe(className => {
       this.layoutClass = className;

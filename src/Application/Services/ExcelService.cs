@@ -16,6 +16,7 @@ using Shared.DTOs.AccountDtos;
 
 using Shared.DTOs.FormDtos;
 using Microsoft.AspNetCore.Http;
+using Persistence.Repository;
 
 namespace Application.Services
 {
@@ -23,6 +24,8 @@ namespace Application.Services
     {
         private readonly ICollageRepository _collageRepository;
         private readonly SubSidaryDailyService _subsidaryDailyService;
+        private readonly IFormRepository _formRepository;
+
         private readonly ISubsidiaryJournalRepository _subsidaryJournalRepository;
 
         private readonly IFundRepository _fundRepository;
@@ -30,13 +33,14 @@ namespace Application.Services
         private readonly IDailyRepository _dailyRepository;
         private readonly IUow _uow;
 
-        public ExcelService(IDailyRepository dailyRepository, IUow uow, ISubsidiaryJournalRepository subsidiaryJournalRepository, ICollageRepository collageRepository, SubSidaryDailyService subsidaryDailyService, IFundRepository fundRepository, IAccountRepository accountRepository)
+        public ExcelService(IDailyRepository dailyRepository, IUow uow, ISubsidiaryJournalRepository subsidiaryJournalRepository, IFormRepository formRepository, ICollageRepository collageRepository, SubSidaryDailyService subsidaryDailyService, IFundRepository fundRepository, IAccountRepository accountRepository)
         {
             _collageRepository = collageRepository;
             _subsidaryDailyService = subsidaryDailyService;
             _fundRepository = fundRepository;
             _accountRepository = accountRepository;
             _dailyRepository = dailyRepository;
+            _formRepository = formRepository;
             _uow = uow;
             _subsidaryJournalRepository = subsidiaryJournalRepository;
 

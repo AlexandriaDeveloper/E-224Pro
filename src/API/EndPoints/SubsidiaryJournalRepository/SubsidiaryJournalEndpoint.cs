@@ -41,7 +41,9 @@ public static class SubsidiaryJournal
 
     private static async Task<IResult> GetDailiesBySpecAsync(int accountId, SubSidaryDailyService service, [AsParameters] GetDailyRequest request, HttpContext context)
     {
-        if (context.User.IsInRole("SubsidaryAccountant") && context.User.Claims.FirstOrDefault(x => x.Type == "UserAccount").Value != accountId.ToString()) return Results.Forbid();
+
+        var s = (context.User.Claims.Where(x => x.Type == "userAccount").Select(x => x.Value));
+        if (!s.Any(x => x == accountId.ToString()) && !context.User.IsInRole("Admin")) return Results.Forbid();
         var dailies = await service.GetSubsidaryDailiesBySpec(accountId, request);
         return TypedResults.Ok(dailies);
     }

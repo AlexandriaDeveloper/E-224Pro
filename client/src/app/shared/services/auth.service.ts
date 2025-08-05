@@ -75,10 +75,14 @@ export class AuthService {
         const payload = JSON.parse(atob(token.split('.')[1]));
         console.log(payload)
         //if user role admin return all accounts
-        if (payload['role'] === 'admin') return payload['UserAccount'] ? payload['UserAccount'].map((acc: any) => acc) : [];
-        if (payload['role'] === 'SubsidaryAcountant')
-            return payload['UserAccount'] ? payload['UserAccount']
-                .filter((acc: any) => acc.role === 'SubsidaryAcountant').map((acc: any) => acc) : [];
+        console.log(JSON.stringify(payload['userAccount']));
+
+
+        if (payload['role'] === 'SubsidaryAccountant')
+            return payload['userAccount'] ? payload['userAccount']
+                .map((acc: any) => acc) : [];
         //return payload['UserAccount'] ? payload['UserAccount'].map((acc: any) => acc) : [];
+
+        return [];
     }
 }
