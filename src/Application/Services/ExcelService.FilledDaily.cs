@@ -6,6 +6,7 @@ using Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Specification;
 using Shared.Contracts.FormDetailsRequest;
+using Shared.DTOs.Excel;
 using Shared.DTOs.FormDtos;
 
 namespace Application.Services
@@ -21,41 +22,47 @@ namespace Application.Services
 
         private byte[] GenerateExcel(List<FormsToExcelDto> data)
         {
-            throw new NotImplementedException();
+            return null;
         }
-        private async Task<List<string>> BuildHeader2(List<Form> forms)
+        private async Task<List<ExcelHeaderDto>> BuildFilledExcelHeader(List<Form> forms)
         {
             var creditsAccount = forms
-            .Select(x => x.FormDetails
+            .SelectMany(x => x.FormDetails
             .Where(t => t.Credit.HasValue && t.Credit.Value > 0)
             .Select(y => new { AccountId = y.AccountId, AccountName = y.Account.AccountName })
-            .GroupBy(x => x.AccountId)
-            );
+            ).GroupBy(x => x.AccountId).Select(x => x.FirstOrDefault()).ToList();
             var debitsAccount = forms
-            .Select(x => x.FormDetails
+            .SelectMany(x => x.FormDetails
             .Where(t => t.Debit.HasValue && t.Debit.Value > 0)
             .Select(y => new { AccountId = y.AccountId, AccountName = y.Account.AccountName })
-            .GroupBy(x => x.AccountId)
-            );
-            var header = new List<string>();
+            ).GroupBy(x => x.AccountId).Select(x => x.FirstOrDefault()).ToList();
+            var excelFile = new ExcelDto();
+            excelFile.Headers.Add(new ExcelHeaderDto { CodeRow = string.Empty, NameRow = "م" });
+            excelFile.Headers.Add(new ExcelHeaderDto { CodeRow = "A-1", NameRow = "المراجع" });
+            excelFile.Headers.Add(new ExcelHeaderDto { CodeRow = "A-2", NameRow = "رقم 55" });
+            excelFile.Headers.Add(new ExcelHeaderDto { CodeRow = "A-3", NameRow = "رقم 224" });
+            excelFile.Headers.Add(new ExcelHeaderDto { CodeRow = "A-4", NameRow = " الملف" });
+            excelFile.Headers.Add(new ExcelHeaderDto { CodeRow = "A-5", NameRow = " الكلية" });
+            excelFile.Headers.Add(new ExcelHeaderDto { CodeRow = "A-6", NameRow = " الصندوق" });
+            excelFile.Headers.Add(new ExcelHeaderDto { CodeRow = "A-7", NameRow = " تفاصيل" });
+
+            var debitAccounts = debitsAccount
+            .Select(x => new ExcelHeaderDto { CodeRow = x.AccountId.ToString(), NameRow = x.AccountName })
+            .ToList();
 
 
-            foreach (var credit in creditsAccount)
-            {
-                foreach (var item in credit)
-                {
-                    header.Add(item.AccountName);
-                }
-            }
+            var creditAccountNames = creditsAccount
+            .Select(x => new ExcelHeaderDto { CodeRow = x.AccountId.ToString(), NameRow = x.AccountName })
+            .ToList();
 
-            // foreach (var debit in debitsAccount)
-            // {
-            //     foreach (var item in debit)
-            //     {
-            //         header.Add(item.AccountName);
-            //     }
-            // }
-            return header;
+            excelFile.Headers.AddRange(debitAccounts);
+
+            excelFile.Headers.Add(new ExcelHeaderDto { CodeRow = string.Empty, NameRow = "اجمالى مدين" });
+
+            excelFile.Headers.AddRange(creditAccountNames);
+            excelFile.Headers.Add(new ExcelHeaderDto { CodeRow = string.Empty, NameRow = "اجمالى دائن" });
+
+            return excelFile.Headers;
 
         }
 
@@ -94,11 +101,43 @@ namespace Application.Services
 
                 });
             }
+            //Step 1  : Build Excel Header
+            await BuildFilledExcelHeader(forms);
+            //Step 2  : Build Excel Data
+            await BuildFilledExcelData(formsToExcel);
 
-            BuildHeader2(forms);
             return formsToExcel;
         }
 
-
+        private async Task BuildFilledExcelData(List<FormsToExcelDto> formsToExcel)
+        {
+            foreach (var form in formsToExcel)
+            {
+                var row = new ExcelRowDto();
+                row.Cells.Add(new ExcelCellDto { CodeRow = string.Empty, Value = form.Id.ToString() });
+                row.Cells.Add(new ExcelCellDto { CodeRow = "A-1", Value = form.FormName ?? string.Empty });
+                row.Cells.Add(new ExcelCellDto { CodeRow = "A-2", Value = form.Num55 ?? string.Empty });
+                row.Cells.Add(new ExcelCellDto { CodeRow = "A-3", Value = form.Num224 ?? string.Empty });
+                row.Cells.Add(new ExcelCellDto { CodeRow = "A-4", Value = form.AuditorName ?? string.Empty });
+                row.Cells.Add(new ExcelCellDto { CodeRow = "A-5", Value = form.CollageName ?? string.Empty });
+                row.Cells.Add(new ExcelCellDto { CodeRow = "A-6", Value = form.FundName ?? string.Empty });
+                row.Cells.Add(new ExcelCellDto { CodeRow = "A-7", Value = form.FormName ?? string.Empty });
+                foreach (var item in form.Debit)
+                {
+                    row.Cells.Add(new ExcelCellDto { CodeRow = item.AccountId.ToString(), Value = item.Amount.ToString() ?? string.Empty });
+                }
+                row.Cells.Add(new ExcelCellDto { CodeRow = string.Empty, Value = form.TotalDebit.ToString() ?? string.Empty });
+                foreach (var item in form.Credit)
+                {
+                    row.Cells.Add(new ExcelCellDto { CodeRow = item.AccountId.ToString(), Value = item.Amount.ToString() ?? string.Empty });
+                }
+                row.Cells.Add(new ExcelCellDto { CodeRow = string.Empty, Value = form.TotalCredit.ToString() ?? string.Empty });
+                row.Cells.Add(new ExcelCellDto { CodeRow = string.Empty, Value = (form.TotalCredit - form.TotalDebit).ToString() ?? string.Empty });
+                if (form.TotalCredit != 0)
+                {
+                    // row.Cells.Add(new ExcelCellDto { CodeRow = string.Empty, Value = ((form.TotalCredit - form.TotalDebit) / form.TotalCredit) * 100.ToString() }); 
+                }
+            }
+        }
     }
 }
